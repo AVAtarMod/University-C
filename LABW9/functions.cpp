@@ -1,0 +1,56 @@
+#include <iostream>
+using std::cout;
+using std::endl;
+
+void deleteArray(int *array)
+{
+    int numberElements = *array;
+    for (int i = 0; i <= numberElements; i++, array++)
+    {
+        delete array;
+        array = nullptr;
+    }
+}
+
+//Вывод количества элементов выводится в 1 элемент массива (с индексом 0)
+int *generationArray()
+{
+    printf("\nВведите число элементов массива: ");
+    int numberElements;
+    scanf("%d", &numberElements);
+
+    int *array = new int[numberElements + 1];
+    array[0] = numberElements + 1;
+    for (int i = 1, negative = 1; i <= numberElements; i++, negative *= -1)
+    {
+        array[i] = (rand() % 25) * negative;
+    }
+
+    return array;
+}
+
+void printArray(int *array, int numberElements, const char *nameArray, bool afterChanging = false)
+{
+    array++;
+    cout << "Массив " << *nameArray << " состоит из [ ";
+
+    for (short int i = 1; i < numberElements; i++, array++)
+    {
+        cout << *array;
+        if (i != numberElements - 1)
+            cout << ";";
+    }
+
+    if (afterChanging)
+        cout << "] (После изменения)" << endl;
+    else
+        cout << " ]" << endl;
+}
+
+int *generationAndPrintArray(const char *nameArray, bool afterChanging = false)
+{
+    int *array = generationArray();
+    int numberElements = *array;
+    printArray(array, numberElements, nameArray, afterChanging);
+    return array;
+}
