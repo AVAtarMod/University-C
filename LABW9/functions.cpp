@@ -5,11 +5,8 @@ using std::endl;
 void deleteArray(int *array)
 {
     int numberElements = *array;
-    for (int i = 0; i <= numberElements; i++, array++)
-    {
-        delete array;
-        array = nullptr;
-    }
+    delete array;
+    array = nullptr;
 }
 
 //Вывод количества элементов выводится в 1 элемент массива (с индексом 0)
