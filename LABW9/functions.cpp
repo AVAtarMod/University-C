@@ -3,7 +3,7 @@
 using std::cout;
 using std::endl;
 
-template<class Type>
+template <class Type>
 void deleteArray(Type *array)
 {
     delete[] array;
@@ -21,23 +21,28 @@ int *generationArray()
     array[0] = numberElements + 1;
     for (int i = 1, negative = 1; i <= numberElements; i++, negative *= -1)
     {
-        array[i] = (hqrandom::engine()%25) * negative;
+        array[i] = (hqrandom::engine() % 25) * negative;
     }
 
     return array;
 }
 
-template<class Type>
-void printArray(Type *array, int numberElements, const char *nameArray, bool afterChanging = false)
+template <class Type>
+void printArray(Type *array, int numberElements, const char *nameArray, bool afterChanging = false, bool showZero = true)
 {
     array++;
     cout << "Массив " << *nameArray << " состоит из [ ";
 
     for (short int i = 1; i < numberElements; i++, array++)
     {
-        cout << *array;
-        if (i != numberElements - 1)
-            cout << ";";
+        if (*array || showZero)
+        {
+            cout << *array;
+            if (i != numberElements - 1)
+            {
+                cout << ";";
+            }
+        }
     }
 
     if (afterChanging)
