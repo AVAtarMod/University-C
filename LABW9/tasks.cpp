@@ -27,6 +27,10 @@ int main()
     case 6:
         task6();
         break;
+    case 7:
+        task7();
+        break;
+
     default:
         printf("Задачи под данным номером не существует или она не решена");
         break;
@@ -125,10 +129,11 @@ int task4()
     }
     deleteArray(arrayA);
 
-    printArray(arrayB, numberElements, "B", false, false);
     if (!counter)
         cout << "*Простых чисел не найдено\n"
              << endl;
+    else
+        printArray(arrayB, numberElements, "из простых чисел", false, false);
 
     deleteArray(arrayB);
     return 0;
@@ -192,11 +197,47 @@ int task6()
     }
     deleteArray(arrayA);
 
-    printArray(arrayB, numberElements, "B", false, false);
     if (!counter)
-        cout << "*Простых чисел не найдено\n"
+        cout << "*Отрицательных чисел не найдено\n"
              << endl;
+    else
+        printArray(arrayB, numberElements, "из номеров отрицательных элементов", false, false);
 
     deleteArray(arrayB);
+    return 0;
+}
+
+int task7()
+{
+    int *arrayA = generationAndPrintArray("A");
+    short int numberElements = *arrayA;
+
+    int *arrayB = new int[2];
+    *arrayB = numberElements;
+
+    int counter = 0;
+    for (int i = 1, *P = (arrayA + i); i < numberElements; P++, i++)
+    {
+        int result = 0;
+        if (*P % 7 == 0)
+        {
+            arrayB[1] = i-1;
+            counter++;
+        }
+    }
+    deleteArray(arrayA);
+
+    if (!counter)
+        cout << "*Чисел, кратных 7 не найдено\n"
+             << endl;
+    else
+        printArray(arrayB, 2, "индекса числа, кратных 7");
+
+    deleteArray(arrayB);
+    return 0;
+}
+
+int task8(){
+
     return 0;
 }

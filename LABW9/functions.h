@@ -8,17 +8,17 @@ int task3();
 int task4();
 int task5();
 int task6();
-// int task7();
-// int task9();
+int task7();
+int task8();
 // int task10();
 
 int *generationArray();
-int *generationAndPrintArray(const char *, bool);
+int *generationAndPrintArray(std::string text, bool);
 
 template<class Type>
 void deleteArray(Type*);
 
 template<class Type>
-void printArray(Type*, int, const char*, bool, bool);
+void printArray(Type*, int, std::string text, bool, bool);
 
 #endif //FUNCTIONS_H
