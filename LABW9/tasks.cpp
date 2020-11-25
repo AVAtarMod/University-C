@@ -2,11 +2,6 @@
 
 #include "functions.h"
 
-int task1();
-int task2();
-int task3();
-int task4();
-
 int main()
 {
     printf("\n\nВведите номер задачи для ее запуска: ");
@@ -27,6 +22,7 @@ int main()
         task4();
         break;
     case 5:
+        task5();
         break;
     case 6:
         break;
@@ -130,8 +126,47 @@ int task4()
 
     printArray(arrayB, numberElements, "B", false, false);
     if (!counter)
-        cout << "*Простых чисел не найдено" << endl << endl;
+        cout << "*Простых чисел не найдено\n"
+             << endl;
 
     deleteArray(arrayB);
+    return 0;
+}
+
+int task5()
+{
+    int *multiplicationTable = new int[100];
+
+    cout << "Таблица умножения:"
+         << "\n     ";
+    for (int i = 1; i <= 10; i++)
+    {
+        cout << i << "  ";
+    }
+    cout << "\n";
+
+    int *p = multiplicationTable;
+    for (int a = 1; a <= 10; a++)
+    {
+        if (a < 10)
+            cout << a << " [ ";
+        else
+            cout << a << "[ ";
+
+        for (int b = 1; b <= 10; b++, p++)
+        {
+            *p = a * b;
+            if (*p < 10)
+                cout << " ";
+            cout << *p;
+            if (*p < 100)
+                cout << " ";
+        }
+        cout << " ]\n";
+    }
+    cout << "\n"
+         << endl;
+    deleteArray(multiplicationTable);
+
     return 0;
 }

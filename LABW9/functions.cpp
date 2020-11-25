@@ -46,9 +46,9 @@ void printArray(Type *array, int numberElements, const char *nameArray, bool aft
     }
 
     if (afterChanging)
-        cout << "] (После изменения)" << endl;
+        cout << "] (После изменения)\n";
     else
-        cout << " ]" << endl;
+        cout << " ]\n";
 }
 
 int *generationAndPrintArray(const char *nameArray, bool afterChanging = false)
