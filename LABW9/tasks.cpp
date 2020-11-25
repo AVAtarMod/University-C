@@ -34,6 +34,9 @@ int main()
     case 8:
         task8();
         break;
+    case 9:
+        task9();
+        break;        
     default:
         printf("Задачи под данным номером не существует или она не решена");
         break;
@@ -255,6 +258,24 @@ int task8()
         else
         {
             *(arrayA + i) = 2 * *(arrayA + i);
+        }
+    }
+    printArray(arrayA, numberElements, "A", true);
+    deleteArray(arrayA);
+    return 0;
+}
+
+int task9()
+{
+    int *arrayA = generationAndPrintArray("A");
+    short int numberElements = *arrayA;
+
+    for (int *P = (arrayA + 2), i = 2; i < numberElements; P++, i++)
+    {
+        int element = *(arrayA + i);
+        if ((i - 1) % 2 == 0 && *(arrayA + i) < 0)
+        {
+            *(arrayA + i) = element + i-1;
         }
     }
     printArray(arrayA, numberElements, "A", true);

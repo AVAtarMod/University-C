@@ -10,7 +10,7 @@ int task5();
 int task6();
 int task7();
 int task8();
-// int task10();
+int task9();
 
 int *generationArray();
 int *generationAndPrintArray(std::string text, bool);
