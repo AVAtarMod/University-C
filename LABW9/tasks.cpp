@@ -1,4 +1,5 @@
 //9 лабораторная работа, все вспомогательные функции в functions.h
+//В данной лабораторной работе массив увеличен на 1 индекс, так как размер массива хранится в 1 элементе.
 
 #include "functions.h"
 
@@ -30,7 +31,9 @@ int main()
     case 7:
         task7();
         break;
-
+    case 8:
+        task8();
+        break;
     default:
         printf("Задачи под данным номером не существует или она не решена");
         break;
@@ -221,7 +224,7 @@ int task7()
         int result = 0;
         if (*P % 7 == 0)
         {
-            arrayB[1] = i-1;
+            arrayB[1] = i - 1;
             counter++;
         }
     }
@@ -237,7 +240,24 @@ int task7()
     return 0;
 }
 
-int task8(){
+int task8()
+{
+    int *arrayA = generationAndPrintArray("A");
+    short int numberElements = *arrayA;
 
+    for (int *P = (arrayA + 2), i = 2; i < numberElements; P++, i++)
+    {
+        int result = 0;
+        if ((i - 1) % 2 == 0)
+        {
+            *(arrayA + i) = *(arrayA + i) * *(arrayA + i);
+        }
+        else
+        {
+            *(arrayA + i) = 2 * *(arrayA + i);
+        }
+    }
+    printArray(arrayA, numberElements, "A", true);
+    deleteArray(arrayA);
     return 0;
 }
