@@ -24,6 +24,7 @@ int main()
         task3();
         break;
     case 4:
+        task4();
         break;
     case 5:
         break;
@@ -99,20 +100,38 @@ int task3()
     return 0;
 }
 
-int task4(){
+int task4()
+{
     int *arrayA = generationAndPrintArray("A");
     short int numberElements = *arrayA;
 
     int *arrayB = new int[numberElements];
     *arrayB = numberElements;
-    for (int i = 1; i <= numberElements; i++)
+
+    int counter = 0;
+    for (int i = 1, *P = (arrayA + i); i <= numberElements; i++, P++)
     {
         int result = 0;
-        for (int c = 1, *p = (arrayA + c); c <= i; c++, p++)
+        int c = 0;
+        for (int divisor = 2; divisor < *P; divisor++)
         {
-            result += *p;
+            if (*P % divisor != 0)
+            {
+                c++;
+            }
         }
-        arrayB[i] = result;
+        if (c == 0)
+        {
+            arrayB[i] = *P;
+            counter++;
+        }
     }
-    
+    deleteArray(arrayA);
+
+    printArray(arrayB, numberElements, "B", false, false);
+    if (!counter)
+        cout << "*Простых чисел не найдено" << endl << endl;
+
+    deleteArray(arrayB);
+    return 0;
 }
