@@ -25,6 +25,7 @@ int main()
         task5();
         break;
     case 6:
+        task6();
         break;
     default:
         printf("Задачи под данным номером не существует или она не решена");
@@ -168,5 +169,34 @@ int task5()
          << endl;
     deleteArray(multiplicationTable);
 
+    return 0;
+}
+
+int task6()
+{
+    int *arrayA = generationAndPrintArray("A");
+    short int numberElements = *arrayA;
+
+    int *arrayB = new int[numberElements];
+    *arrayB = numberElements;
+
+    int counter = 0;
+    for (int i = 1, *P = (arrayA + i); i <= numberElements; i++, P++)
+    {
+        int result = 0;
+        if (*P < 0)
+        {
+            arrayB[i] = i;
+            counter++;
+        }
+    }
+    deleteArray(arrayA);
+
+    printArray(arrayB, numberElements, "B", false, false);
+    if (!counter)
+        cout << "*Простых чисел не найдено\n"
+             << endl;
+
+    deleteArray(arrayB);
     return 0;
 }
