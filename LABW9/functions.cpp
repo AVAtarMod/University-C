@@ -28,10 +28,10 @@ int *generationArray()
 }
 
 template <class Type>
-void printArray(Type *array, int numberElements, const char *nameArray, bool afterChanging = false, bool showZero = true)
+void printArray(Type *array, int numberElements, std::string text, bool afterChanging = false, bool showZero = true)
 {
     array++;
-    cout << "Массив " << *nameArray << " состоит из [ ";
+    cout << "Массив " << text << " состоит из [ ";
 
     for (short int i = 1; i < numberElements; i++, array++)
     {
@@ -51,10 +51,10 @@ void printArray(Type *array, int numberElements, const char *nameArray, bool aft
         cout << " ]\n";
 }
 
-int *generationAndPrintArray(const char *nameArray, bool afterChanging = false)
+int *generationAndPrintArray(std::string text, bool afterChanging = false)
 {
     int *array = generationArray();
     int numberElements = *array;
-    printArray(array, numberElements, nameArray, afterChanging);
+    printArray(array, numberElements, text, afterChanging);
     return array;
 }
