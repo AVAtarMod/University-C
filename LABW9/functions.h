@@ -3,9 +3,12 @@
 #include "functions.cpp"
 
 int *generationArray();
-void printArray(int *, int, const char *, bool);
-
 int *generationAndPrintArray(const char *, bool);
-void deleteArray(int *);
+
+template<class Type>
+void deleteArray(Type*);
+
+template<class Type>
+void printArray(Type*, int, const char*, bool);
 
 #endif //FUNCTIONS_H

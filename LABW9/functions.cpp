@@ -1,11 +1,12 @@
 #include <iostream>
+#include "random.cpp"
 using std::cout;
 using std::endl;
 
-void deleteArray(int *array)
+template<class Type>
+void deleteArray(Type *array)
 {
-    int numberElements = *array;
-    delete array;
+    delete[] array;
     array = nullptr;
 }
 
@@ -20,13 +21,14 @@ int *generationArray()
     array[0] = numberElements + 1;
     for (int i = 1, negative = 1; i <= numberElements; i++, negative *= -1)
     {
-        array[i] = (rand() % 25) * negative;
+        array[i] = (hqrandom::engine()%25) * negative;
     }
 
     return array;
 }
 
-void printArray(int *array, int numberElements, const char *nameArray, bool afterChanging = false)
+template<class Type>
+void printArray(Type *array, int numberElements, const char *nameArray, bool afterChanging = false)
 {
     array++;
     cout << "Массив " << *nameArray << " состоит из [ ";

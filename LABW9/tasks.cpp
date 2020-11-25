@@ -18,6 +18,7 @@ int main()
         task1();
         break;
     case 2:
+        task2();
         break;
     case 3:
         break;
@@ -38,32 +39,34 @@ int task1()
     int *arrayA = generationAndPrintArray("A");
     short int numberElements = *arrayA;
 
-    int arrayB[numberElements+1];
-    arrayB[0] = numberElements;
+    int *arrayB = new int[numberElements];
+    *arrayB = numberElements;
     for (int i = 1; i <= numberElements; i++)
     {
-        arrayB[i] = *(arrayA+i) * (*(arrayA+i)) + 2 * (*(arrayA+i)) - 1;
+        arrayB[i] = *(arrayA + i) * (*(arrayA + i)) + 2 * (*(arrayA + i)) - 1;
     }
     deleteArray(arrayA);
-    printArray(arrayB,numberElements,"B");
+    printArray(arrayB, numberElements, "B");
+    deleteArray(arrayB);
 
     return 0;
 }
 
-int task2(){
+int task2()
+{
 
     int *arrayA = generationAndPrintArray("A");
     short int numberElements = *arrayA;
 
-    int arrayB[numberElements];
-    arrayB[0] = numberElements;
-
-    for (int i = 1; i <= numberElements; i++, arrayA++)
+    bool *arrayB = new bool[numberElements];
+    *arrayB = numberElements;
+    for (int i = 1; i <= numberElements; i++)
     {
-        arrayB[i] = (*arrayA) * (*arrayA) + 2 * (*arrayA) - 1;
+        arrayB[i] = (abs(arrayA[i]) % 3 == 0) ? true : false;
     }
     deleteArray(arrayA);
-    printArray(arrayB,numberElements,"B");
+    printArray(arrayB, numberElements, "B");
+    deleteArray(arrayB);
 
     return 0;
 }
