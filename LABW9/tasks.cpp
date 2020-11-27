@@ -36,7 +36,10 @@ int main()
         break;
     case 9:
         task9();
-        break;        
+        break;
+    case 10:
+        task10();
+        break;
     default:
         printf("Задачи под данным номером не существует или она не решена");
         break;
@@ -275,10 +278,41 @@ int task9()
         int element = *(arrayA + i);
         if ((i - 1) % 2 == 0 && *(arrayA + i) < 0)
         {
-            *(arrayA + i) = element + i-1;
+            *(arrayA + i) = element + i - 1;
         }
     }
     printArray(arrayA, numberElements, "A", true);
     deleteArray(arrayA);
+    return 0;
+}
+
+int task10()
+{
+    int *arrayM = generationAndPrintArray("M");
+    short int numberElements = *arrayM;
+
+    int A, B;
+    cout << "Введите границы А,Б : ";
+    scanf("%d %d", &A, &B);
+    A++;
+    B++;
+    if (A > B)
+    {
+        int temp = A;
+        A = B;
+        B = temp;
+    }
+    if (A <= numberElements && B <= numberElements && A >= 0 && B >= 0)
+    {
+        int result = 1;
+        for (int *P = (arrayM + A), i = A; i <= B; P++, i++)
+        {
+            result *= *P;
+        }
+        cout << "Результат: " << result << "\n";
+    }
+    else
+        cout << "Введены некорректные значения.";
+
     return 0;
 }

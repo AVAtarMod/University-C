@@ -19,9 +19,9 @@ int *generationArray()
 
     int *array = new int[numberElements + 1];
     array[0] = numberElements + 1;
-    for (int i = 1, negative = 1; i <= numberElements; i++, negative *= -1)
+    for (int i = 1; i <= numberElements; i++)
     {
-        array[i] = (hqrandom::engine() % 25) * negative;
+        array[i] = hqrandom::engine() % 25;
     }
 
     return array;
@@ -50,7 +50,7 @@ void printArray(Type *array, int numberElements, std::string text, bool afterCha
     else
         cout << " ]\n";
 }
-
+//Вывод количества элементов выводится в 1 элемент массива (с индексом 0,поэтому происходит смещение на +1)
 int *generationAndPrintArray(std::string text, bool afterChanging = false)
 {
     int *array = generationArray();
