@@ -2,11 +2,24 @@
 
 #include <iostream>
 typedef int blocks;
+int computeNumberStairs(blocks n, int layer);
 
-int computeNumberStairs(blocks n, int layers)
+int main(){
+    std::cout << computeNumberStairs(10,1);
+}
+
+int computeNumberStairs(blocks n, int layer)
 {
-    for (int sum = 0; sum <= n;)
-    {
-        
-    }
+    if (n <= 0)
+        return 0;
+    int result = 0;
+
+  int count = 0;
+  for (int level = 1; level < layer; ++level) {
+    if ((n - level) < 0) 
+      break;
+    count += computeNumberStairs(level, n - level);
+  }
+
+    return result;
 }
