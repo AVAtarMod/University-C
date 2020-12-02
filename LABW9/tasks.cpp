@@ -40,6 +40,9 @@ int main()
     case 10:
         task10();
         break;
+    case 11:
+        task11();
+        break;
     default:
         printf("Задачи под данным номером не существует или она не решена");
         break;
@@ -121,7 +124,6 @@ int task4()
     int counter = 0;
     for (int i = 1, *P = (arrayA + i); i <= numberElements; i++, P++)
     {
-        int result = 0;
         int c = 0;
         for (int divisor = 2; divisor < *P; divisor++)
         {
@@ -197,7 +199,6 @@ int task6()
     int counter = 0;
     for (int i = 1, *P = (arrayA + i); i <= numberElements; i++, P++)
     {
-        int result = 0;
         if (*P < 0)
         {
             arrayB[i] = i;
@@ -227,7 +228,6 @@ int task7()
     int counter = 0;
     for (int i = 1, *P = (arrayA + i); i < numberElements; P++, i++)
     {
-        int result = 0;
         if (*P % 7 == 0)
         {
             arrayB[1] = i - 1;
@@ -253,7 +253,6 @@ int task8()
 
     for (int *P = (arrayA + 2), i = 2; i < numberElements; P++, i++)
     {
-        int result = 0;
         if ((i - 1) % 2 == 0)
         {
             *(arrayA + i) = *(arrayA + i) * *(arrayA + i);
@@ -314,5 +313,34 @@ int task10()
     else
         cout << "Введены некорректные значения.";
 
+    return 0;
+}
+int task11()
+{
+    int *arrayA = generationAndPrintArray("A");
+    short int numberElements = *arrayA;
+
+    bool numberIsExist = false;
+    int *startAdress, startNumber;
+    for (int i = 1, *p = arrayA; i < numberElements; i++, p++)
+    {
+        if (*p < 0 && abs(*p) % 10 == 3)
+        {
+            startAdress = (p+1);
+            startNumber = (i+1);
+            numberIsExist = true;
+        }
+    }
+    if (numberIsExist)
+    {
+        long long int result = 1;
+        for (int i = startNumber, *p = startAdress; i <= numberElements; i++, p++)
+        {
+            result *= *p;
+        }
+        cout << "Результат выполнения = " << result << "\n";
+    }
+    else
+        cout << "Отрезок, соответствующий условиям не найден \n";
     return 0;
 }
