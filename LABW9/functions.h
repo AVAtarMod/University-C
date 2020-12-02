@@ -1,6 +1,10 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
-#include "functions.cpp"
+
+#include <iostream>
+#include <random>
+using std::cout;
+using std::endl;
 
 int task1();
 int task2();
@@ -12,14 +16,15 @@ int task7();
 int task8();
 int task9();
 int task10();
+int task11();
 
 int *generationArray();
-int *generationAndPrintArray(std::string text, bool);
+int *generationAndPrintArray(std::string text, bool afterChanging = false);
 
-template<class Type>
-void deleteArray(Type*);
+template <class Type>
+void deleteArray(Type *array);
 
-template<class Type>
-void printArray(Type*, int, std::string text, bool, bool);
+template <class Type>
+void printArray(Type *array, int numberElements, std::string text, bool afterChanging = false, bool showZero = true);
 
 #endif //FUNCTIONS_H
