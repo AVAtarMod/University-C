@@ -10,8 +10,7 @@ int main()
     printf("Введите m и n: ");
     int m, n;
     scanf("%d %d", &m, &n);
-    if (1 <= m, n <= 10)
-        cout << ackerman(m, n) << endl;
+    cout << ackerman(m, n) << endl;
 }
 
 int ackerman(int m, int n)
@@ -20,11 +19,11 @@ int ackerman(int m, int n)
     {
         return n + 1;
     }
-    else if ((m > 0) && (n == 0))
+    else if (n == 0)
     {
         return ackerman(m - 1, 1);
     }
-    else if ((m > 0) && (n > 0))
+    else
     {
         return ackerman(m - 1, ackerman(m, n - 1));
     }
