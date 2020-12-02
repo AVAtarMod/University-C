@@ -24,7 +24,7 @@ int main()
 
 void OutputDigits(long int number){
     printf("%ld\n",number%10);
-    if (number/10 > 0) OutputDigits(number/10);
+    if (number > 9) OutputDigits(number/10);
 }
 
 void OutputDigits_invert(long int number){
