@@ -8,57 +8,50 @@
 #include <iostream>
 #include <ctime>
 
-int main(){
+int main()
+{
 
     using namespace std;
-    int day,m,y;
+    int day, month, year;
     printf("Введите дату рождения в формате ДД.ММ.ГГГГ, например 06.01.2021\n");
-    scanf("%d.%d.%d",&day,&m,&y);
-    
-    time_t birthday = ((y-1970)*365 + m*30.41 + day)*24*60*60+1;
-    time_t currentDate = time(nullptr);
-    time_t dt = difftime(currentDate,birthday);
-    dt /=3600*24;
-    std::cout << dt << "\n\n" ;
-    /*
-    Преобразование дат в дни (среднем в каждом месяце 30,41 дней если поделить 365 на 12)
-    */
+    scanf("%d.%d.%d", &day, &month, &year);
+
+    time_t now = time(nullptr);
+    struct tm tm = *localtime(&now);
+
+    short int nowYear = tm.tm_year + 1900;
+    int nowMonth = tm.tm_mon + 1,
+        nowDay = tm.tm_mday;
+
+    int dt = (nowYear * 365 + nowMonth * 30 + nowDay) - (year * 365 + month * 30 + day);
     if (dt > 0)
     {
-        int dtYear = dt/365;
-        if (dt%365 == 0)
+        int diffYear = (nowMonth < month || (nowDay > day && nowMonth == month)) ? nowYear - year : nowYear - year - 1;
+        if (dt % 365 == 0)
         {
             printf("С Днем рождения!\n\n");
         }
-        
-        switch(dtYear){
-            case 14 : printf("Вам нужно получить паспорт\n");
-                    break;
-            case 18 : printf("Вы можете получить права в РФ\n");
-                    break;
-            case 20 : printf("Вам нужно получить паспорт\n");
-                    break; 
-            case 21 : printf("Вы можете быть избраны в Государственную думу РФ\n");
-                    break;  
-            case 45 : printf("Вам нужно получить паспорт\n");
-                    break;
-
-            default : break;
-        }
-        if (dtYear > 13 && dtYear < 18)
+        if (diffYear >= 13 && diffYear < 18)
         {
             printf("Вам нужно получить паспорт\n");
+
         }
-        
-        if (dtYear > 18 && dtYear < 21)
+        else if (diffYear >= 18 && diffYear < 21)
         {
             printf("Вы можете получить права в РФ\n");
+            if (diffYear == 20)
+            {
+                printf("Вам нужно получить паспорт\n");
+            }
         }
-        if (dtYear > 21)
+        else
         {
             printf("Вы можете получить права в РФ\nВы можете быть избраны в Государственную думу РФ\n");
+            if (diffYear == 45)
+            {
+                printf("Вам нужно получить паспорт\n");
+            }
         }
-
     }
     else
     {
@@ -69,7 +62,7 @@ int main(){
     на соответвие условиям. Вывод результата.
     (Совместное использование оператора выбора, тернарного оператора 
     и операторов if/else)
-    */  
+    */
 
     return 0;
 }
