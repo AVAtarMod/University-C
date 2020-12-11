@@ -8,10 +8,10 @@ CXXFLAGS = -std=c++17 -Wall
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
-APPNAME = labwork
+APPNAME = labwork9.app
 EXT = .cpp
 SRCDIR = .
-OBJDIR = .
+OBJDIR = build/
 
 ############## Do not change anything from here downwards! #############
 SRC = $(wildcard $(SRCDIR)/*$(EXT))
@@ -20,16 +20,12 @@ DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
 # UNIX-based OS variables & settings
 RM = rm
 DELOBJ = $(OBJ)
-# Windows OS variables & settings
-DEL = del
-EXE = .exe
-WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 
 ########################################################################
 ####################### Targets beginning here #########################
 ########################################################################
 
-all: $(APPNAME)
+all: $(APPNAME) cleandep
 
 # Builds the app
 $(APPNAME): $(OBJ)
@@ -56,14 +52,3 @@ clean:
 .PHONY: cleandep
 cleandep:
 	$(RM) $(DEP)
-
-#################### Cleaning rules for Windows OS #####################
-# Cleans complete project
-.PHONY: cleanw
-cleanw:
-	$(DEL) $(WDELOBJ) $(DEP) $(APPNAME)$(EXE)
-
-# Cleans only all files with the extension .d
-.PHONY: cleandepw
-cleandepw:
-	$(DEL) $(DEP)

@@ -1,10 +1,11 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+// #ifndef FUNCTIONS
+// #define FUNCTIONS
 
 #include <iostream>
 #include <random>
 using std::cout;
 using std::endl;
+using std::string;
 
 int task1();
 int task2();
@@ -19,12 +20,32 @@ int task10();
 int task11();
 
 int *generationArray();
-int *generationAndPrintArray(std::string text, bool afterChanging = false);
+int *generationAndPrintArray(string text);
 
 template <class Type>
-void deleteArray(Type *array);
+void deleteArray(Type **array)
+{
+    delete[] *array;
+    *array = nullptr;
+}
 
 template <class Type>
-void printArray(Type *array, int numberElements, std::string text, bool afterChanging = false, bool showZero = true);
+void printArray(Type *array, int numberElements, std::string text,bool showZero = true)
+{
+    array++;
+    cout << "Массив " << text << " состоит из [ ";
 
-#endif //FUNCTIONS_H
+    for (short int i = 1; i < numberElements; i++, array++)
+    {
+        if (*array || showZero)
+        {
+            cout << *array;
+            if (i != numberElements - 1)
+            {
+                cout << ";";
+            }
+        }
+    }
+    cout << "\n";
+}
+// #endif //FUNCTIONS
