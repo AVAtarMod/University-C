@@ -1,6 +1,8 @@
 //9 лабораторная работа, все вспомогательные функции в functions.h
 //В данной лабораторной работе массив увеличен на 1 индекс, так как размер массива хранится в 1 элементе.
 
+//TODO: доделать старт
+
 #include "functions.h"
 
 int main()
@@ -60,10 +62,9 @@ int task1()
     {
         arrayB[i] = *(arrayA + i) * (*(arrayA + i)) + 2 * (*(arrayA + i)) - 1;
     }
-    deleteArray(arrayA);
-
-    printArray(arrayB, numberElements, "B");
-    deleteArray(arrayB);
+    deleteArray(&arrayA);
+    printArray(arrayB, numberElements,"B");
+    deleteArray(&arrayB);
 
     return 0;
 }
@@ -80,10 +81,10 @@ int task2()
     {
         arrayB[i] = (abs(arrayA[i]) % 3 == 0) ? true : false;
     }
-    deleteArray(arrayA);
+    deleteArray(&arrayA);
 
     printArray(arrayB, numberElements, "B");
-    deleteArray(arrayB);
+    deleteArray(&arrayB);
 
     return 0;
 }
@@ -105,10 +106,10 @@ int task3()
         }
         arrayB[i] = result;
     }
-    deleteArray(arrayA);
+    deleteArray(&arrayA);
 
     printArray(arrayB, numberElements, "B");
-    deleteArray(arrayB);
+    deleteArray(&arrayB);
 
     return 0;
 }
@@ -138,15 +139,15 @@ int task4()
             counter++;
         }
     }
-    deleteArray(arrayA);
+    deleteArray(&arrayA);
 
     if (!counter)
         cout << "*Простых чисел не найдено\n"
              << endl;
     else
-        printArray(arrayB, numberElements, "из простых чисел", false, false);
+        printArray(arrayB, numberElements, "из простых чисел", false);
 
-    deleteArray(arrayB);
+    deleteArray(&arrayB);
     return 0;
 }
 
@@ -183,7 +184,7 @@ int task5()
     }
     cout << "\n"
          << endl;
-    deleteArray(multiplicationTable);
+    deleteArray(&multiplicationTable);
 
     return 0;
 }
@@ -205,15 +206,15 @@ int task6()
             counter++;
         }
     }
-    deleteArray(arrayA);
+    deleteArray(&arrayA);
 
     if (!counter)
         cout << "*Отрицательных чисел не найдено\n"
              << endl;
     else
-        printArray(arrayB, numberElements, "из номеров отрицательных элементов", false, false);
+        printArray(arrayB, numberElements, "из номеров отрицательных элементов", false);
 
-    deleteArray(arrayB);
+    deleteArray(&arrayB);
     return 0;
 }
 
@@ -234,7 +235,7 @@ int task7()
             counter++;
         }
     }
-    deleteArray(arrayA);
+    deleteArray(&arrayA);
 
     if (!counter)
         cout << "*Чисел, кратных 7 не найдено\n"
@@ -242,7 +243,7 @@ int task7()
     else
         printArray(arrayB, 2, "индекса числа, кратных 7");
 
-    deleteArray(arrayB);
+    deleteArray(&arrayB);
     return 0;
 }
 
@@ -263,7 +264,7 @@ int task8()
         }
     }
     printArray(arrayA, numberElements, "A", true);
-    deleteArray(arrayA);
+    deleteArray(&arrayA);
     return 0;
 }
 
@@ -281,7 +282,7 @@ int task9()
         }
     }
     printArray(arrayA, numberElements, "A", true);
-    deleteArray(arrayA);
+    deleteArray(&arrayA);
     return 0;
 }
 
