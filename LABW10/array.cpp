@@ -4,11 +4,12 @@
 
 #include "array.h"
 
-int getLenghtUser(){
+int getLenghtUser()
+{
     printf("Введите длину массива: ");
     int length;
 
-    scanf("%d",&length);
+    scanf("%d", &length);
     return length;
 }
 
@@ -26,7 +27,7 @@ int *generateFromUser(int *array, int numberElements)
     return array;
 }
 
-int *generateRandom(int *array, int numberElements, int minNumber = -25, int maxNumber = 25)
+int *generateRandom(int *array, int numberElements, int minNumber, int maxNumber)
 {
     std::default_random_engine engine(time(nullptr));
     std::uniform_int_distribution<int> random(minNumber, maxNumber);

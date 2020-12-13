@@ -16,7 +16,7 @@ using std::cout;
 int getLenghtUser();
 
 int *generateFromUser(int *ar, int nE);
-int *generateRandom(int *ar, int nE, int minN, int maxN);
+int *generateRandom(int *ar, int nE, int minN = -25, int maxN = 25);
 void print(const int *ar, const int nE);
 
 int searchElement(const int *ar, const int nE, const int number);
