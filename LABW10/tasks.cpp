@@ -179,6 +179,20 @@ void task7()
 }
 void task8()
 {
+    const int ln = getLenghtRandom(5, 12);
+
+    int *array = new int[ln];
+    array = generateRandom(array, ln, -30, 30);
+    print(array, ln);
+
+    int *arrayResult = elementsRelevantConditions(array,ln,isOdd);
+    print(arrayResult,*arrayResult,"элементов из нечетных чисел",1);
+
+    delete[] array;
+    delete[] arrayResult;
+}
+void task9()
+{
     const int ln = getLenghtUser();
     int *array = new int[ln];
 
@@ -189,11 +203,17 @@ void task8()
 
     delete[] arrayResult;
 }
-void task9()
-{
-}
 void task10()
 {
+    const int ln = getLenghtUser();
+    int *array = new int[ln];
+
+    array = generateFromUser(array, ln);
+    int *arrayResult = deleteCoincidences(array,ln,getElementUser("Для удаления элементов, равных введенному"));
+
+    print(arrayResult,*arrayResult,"с удаленными элементами",1);
+
+    delete[] arrayResult;
 }
 void task11()
 {
