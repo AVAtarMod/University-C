@@ -85,9 +85,8 @@ int searchElement(const int *array, const int numberElements, const int number)
 {
     for (int i = 0; i < numberElements; i++)
     {
-        if (*array == number)
-            return i + 1;
-        array++;
+        if (array[i] == number)
+            return i;
     }
     return -1;
 }
