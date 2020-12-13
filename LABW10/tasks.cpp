@@ -169,10 +169,10 @@ void task7()
     array = generateFromUser(array, ln);
     int *arrayResult = searchIndexElements(array, ln, getElementUser("Для поиска количества вхождений"));
 
-    if (arrayResult)
+    if (!arrayResult)
         print(arrayResult, *arrayResult, "вхождений элементов", 1);
     else
-        printf("Вхождений не найдено");
+        printf("Вхождений не найдено\n");
 
     delete[] array;
     delete[] arrayResult;
