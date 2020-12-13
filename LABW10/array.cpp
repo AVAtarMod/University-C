@@ -106,11 +106,9 @@ int searchMinMaxElement(const int *array, int numberElements, bool comparator(in
 
     for (int i = 1; i < numberElements; i++)
     {
-        array++;
-        int secondNumber = *array;
-        if (comparator(firstNumber, secondNumber))
+        if (comparator(firstNumber, array[i]))
         {
-            firstNumber = secondNumber;
+            firstNumber = array[i];
             result = i;
         }
     }
@@ -120,32 +118,37 @@ int searchMinMaxElement(const int *array, int numberElements, bool comparator(in
 int searchMinMaxElementWithConditions(const int *array, int numberElements, bool comparator(int, int), bool condition(int))
 {
     int firstNumber = *array;
-    int result;
+    int result = 0;
 
     for (int i = 1; i < numberElements; i++)
     {
         array++;
         int secondNumber = *array;
-        if (comparator(firstNumber, secondNumber) && condition(secondNumber))
+        if (comparator(firstNumber, secondNumber))
         {
-            firstNumber = secondNumber;
-            result = i;
+            if (condition(secondNumber))
+            {
+                firstNumber = secondNumber;
+                result = i;
+            }
         }
     }
     return result;
 }
 
-int *searchElements(const int *array, int *arrayResult, const int numberElements, const int number)
+int *searchIndexElements(const int *array, const int numberElements, const int number)
 {
-    for (int counterArray = 0, iteratorResult = 1; counterArray < numberElements; counterArray++)
+    int *arrayResult = new int[numberElements]();
+
+    for (int i = 0, iResArray = 1; i < numberElements; i++)
     {
-        if (*array == number)
+        if (array[i] == number)
         {
-            arrayResult[iteratorResult] = counterArray;
-            arrayResult[0] = iteratorResult;
-            iteratorResult++;
+            arrayResult[iResArray] = i;     //Заполняем arrayResult
+            arrayResult[0] = iResArray; //Записываем длину массива в 1 элемент
+
+            iResArray++;
         }
-        array++;
     }
     if (arrayResult[0] == -1)
         return nullptr;
@@ -221,9 +224,10 @@ int *pasteElement(int *array, int numberElements, int index, int element)
     return arrayResult;
 }
 
-void print(const int *array, const int numberElements)
+void print(const int *array, const int numberElements, const char *text,const int offset)
 {
-    printf("Значения массива : [ ");
+    array=(array+offset);
+    printf("Значения массива %s : [ ", text);
     for (int i = 0; i < numberElements; i++)
     {
         printf("%d, ", *array);
