@@ -138,13 +138,13 @@ int searchMinMaxElementWithConditions(const int *array, int numberElements, bool
 
 int *searchIndexElements(const int *array, const int numberElements, const int number)
 {
-    int *arrayResult = new int[numberElements]();
+    int *arrayResult = new int[numberElements];
 
     for (int i = 0, iResArray = 1; i < numberElements; i++)
     {
         if (array[i] == number)
         {
-            arrayResult[iResArray] = i;     //Заполняем arrayResult
+            arrayResult[iResArray] = i; //Заполняем arrayResult
             arrayResult[0] = iResArray; //Записываем длину массива в 1 элемент
 
             iResArray++;
@@ -156,8 +156,10 @@ int *searchIndexElements(const int *array, const int numberElements, const int n
         return arrayResult;
 }
 
-int *elementsAppropriateConditions(int *array, int *arrayResult, int numberElements, bool *condition(int number))
+int *elementsAppropriateConditions(int *array, int numberElements, bool *condition(int number))
 {
+    int *arrayResult = new int[numberElements];
+
     for (int counterArray = 0, iteratorResult = 1; counterArray < numberElements; counterArray++)
     {
         if (condition(*array))
@@ -175,32 +177,38 @@ int *elementsAppropriateConditions(int *array, int *arrayResult, int numberEleme
         return arrayResult;
 }
 
-int *deleteElement(int *array, int *arrayResult, int numberElements, int index)
+int *deleteElement(int *array, int numberElements, int index)
 {
-    for (int counterArray = 0, iteratorResult = 0; counterArray < numberElements; counterArray++)
+    int *arrayResult = new int[numberElements];
+
+    for (int i = 0, iRes = 0; i < numberElements; i++)
     {
-        if (counterArray != index)
+        if (i != index)
         {
-            arrayResult[iteratorResult] = *array;
-            iteratorResult++;
+            arrayResult[iRes] = array[i];
+            iRes++;
         }
-        array++;
     }
+
+    delete[] array;
 
     return arrayResult;
 }
 
-int *deleteCoincidences(int *array, int *arrayResult, int numberElements, int element)
+int *deleteCoincidences(int *array, int numberElements, int element)
 {
-    for (int counterArray = 0, iteratorResult = 0; counterArray < numberElements; counterArray++)
+    int *arrayResult = new int[numberElements];
+
+    for (int i = 0, iRes = 0; i < numberElements; i++)
     {
         if (*array != element)
         {
-            arrayResult[iteratorResult] = *array;
-            iteratorResult++;
+            arrayResult[iRes] = array[i];
+            iRes++;
         }
-        array++;
     }
+
+    delete[] array;
 
     return arrayResult;
 }
@@ -224,9 +232,9 @@ int *pasteElement(int *array, int numberElements, int index, int element)
     return arrayResult;
 }
 
-void print(const int *array, const int numberElements, const char *text,const int offset)
+void print(const int *array, const int numberElements, const char *text, const int offset)
 {
-    array=(array+offset);
+    array = (array + offset);
     printf("Значения массива %s : [ ", text);
     for (int i = 0; i < numberElements; i++)
     {

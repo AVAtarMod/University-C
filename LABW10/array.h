@@ -31,8 +31,8 @@ int *searchIndexElements(const int *ar, const int ln, const int number);
 
 int *elementsAppropriateConditions(int *ar, int *arRes, int ln, bool *condition(int number));
 
-int *deleteElement(int *ar, int *arRes, int ln, int index);
-int *deleteCoincidences(int *ar, int *arRes, int ln, int element);
+int *deleteElement(int *ar, int ln, int index);
+int *deleteCoincidences(int *ar, int ln, int element);
 //Return new array, use pointer
 int *pasteElement(int *ar, int ln, int index, int element);
 
