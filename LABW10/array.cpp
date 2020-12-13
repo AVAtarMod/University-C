@@ -140,38 +140,36 @@ int *searchIndexElements(const int *array, const int numberElements, const int n
 {
     int *arrayResult = new int[numberElements];
 
-    for (int i = 0, iResArray = 1; i < numberElements; i++)
+    for (int i = 0, iRes = 1; i < numberElements; i++)
     {
         if (array[i] == number)
         {
-            arrayResult[iResArray] = i; //Заполняем arrayResult
-            arrayResult[0] = iResArray; //Записываем длину массива в 1 элемент
-
-            iResArray++;
+            arrayResult[iRes] = i; //Заполняем arrayResult
+            arrayResult[0] = iRes; //Записываем длину массива в 1 элемент
+            iRes++;
         }
     }
-    if (arrayResult[0] == -1)
+    if (arrayResult[0] == 0)
         return nullptr;
     else
         return arrayResult;
 }
 
-int *elementsAppropriateConditions(int *array, int numberElements, bool *condition(int number))
+int *elementsRelevantConditions(int *array, int numberElements, bool condition(int number))
 {
     int *arrayResult = new int[numberElements];
 
-    for (int counterArray = 0, iteratorResult = 1; counterArray < numberElements; counterArray++)
+    for (int i = 0, iRes = 1; i < numberElements; i++)
     {
-        if (condition(*array))
+        if (condition(array[i]))
         {
-            arrayResult[iteratorResult] = *array;
-            arrayResult[0] = iteratorResult;
-            iteratorResult++;
+            arrayResult[iRes] = array[i];
+            arrayResult[0] = iRes;
+            iRes++;
         }
-        array++;
     }
 
-    if (arrayResult[0] == -1)
+    if (arrayResult[0] == 0)
         return nullptr;
     else
         return arrayResult;
@@ -199,11 +197,12 @@ int *deleteCoincidences(int *array, int numberElements, int element)
 {
     int *arrayResult = new int[numberElements];
 
-    for (int i = 0, iRes = 0; i < numberElements; i++)
+    for (int i = 0, iRes = 1; i < numberElements; i++)
     {
         if (array[i] != element)
         {
             arrayResult[iRes] = array[i];
+            arrayResult[0] = iRes;
             iRes++;
         }
     }
@@ -216,7 +215,7 @@ int *deleteCoincidences(int *array, int numberElements, int element)
 int *pasteElement(int *array, int numberElements, int index, int element)
 {
     int *arrayResult = new int[numberElements + 1];
-    //i = iterator
+
     for (int i = 0, iRes = 0; i < numberElements; i++)
     {
         if (i == index)
@@ -256,10 +255,10 @@ bool isMin(const int a, const int b)
 
 bool isOdd(const int number)
 {
-    return (number % 2 == 1);
+    return (abs(number % 2) == 1);
 }
 
 bool isEven(const int number)
 {
-    return (number % 2 == 0);
+    return (abs(number % 2) == 0);
 }
