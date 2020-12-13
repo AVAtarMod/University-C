@@ -201,7 +201,7 @@ int *deleteCoincidences(int *array, int numberElements, int element)
 
     for (int i = 0, iRes = 0; i < numberElements; i++)
     {
-        if (*array != element)
+        if (array[i] != element)
         {
             arrayResult[iRes] = array[i];
             iRes++;
