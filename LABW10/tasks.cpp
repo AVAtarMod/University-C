@@ -96,7 +96,7 @@ void task2()
 }
 void task3()
 {
-    const int ln = 5;
+    const int ln = getLenghtRandom();
     int *array = new int[ln];
 
     array = generateRandom(array, ln, -30, 30);
@@ -131,25 +131,51 @@ void task4()
 }
 void task5()
 {
-    const int ln = getLenghtRandom(5,12);
+    const int ln = getLenghtRandom(5, 12);
 
     int *array = new int[ln];
     array = generateRandom(array, ln, -30, 30);
     print(array, ln);
 
-    int maxElement = searchMinMaxElement(array,ln,isMax);
-    printf("\nМаксимальный элемент = %d\n", maxElement);
+    int maxElement = searchMinMaxElement(array, ln, isMax);
+    printf("\nИндекс максимального элемента = %d\n", maxElement);
 
-    int minElement = searchMinMaxElement(array,ln,isMin);
-    printf("\nМинимальный элемент  = %d\n", minElement);
+    int minElement = searchMinMaxElement(array, ln, isMin);
+    printf("\nИндекс минимального элемента  = %d\n", minElement);
 
     delete[] array;
 }
 void task6()
 {
+    const int ln = getLenghtRandom(5, 12);
+
+    int *array = new int[ln];
+    array = generateRandom(array, ln, -30, 30);
+    print(array, ln);
+
+    int indexMaxElement = searchMinMaxElementWithConditions(array, ln, isMax, isOdd);
+    printf("\nИндекс максимального нечетного элемента = %d\n", indexMaxElement);
+
+    int indexMinElement = searchMinMaxElementWithConditions(array, ln, isMin, isEven);
+    printf("\nИндекс минимального четного элемента  = %d\n", indexMinElement);
+
+    delete[] array;
 }
 void task7()
 {
+    const int ln = getLenghtUser();
+    int *array = new int[ln];
+
+    array = generateFromUser(array, ln);
+    int *arrayResult = searchIndexElements(array, ln, getElementUser("Для поиска количества вхождений"));
+
+    if (arrayResult)
+        print(arrayResult, *arrayResult, "вхождений элементов", 1);
+    else
+        printf("Вхождений не найдено");
+
+    delete[] array;
+    delete[] arrayResult;
 }
 void task8()
 {
