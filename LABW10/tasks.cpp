@@ -89,8 +89,8 @@ void task2()
     const int ln = getLenghtUser();
     int *array = new int[ln];
 
-    array = generateRandom(array,ln,-30,30);
-    print(array,ln);
+    array = generateRandom(array, ln, -30, 30);
+    print(array, ln);
 
     delete[] array;
 }
@@ -99,14 +99,14 @@ void task3()
     const int ln = 5;
     int *array = new int[ln];
 
-    array = generateRandom(array,ln,-30,30);
-    print(array,ln);
+    array = generateRandom(array, ln, -30, 30);
+    print(array, ln);
 
-    int index = getIndexUser(ln,"Для вставки элемента");
+    int index = getIndexUser(ln, "Для вставки элемента");
     int element = getElementUser("Для вставки его в массив");
 
-    int *arrayB = pasteElement(array,ln,index,element);
-    print(arrayB,ln+1);
+    int *arrayB = pasteElement(array, ln, index, element);
+    print(arrayB, ln + 1);
 
     delete[] array;
     delete[] arrayB;
@@ -118,13 +118,32 @@ void task4()
 
     array = generateFromUser(array, ln);
 
-    int searchedElement = searchElement(array,ln,getElementUser("Чтобы найти его индекс"));
-    printf("Индекс элемента = %d\n",searchedElement);
+    int indexSearchedElement = searchElement(array, ln, getElementUser("Для получения индекса"));
+
+    if (indexSearchedElement == -1)
+    {
+        printf("\nЭлемент не найден\n");
+    }
+    else
+        printf("\nИндекс элемента = %d\n", indexSearchedElement);
 
     delete[] array;
 }
 void task5()
 {
+    const int ln = getLenghtRandom(5,12);
+
+    int *array = new int[ln];
+    array = generateRandom(array, ln, -30, 30);
+    print(array, ln);
+
+    int maxElement = searchMinMaxElement(array,ln,isMax);
+    printf("\nМаксимальный элемент = %d\n", maxElement);
+
+    int minElement = searchMinMaxElement(array,ln,isMin);
+    printf("\nМинимальный элемент  = %d\n", minElement);
+
+    delete[] array;
 }
 void task6()
 {
