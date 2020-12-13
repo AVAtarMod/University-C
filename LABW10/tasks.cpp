@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "array.h"
+
 int main(int argc, char *argv[])
 {
     bool noData = false;
@@ -85,12 +86,40 @@ void task1()
 }
 void task2()
 {
+    const int ln = getLenghtUser();
+    int *array = new int[ln];
+
+    array = generateRandom(array,ln,-30,30);
+    print(array,ln);
+
+    delete[] array;
 }
 void task3()
 {
+    const int ln = 5;
+    int *array = new int[ln];
+
+    array = generateRandom(array,ln,-30,30);
+    print(array,ln);
+
+    int index = getIndexUser(ln,"Для вставки элемента");
+    int element = getElementUser("Для вставки его в массив");
+
+    int *arrayB = pasteElement(array,ln,index,element);
+    print(arrayB,ln+1);
+
+    delete[] array;
+    delete[] arrayB;
 }
 void task4()
 {
+    const int ln = getLenghtUser();
+    int *array = new int[ln];
+
+    array = generateFromUser(array, ln);
+    print(array, ln);
+
+    delete[] array;
 }
 void task5()
 {
