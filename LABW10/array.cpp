@@ -10,7 +10,7 @@ int getLenghtUser()
     int length;
 
     scanf("%d", &length);
-    std::cin.ignore(32767,'\n');
+    std::cin.ignore(32767, '\n');
 
     return length;
 }
@@ -44,18 +44,21 @@ int getIndexUser(const int numberElementsArray, const char *reason)
             printf("Введен некорректный индекс. Он должен быть числом от 0 до %d", numberElementsArray);
         }
         else
-            std::cin.ignore(32767,'\n');
+        {
+            std::cin.ignore(32767, '\n');
             return index;
+        }
     }
 }
 
-int getElementUser(const char *reason){
+int getElementUser(const char *reason)
+{
     int element;
 
-    printf("Введите элемент (%s): ",reason);
-    scanf("%d",&element);
-    std::cin.ignore(32767,'\n');
-    
+    printf("Введите элемент (%s): ", reason);
+    scanf("%d", &element);
+    std::cin.ignore(32767, '\n');
+
     return element;
 }
 
@@ -69,7 +72,7 @@ int *generateFromUser(int *array, int numberElements)
         scanf("%d", &value);
         array[i] = value;
     }
-    std::cin.ignore(32767,'\n');
+    std::cin.ignore(32767, '\n');
     return array;
 }
 
@@ -96,23 +99,25 @@ int searchElement(const int *array, const int numberElements, const int number)
     return -1;
 }
 
-int searchMinMaxElement(const int *array, int numberElements, bool *comparator(int firstNumber, int secondNumber))
+int searchMinMaxElement(const int *array, int numberElements, bool comparator(int, int))
 {
     int firstNumber = *array;
-    int result;
+    int result = 0;
 
     for (int i = 1; i < numberElements; i++)
     {
         array++;
         int secondNumber = *array;
         if (comparator(firstNumber, secondNumber))
+        {
             firstNumber = secondNumber;
-        result = i + 1;
+            result = i;
+        }
     }
     return result;
 }
 
-int searchMinMaxElementWithConditions(const int *array, int numberElements, bool *comparator(int firstNumber, int secondNumber), bool *condition(int number))
+int searchMinMaxElementWithConditions(const int *array, int numberElements, bool comparator(int, int), bool condition(int))
 {
     int firstNumber = *array;
     int result;
@@ -122,8 +127,10 @@ int searchMinMaxElementWithConditions(const int *array, int numberElements, bool
         array++;
         int secondNumber = *array;
         if (comparator(firstNumber, secondNumber) && condition(secondNumber))
+        {
             firstNumber = secondNumber;
-        result = i + 1;
+            result = i;
+        }
     }
     return result;
 }
@@ -195,9 +202,9 @@ int *deleteCoincidences(int *array, int *arrayResult, int numberElements, int el
     return arrayResult;
 }
 
-int* pasteElement(int *array, int numberElements, int index, int element)
+int *pasteElement(int *array, int numberElements, int index, int element)
 {
-    int* arrayResult = new int[numberElements+1];
+    int *arrayResult = new int[numberElements + 1];
     //i = iterator
     for (int i = 0, iRes = 0; i < numberElements; i++)
     {
