@@ -117,7 +117,9 @@ void task4()
     int *array = new int[ln];
 
     array = generateFromUser(array, ln);
-    print(array, ln);
+
+    int searchedElement = searchElement(array,ln,getElementUser("Чтобы найти его индекс"));
+    printf("Индекс элемента = %d\n",searchedElement);
 
     delete[] array;
 }
