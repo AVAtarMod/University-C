@@ -179,6 +179,15 @@ void task7()
 }
 void task8()
 {
+    const int ln = getLenghtUser();
+    int *array = new int[ln];
+
+    array = generateFromUser(array, ln);
+    int *arrayResult = deleteElement(array,ln,getIndexUser(ln,"Для удаления элемента"));
+
+    print(arrayResult,ln-1,"без удаленного элемента");
+
+    delete[] arrayResult;
 }
 void task9()
 {
