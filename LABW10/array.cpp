@@ -13,6 +13,47 @@ int getLenghtUser()
     return length;
 }
 
+int getLenghtRandom(int minN, int maxN)
+{
+    try
+    {
+        if (minN < 0)
+            throw minN;
+    }
+    catch (int minN)
+    {
+        std::cerr << "ОШИБКА(minN =" << minN << "):minN должен быть > 0. ";
+    }
+
+    std::mt19937 engine(static_cast<unsigned long>(clock()));
+    std::uniform_int_distribution<int> random(minN, maxN);
+    return random(engine);
+}
+
+int getIndexUser(const int numberElementsArray, const char *reason)
+{
+    printf("Введите индекс (%s): ", reason);
+    int index;
+    scanf("%d", &index);
+    while (true)
+    {
+        if (index < 0 && index > numberElementsArray)
+        {
+            printf("Введен некорректный индекс. Он должен быть числом от 0 до %d", numberElementsArray);
+        }
+        else
+            return index;
+    }
+}
+
+int getElementUser(const char *reason){
+    int element;
+    printf("Введите элемент (%s): ",reason);
+    scanf("%d",&element);
+    
+    return element;
+}
+
 int *generateFromUser(int *array, int numberElements)
 {
     printf("Введите элементы массива через пробел: ");
@@ -29,7 +70,7 @@ int *generateFromUser(int *array, int numberElements)
 
 int *generateRandom(int *array, int numberElements, int minNumber, int maxNumber)
 {
-    std::default_random_engine engine(time(nullptr));
+    std::mt19937 engine(static_cast<unsigned long>(clock()));
     std::uniform_int_distribution<int> random(minNumber, maxNumber);
 
     for (int i = 0; i < numberElements; i++)
@@ -150,17 +191,19 @@ int *deleteCoincidences(int *array, int *arrayResult, int numberElements, int el
     return arrayResult;
 }
 
-int *pasteElement(int *array, int *arrayResult, int numberElements, int index, int element)
+int* pasteElement(int *array, int numberElements, int index, int element)
 {
-    for (int counterArray = 0, iteratorResult = 0; counterArray < numberElements; counterArray++)
+    int* arrayResult = new int[numberElements+1];
+    //i = iterator
+    for (int i = 0, iRes = 0; i < numberElements; i++)
     {
-        if (counterArray == index)
+        if (i == index)
         {
-            arrayResult[iteratorResult] = element;
-            iteratorResult++;
+            arrayResult[iRes] = element;
+            iRes++;
         }
-        arrayResult[iteratorResult] = *array;
-        iteratorResult++;
+        arrayResult[iRes] = *array;
+        iRes++;
         array++;
     }
 
@@ -169,7 +212,7 @@ int *pasteElement(int *array, int *arrayResult, int numberElements, int index, i
 
 void print(const int *array, const int numberElements)
 {
-    printf("Значения массива: [ ");
+    printf("Значения массива : [ ");
     for (int i = 0; i < numberElements; i++)
     {
         printf("%d, ", *array);
