@@ -15,8 +15,8 @@ using std::cout;
 
 int getLenghtUser();
 int getLenghtRandom(int minN = 5, int maxN = 10);
-int getIndexUser(const int lnArray, const char *reason);
-int getElementUser(const char *reason);
+int getIndexUser(const int lnArray, const char *reason = "");
+int getElementUser(const char *reason = "");
 
 int *generateFromUser(int *ar, int ln);
 int *generateRandom(int *ar, int ln, int minN = -25, int maxN = 25);
@@ -29,11 +29,12 @@ int searchMinMaxElementWithConditions(const int *ar, int ln, bool comparator(int
 //Возвращает массив с длиной в 1 элементе.
 int *searchIndexElements(const int *ar, const int ln, const int number);
 
-int *elementsAppropriateConditions(int *ar, int *arRes, int ln, bool *condition(int number));
+int *elementsRelevantConditions(int *ar, int ln, bool condition(int));
 
-int *deleteElement(int *ar, int ln, int index);
+//Возвращает массив с длиной в 1 элементе.
 int *deleteCoincidences(int *ar, int ln, int element);
-//Return new array, use pointer
+int *deleteElement(int *ar, int ln, int index);
+
 int *pasteElement(int *ar, int ln, int index, int element);
 
 bool isMax(const int a, const int b);
