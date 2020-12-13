@@ -10,6 +10,8 @@ int getLenghtUser()
     int length;
 
     scanf("%d", &length);
+    std::cin.ignore(32767,'\n');
+
     return length;
 }
 
@@ -42,14 +44,17 @@ int getIndexUser(const int numberElementsArray, const char *reason)
             printf("Введен некорректный индекс. Он должен быть числом от 0 до %d", numberElementsArray);
         }
         else
+            std::cin.ignore(32767,'\n');
             return index;
     }
 }
 
 int getElementUser(const char *reason){
     int element;
+
     printf("Введите элемент (%s): ",reason);
     scanf("%d",&element);
+    std::cin.ignore(32767,'\n');
     
     return element;
 }
@@ -64,7 +69,7 @@ int *generateFromUser(int *array, int numberElements)
         scanf("%d", &value);
         array[i] = value;
     }
-
+    std::cin.ignore(32767,'\n');
     return array;
 }
 
