@@ -2,52 +2,66 @@
 //TODO - показать задание
 #include <iostream>
 #include <cmath>
-int numberRootEquation(float a, float &bAndFirstRoot, float &cAndSecondRoot);
+int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoot);
 
 int main()
 {
     printf("\n\nВведите а,b,c в квадратном уравнении через пробел: ");
-    float a, b, c;
-    scanf("%f %f %f", &a, &b, &c);
-    int numberRoots = numberRootEquation(a, b, c);
+    int a, b, c;
+    scanf("%d %d %d", &a, &b, &c);
 
-    if (!numberRoots)
-        printf("Количество корней уравнения = %d\n", numberRoots);
-    else if (b == c)
-        printf("Количество корней уравнения = %d\n1 корень = %.2f\n", numberRoots, b);
+    float froot, sroot;
+    int numberRoots = numberRootEquation(a, b, c, froot, sroot);
+
+    if (numberRoots == 0)
+        printf("Уравнение не имеет корней\n");
+    else if (numberRoots == 1)
+        printf("Количество корней уравнения = %d\n1 корень = %.2f\n", numberRoots, froot);
     else
-        printf("Количество корней уравнения = %d\n1 корень = %.2f\n2 корень = %.2f\n", numberRoots, b, c);
+        printf("Количество корней уравнения = %d\n1 корень = %.2f\n2 корень = %.2f\n", numberRoots, froot, sroot);
 
     return 0;
 }
 
-int numberRootEquation(float a, float &bAndFirstRoot, float &cAndSecondRoot)
+int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoot)
 {
     int numberRootEquation;
-    float b = bAndFirstRoot, c = cAndSecondRoot;
+    float bFl = b, cFl = c, aFl = a;
 
-    if (!a)
+    if (a == 0)
     {
-        bAndFirstRoot = cAndSecondRoot = (-c) / b;
+        if (b == 0)
+        {
+            firstRoot = 0;
+            secondRoot = 0;
+            return 0;
+        }
+        firstRoot = (-cFl) / bFl;
+        secondRoot = firstRoot;
         return 1;
     }
-
-    float discriminant = pow(bAndFirstRoot, 2) - 4 * a * cAndSecondRoot;
-    if (discriminant == 0)
-    {
-        numberRootEquation = 1;
-        bAndFirstRoot = (-b + discriminant) / (2 * a);
-    }
-    else if (discriminant > 0)
-    {
-        numberRootEquation = 2;
-        bAndFirstRoot = (-b + discriminant) / (2 * a);
-        cAndSecondRoot = (-b - discriminant) / (2 * a);
-    }
     else
-        numberRootEquation = 0;
-        bAndFirstRoot = 0;
-        cAndSecondRoot = 0;
+    {
+        int D = pow(bFl, 2) - 4 * aFl * cFl;
+        if (D == 0)
+        {
+            firstRoot = (-bFl) / (2 * aFl);
+            secondRoot = firstRoot;
+            return 1;
+        }
+        else if (D > 0)
+        {
+            firstRoot = ((-bFl) + D) / (2 * aFl);
+            secondRoot = ((-bFl) - D) / (2 * aFl);
+            return 2;
+        }
+        else
+        {
+            firstRoot = 0;
+            secondRoot = 0;
+            return 0;
+        }
+    }
 
     return numberRootEquation;
 }
