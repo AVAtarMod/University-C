@@ -12,7 +12,7 @@ namespace array2d
 
         std::printf("Введите числа А и В диапазона значений псевдо-случайных чисел [А;В] : ");
         std::scanf("%d %d", &choice[0], &choice[1]);
-        std::cin.ignore(32767,'\n');
+        std::cin.ignore(32767, '\n');
         if (choice[0] > choice[1])
         {
             int temp = choice[0];
@@ -21,6 +21,38 @@ namespace array2d
         }
 
         return choice;
+    }
+
+    int *getSizeUser(bool rowsEqualCollumns)
+    {
+        if (rowsEqualCollumns)
+        {
+            int *size = nullptr;
+            printf("Введите размер массива (1 число): ");
+            scanf("%d", size);
+            std::cin.ignore(32767, '\n');
+            return size;
+        }
+        else
+        {
+            int *size = new int[2];
+
+            for (bool isDataRight = false; !isDataRight;)
+            {
+                printf("Введите размер массива (2 числа через пробел): ");
+                scanf("%d %d", &size[0], &size[1]);
+                std::cin.ignore(32767, '\n');
+                if (size[0] < 0 || size[1] < 0)
+                {
+                    printf("Введены некорректные значения. Попробуйте снова\n");
+                    isDataRight = false;
+                }
+                else
+                    isDataRight = true;
+            }
+
+            return size;
+        }
     }
 
     int **init(const int rows, const int collumns)
