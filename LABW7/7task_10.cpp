@@ -1,5 +1,5 @@
 // Описать функцию вычисления корней квадратного уравнения. Функция должна возвращать количество корней, сами корни возвращаются через параметры.
-//TODO - оптимизировать функцию,чтобы не выдавала некорректные значения
+//TODO - показать задание
 #include <iostream>
 #include <cmath>
 int numberRootEquation(float a, float &bAndFirstRoot, float &cAndSecondRoot);
@@ -10,13 +10,6 @@ int main()
     float a, b, c;
     scanf("%f %f %f", &a, &b, &c);
     int numberRoots = numberRootEquation(a, b, c);
-
-    if (!(std::isnormal(b)))
-        numberRoots--;
-    if (!(std::isnormal(c)))
-        numberRoots--;
-    if (numberRoots < 0)
-        numberRoots = 0;
 
     if (!numberRoots)
         printf("Количество корней уравнения = %d\n", numberRoots);
@@ -41,13 +34,20 @@ int numberRootEquation(float a, float &bAndFirstRoot, float &cAndSecondRoot)
 
     float discriminant = pow(bAndFirstRoot, 2) - 4 * a * cAndSecondRoot;
     if (discriminant == 0)
+    {
         numberRootEquation = 1;
+        bAndFirstRoot = (-b + discriminant) / (2 * a);
+    }
     else if (discriminant > 0)
+    {
         numberRootEquation = 2;
+        bAndFirstRoot = (-b + discriminant) / (2 * a);
+        cAndSecondRoot = (-b - discriminant) / (2 * a);
+    }
     else
         numberRootEquation = 0;
-    bAndFirstRoot = (-b + discriminant) / (2 * a);
-    cAndSecondRoot = (-b - discriminant) / (2 * a);
+        bAndFirstRoot = 0;
+        cAndSecondRoot = 0;
 
     return numberRootEquation;
 }
