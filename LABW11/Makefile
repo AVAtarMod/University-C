@@ -4,7 +4,7 @@ CXXFLAGS = -std=c++17 -Wall -Weffc++ -Wextra -Wsign-conversion -pedantic-errors 
 LDFLAGS = 
 
 # Makefile settings - Can be customized.
-APPNAME = labwork10.app
+APPNAME = labwork11.app
 EXT = .cpp
 SRCDIR = .
 OBJDIR = build/
