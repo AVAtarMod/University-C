@@ -30,6 +30,7 @@ int main(int argc, char const *argv[])
         if (noData)
         {
             scanf("%d", &choice);
+            std::cin.ignore(32767, '\n');
         }
         else
         {
@@ -84,7 +85,23 @@ int main(int argc, char const *argv[])
 
 void task1()
 {
+    int rows = 10, collumns = 10;
+    int **array = array2d::init(rows, collumns);
 
+    int sum = 0;
+    for (int r = 0; r < rows; r++)
+    {
+        sum = r-1;
+        for (int c = 0; c < collumns; c++)
+        {
+            sum = (sum < 9) ? sum+1 : 0;
+            array[r][c] = sum;
+        }
+    }
+
+    array2d::print(array, collumns, rows, "для №1 задания", 9);
+
+    delete[] array;
 }
 void task2()
 {
