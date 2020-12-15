@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "arrays2d.h"
+#include "array.h"
 
 void task1();
 void task2();
@@ -91,10 +92,10 @@ void task1()
     int sum = 0;
     for (int r = 0; r < rows; r++)
     {
-        sum = r-1;
+        sum = r - 1;
         for (int c = 0; c < collumns; c++)
         {
-            sum = (sum < 9) ? sum+1 : 0;
+            sum = (sum < 9) ? sum + 1 : 0;
             array[r][c] = sum;
         }
     }
@@ -105,9 +106,39 @@ void task1()
 }
 void task2()
 {
+    int *range = array2d::getRangeUser();
+    int *size = array2d::getSizeUser();
+    int **array = array2d::init(size[0], size[1]);
+    array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
+    array2d::print(array,size[0],size[1],"",range[1]);
+
+    printf("Введите элемент чтобы найти количество его вхождений: ");
+    int element;
+    scanf("%d",&element);
+    std::cin.ignore(32767,'\n');
+
+    int numOfOccurences=0;
+    for (int row = 0; row < size[0]; row++)
+    {
+        for (int col = 0; col < size[1]; col++)
+        {
+            if(array[row][col] == element){
+                numOfOccurences++;
+            }
+        }
+    }
+    
+    if (numOfOccurences > 0) printf("\nЭлемент встречается %d раз(а)\n",numOfOccurences);
+    else printf("\nВхождений не найдено.\n");
+
+    delete[] array;
+    delete[] size;
+    delete[] range;
+
 }
 void task3()
 {
+
 }
 void task4()
 {
