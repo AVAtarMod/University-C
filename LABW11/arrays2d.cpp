@@ -39,7 +39,7 @@ namespace array2d
 
             for (bool isDataRight = false; !isDataRight;)
             {
-                printf("Введите размер массива (2 числа через пробел): ");
+                printf("Введите размер массива (2 числа через пробел, сначала количество строк, затем столбцов): ");
                 scanf("%d %d", &size[0], &size[1]);
                 std::cin.ignore(32767, '\n');
                 if (size[0] < 0 || size[1] < 0)
