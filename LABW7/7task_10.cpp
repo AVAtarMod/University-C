@@ -42,14 +42,14 @@ int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoo
     }
     else
     {
-        int D = pow(bFl, 2) - 4 * aFl * cFl;
-        if (D == 0)
+        float D = pow(bFl, 2) - 4 * aFl * cFl;
+        if (D < __FLT_EPSILON__ || D > -__FLT_EPSILON__)
         {
             firstRoot = (-bFl) / (2 * aFl);
             secondRoot = firstRoot;
             return 1;
         }
-        else if (D > 0)
+        else if (D > -__FLT_EPSILON__)
         {
             firstRoot = ((-bFl) + D) / (2 * aFl);
             secondRoot = ((-bFl) - D) / (2 * aFl);
