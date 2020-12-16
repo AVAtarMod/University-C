@@ -3,6 +3,11 @@
 
 //TODO: доделать старт
 
+#include <iostream>
+#include <random>
+using std::cout;
+using std::endl;
+
 #include "functions.h"
 
 int main()
@@ -53,18 +58,18 @@ int main()
 
 int task1()
 {
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A",1);
     short int numberElements = *arrayA;
 
-    int *arrayB = new int[numberElements];
+    int *arrayB = new int[numberElements]();
     *arrayB = numberElements;
     for (int i = 1; i <= numberElements; i++)
     {
         arrayB[i] = *(arrayA + i) * (*(arrayA + i)) + 2 * (*(arrayA + i)) - 1;
     }
-    deleteArray(&arrayA);
-    printArray(arrayB, numberElements,"B");
-    deleteArray(&arrayB);
+    deleteArray(arrayA);
+    printArray(arrayB, numberElements, "B");
+    deleteArray(arrayB);
 
     return 0;
 }
@@ -72,30 +77,29 @@ int task1()
 int task2()
 {
 
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    bool *arrayB = new bool[numberElements];
+    bool *arrayB = new bool[numberElements]();
     *arrayB = numberElements;
     for (int i = 1; i <= numberElements; i++)
     {
         arrayB[i] = (abs(arrayA[i]) % 3 == 0) ? true : false;
     }
-    deleteArray(&arrayA);
+    deleteArray(arrayA);
 
-    printArray(arrayB, numberElements, "B");
-    deleteArray(&arrayB);
+    printArray(arrayB, numberElements, "B", 1);
+    deleteArray(arrayB);
 
     return 0;
 }
 
 int task3()
 {
-
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    int *arrayB = new int[numberElements];
+    int *arrayB = new int[numberElements]();
     *arrayB = numberElements;
     for (int i = 1; i <= numberElements; i++)
     {
@@ -106,48 +110,23 @@ int task3()
         }
         arrayB[i] = result;
     }
-    deleteArray(&arrayA);
+    deleteArray(arrayA);
 
-    printArray(arrayB, numberElements, "B");
-    deleteArray(&arrayB);
+    printArray(arrayB, numberElements, "B", 1);
+    deleteArray(arrayB);
 
     return 0;
 }
 
 int task4()
 {
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    int *arrayB = new int[numberElements];
-    *arrayB = numberElements;
-
-    int counter = 0;
-    for (int i = 1, *P = (arrayA + i); i <= numberElements; i++, P++)
-    {
-        int c = 0;
-        for (int divisor = 2; divisor < *P; divisor++)
-        {
-            if (*P % divisor != 0)
-            {
-                c++;
-            }
-        }
-        if (c == 0)
-        {
-            arrayB[i] = *P;
-            counter++;
-        }
-    }
-    deleteArray(&arrayA);
-
-    if (!counter)
-        cout << "*Простых чисел не найдено\n"
-             << endl;
-    else
-        printArray(arrayB, numberElements, "из простых чисел", false);
-
-    deleteArray(&arrayB);
+    int *arrayB = elementsRelevantConditions(arrayA, numberElements, isSimple,1);
+    printArray(arrayB, numberElements, "из простых чисел", 1, false);
+    deleteArray(arrayA);
+    deleteArray(arrayB);
     return 0;
 }
 
@@ -184,72 +163,49 @@ int task5()
     }
     cout << "\n"
          << endl;
-    deleteArray(&multiplicationTable);
+    deleteArray(multiplicationTable);
 
     return 0;
 }
 
 int task6()
 {
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    int *arrayB = new int[numberElements];
-    *arrayB = numberElements;
+    int *arrayB = indexesRelevantConditions(arrayA,numberElements,isNegative,1);
+    
+    deleteArray(arrayA);
 
-    int counter = 0;
-    for (int i = 1, *P = (arrayA + i); i <= numberElements; i++, P++)
-    {
-        if (*P < 0)
-        {
-            arrayB[i] = i;
-            counter++;
-        }
-    }
-    deleteArray(&arrayA);
-
-    if (!counter)
+    if (*arrayB == 0)
         cout << "*Отрицательных чисел не найдено\n"
              << endl;
     else
-        printArray(arrayB, numberElements, "из номеров отрицательных элементов", false);
+        printArray(arrayB, numberElements, "из номеров отрицательных элементов", 1, false);
 
-    deleteArray(&arrayB);
+    deleteArray(arrayB);
     return 0;
 }
 
 int task7()
 {
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    int *arrayB = new int[2];
-    *arrayB = numberElements;
+    int index = indexRelevantConditions(arrayA, numberElements, isDivideBy7,1);
+    deleteArray(arrayA);
 
-    int counter = 0;
-    for (int i = 1, *P = (arrayA + i); i < numberElements; P++, i++)
-    {
-        if (*P % 7 == 0)
-        {
-            arrayB[1] = i - 1;
-            counter++;
-        }
-    }
-    deleteArray(&arrayA);
-
-    if (!counter)
+    if (index == -1)
         cout << "*Чисел, кратных 7 не найдено\n"
              << endl;
     else
-        printArray(arrayB, 2, "индекса числа, кратных 7");
-
-    deleteArray(&arrayB);
+        printf("Индекс числа кратного 7 = %d\n\n",index);
     return 0;
 }
 
 int task8()
 {
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
     for (int *P = (arrayA + 2), i = 2; i < numberElements; P++, i++)
@@ -263,14 +219,14 @@ int task8()
             *(arrayA + i) = 2 * *(arrayA + i);
         }
     }
-    printArray(arrayA, numberElements, "A", true);
-    deleteArray(&arrayA);
+    printArray(arrayA, numberElements, "A", 1, true);
+    deleteArray(arrayA);
     return 0;
 }
 
 int task9()
 {
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
     for (int *P = (arrayA + 2), i = 2; i < numberElements; P++, i++)
@@ -281,14 +237,14 @@ int task9()
             *(arrayA + i) = element + i - 1;
         }
     }
-    printArray(arrayA, numberElements, "A", true);
-    deleteArray(&arrayA);
+    printArray(arrayA, numberElements, "A", 1, true);
+    deleteArray(arrayA);
     return 0;
 }
 
 int task10()
 {
-    int *arrayM = generationAndPrintArray("M");
+    int *arrayM = generationAndPrintArray("M", 1);
     short int numberElements = *arrayM;
 
     int A, B;
@@ -318,17 +274,17 @@ int task10()
 }
 int task11()
 {
-    int *arrayA = generationAndPrintArray("A");
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
     bool numberIsExist = false;
     int *startAdress, startNumber;
-    for (int i = 1, *p = arrayA; i < numberElements; i++, p++)
+    for (int i = 1; i < numberElements; i++)
     {
-        if (*p < 0 && abs(*p) % 10 == 3)
+        if (arrayA[i] < 0 && abs(arrayA[i]) % 10 == 3)
         {
-            startAdress = (p+1);
-            startNumber = (i+1);
+            startAdress = (&arrayA[i] + 1);
+            startNumber = (i + 1);
             numberIsExist = true;
         }
     }
