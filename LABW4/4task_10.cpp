@@ -25,8 +25,8 @@ int main(){
         sNum1 = t;
     }
     //Находим НОК чисел
-    result = num1 * num2 / sNum2;
-    printf("НОК чисел = %d\n\n",result);
+
+    printf("НОК чисел %d*%d/%d = %d\n\n",num1,num2,sNum2,result);
 
     return 0;
 }
