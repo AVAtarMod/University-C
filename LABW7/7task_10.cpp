@@ -2,7 +2,7 @@
 //TODO - показать задание
 #include <iostream>
 #include <cmath>
-int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoot);
+int numberRootEquation(int a, int b, int c, float &firstRoot, float &secondRoot);
 
 int main()
 {
@@ -23,7 +23,7 @@ int main()
     return 0;
 }
 
-int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoot)
+int numberRootEquation(int a, int b, int c, float &firstRoot, float &secondRoot)
 {
     int numberRootEquation;
     float bFl = b, cFl = c, aFl = a;
@@ -34,7 +34,7 @@ int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoo
         {
             firstRoot = 0;
             secondRoot = 0;
-            return 0;
+            return -1;
         }
         firstRoot = (-cFl) / bFl;
         secondRoot = firstRoot;
@@ -43,7 +43,7 @@ int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoo
     else
     {
         float D = pow(bFl, 2) - 4 * aFl * cFl;
-        if (D < __FLT_EPSILON__ || D > -__FLT_EPSILON__)
+        if (D < __FLT_EPSILON__ && D > -(__FLT_EPSILON__))
         {
             firstRoot = (-bFl) / (2 * aFl);
             secondRoot = firstRoot;
@@ -51,8 +51,8 @@ int numberRootEquation(float a, int b, int c, float &firstRoot, float &secondRoo
         }
         else if (D > -__FLT_EPSILON__)
         {
-            firstRoot = ((-bFl) + D) / (2 * aFl);
-            secondRoot = ((-bFl) - D) / (2 * aFl);
+            firstRoot = ((-bFl) + sqrt(D)) / (2 * aFl);
+            secondRoot = ((-bFl) - sqrt(D)) / (2 * aFl);
             return 2;
         }
         else
