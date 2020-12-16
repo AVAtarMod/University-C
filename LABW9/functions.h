@@ -1,11 +1,10 @@
-// #ifndef FUNCTIONS
-// #define FUNCTIONS
+#ifndef FUNCTIONS
+#define FUNCTIONS
 
 #include <iostream>
-#include <random>
+using std::string;
 using std::cout;
 using std::endl;
-using std::string;
 
 int task1();
 int task2();
@@ -20,32 +19,41 @@ int task10();
 int task11();
 
 int *generationArray();
-int *generationAndPrintArray(string text);
+int *generationAndPrintArray(string text, int offset);
+int *elementsRelevantConditions(const int *ar, int ln, bool condition(int),int offset = 0);
+int *indexesRelevantConditions(const int *ar, int ln, bool condition(int),int offset = 0);
+int indexRelevantConditions(const int *ar, int ln, bool condition(int),int offset = 0);
+
 
 template <class Type>
-void deleteArray(Type **array)
+void deleteArray(Type *array)
 {
-    delete[] *array;
-    *array = nullptr;
+    delete[] array;
+    array = nullptr;
 }
 
 template <class Type>
-void printArray(Type *array, int numberElements, std::string text,bool showZero = true)
+void printArray(Type *array, int numberElements, std::string text,int offset=0, bool showZero = true)
 {
-    array++;
     cout << "Массив " << text << " состоит из [ ";
 
-    for (short int i = 1; i < numberElements; i++, array++)
+    for (short int i = offset; i < numberElements; i++)
     {
-        if (*array || showZero)
+        if (array[i] || showZero)
         {
-            cout << *array;
+            cout << array[i];
             if (i != numberElements - 1)
             {
                 cout << ";";
             }
         }
     }
-    cout << "\n";
+    cout << " ]\n";
 }
-// #endif //FUNCTIONS
+
+bool isSimple(int number);
+bool isDivideBy3(int number);
+bool isNegative(int number);
+bool isDivideBy7(int number);
+
+#endif //FUNCTIONS
