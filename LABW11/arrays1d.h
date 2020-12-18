@@ -43,6 +43,7 @@ namespace arrays1d
     bool isMin(const int a, const int b);
     bool isOdd(const int number);
     bool isEven(const int number);
+    bool isNegative(const int number);
     bool alwaysTrue(const int);
 
     int doNothing(const int number);

@@ -233,18 +233,19 @@ namespace arrays1d
         return arrayResult;
     }
 
-    int computeSumElements(const int *ar, int ln, bool condition(int),int action(int))
+    int computeSumElements(const int *ar, int ln, bool condition(int), int action(int))
     {
         int sum = 0;
 
         for (int i = 0; i < ln; i++)
         {
-            if(condition(ar[i])){
+            if (condition(ar[i]))
+            {
                 sum += action(ar[i]);
             }
         }
 
-        return  sum;
+        return sum;
     }
 
     void print(const int *array, const int numberElements, const char *text, const int offset)
@@ -279,15 +280,23 @@ namespace arrays1d
         return (abs(number % 2) == 0);
     }
 
-    bool alwaysTrue(const int){
+    bool isNegative(const int number)
+    {
+        return (number < 0);
+    }
+
+    bool alwaysTrue(const int)
+    {
         return true;
     }
 
-    int doNothing(const int number){
+    int doNothing(const int number)
+    {
         return number;
     }
 
-    int doAbs(const int number){
+    int doAbs(const int number)
+    {
         return abs(number);
     }
 } // namespace arrays1d
