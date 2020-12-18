@@ -220,7 +220,7 @@ void task6()
     int **array = array2d::init(size[0], size[1]);
     array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
 
-    int indexSortRow = array2d::isSortRow(array, size[0], size[1], arrays1d::isMax);
+    int indexSortRow = array2d::searchSortRows(array, size[0], size[1], arrays1d::isMax);
     if (indexSortRow == -1)
         printf("Искомой строки нет");
     else
@@ -233,7 +233,7 @@ void task6()
     delete[] range;
 }
 
-void task11()
+void task12()
 {
     int *range = array2d::getRangeRandom(-100, 100);
     int *size = array2d::getSizeUser();
@@ -252,7 +252,7 @@ void task11()
             arrayWithoutRow[index] = nullptr;
         }
         else
-            printf("Введено неправильное значение. Повторите снова.");
+            printf("Допустимые значения : [%d;%d]",0,size[0]);
     }
 
     array2d::print(arrayWithoutRow, size[0], size[1], "без удаленных строк", range[1]);

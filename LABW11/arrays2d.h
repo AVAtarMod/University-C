@@ -12,7 +12,8 @@ namespace array2d
     int **init(const int rows, const int collumns);
     int **fillRandom(int **array, int leftLim, int rightLim, const int rows, const int collumns);
 
-    int isSortRow(int **array, int rows, int collumns, bool condition(int, int));
+    int searchSortRows(int **array, int rows, int collumns, bool condition(int, int));
+    
 
     void print(int **array, int rows, int collumns, const char *text = "", int maxElement = 0);
     void checkWork(int **array,int *size, int *range);
@@ -20,6 +21,7 @@ namespace array2d
     void delete_(int **array, int rows);
 
 } // namespace array2d
+
 int getRandomNumber(int leftLim, int rightLim);
 int numDigits(int number);
 #endif

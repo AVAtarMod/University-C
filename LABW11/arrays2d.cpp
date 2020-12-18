@@ -81,7 +81,7 @@ namespace array2d
         return array;
     }
 
-    int isSortRow(int **array, int rows, int collumns, bool condition(int, int))
+    int searchSortRows(int **array, int rows, int collumns, bool condition(int, int))
     {
         int indexRow = -1;
         for (int row = 0; row < rows; row++)
