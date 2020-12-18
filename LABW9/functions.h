@@ -29,7 +29,6 @@ template <class Type>
 void deleteArray(Type *array)
 {
     delete[] array;
-    array = nullptr;
 }
 
 template <class Type>
