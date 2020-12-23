@@ -2,9 +2,9 @@
 #define FUNCTIONS
 
 #include <iostream>
-using std::string;
 using std::cout;
 using std::endl;
+using std::string;
 
 int task1();
 int task2();
@@ -18,12 +18,14 @@ int task9();
 int task10();
 int task11();
 
+void getRangeUser(int ln, int *range);
+
 int *generationArray();
 int *generationAndPrintArray(string text, int offset);
-int *elementsRelevantConditions(const int *ar, int ln, bool condition(int),int offset = 0);
-int *indexesRelevantConditions(const int *ar, int ln, bool condition(int),int offset = 0);
-int indexRelevantConditions(const int *ar, int ln, bool condition(int),int offset = 0);
-
+int *elementsRelevantConditions(const int *ar, int ln, bool condition(int), int offset = 0);
+int *indexesRelevantConditions(const int *ar, int ln, bool condition(int), int offset = 0);
+int indexRelevantConditions(const int *ar, int ln, bool condition(int), int offset = 0);
+int productElements(int *array, int ln, int offset = 0);
 
 template <class Type>
 void deleteArray(Type *array)
@@ -32,16 +34,16 @@ void deleteArray(Type *array)
 }
 
 template <class Type>
-void printArray(Type *array, int numberElements, std::string text,int offset=0, bool showZero = true)
+void printArray(Type *array, int numberElements, std::string text, int offset = 0, bool showZero = true)
 {
     cout << "Массив " << text << " состоит из [ ";
 
-    for (short int i = offset; i < numberElements; i++)
+    for (short int i = offset; i <= numberElements; i++)
     {
         if (array[i] || showZero)
         {
             cout << array[i];
-            if (i != numberElements - 1)
+            if (i != numberElements)
             {
                 cout << ";";
             }
@@ -54,5 +56,6 @@ bool isSimple(int number);
 bool isDivideBy3(int number);
 bool isNegative(int number);
 bool isDivideBy7(int number);
+bool isEndsIn3(int number);
 
 #endif //FUNCTIONS
