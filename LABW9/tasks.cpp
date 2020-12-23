@@ -58,7 +58,7 @@ int main()
 
 int task1()
 {
-    int *arrayA = generationAndPrintArray("A",1);
+    int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
     int *arrayB = new int[numberElements]();
@@ -123,10 +123,13 @@ int task4()
     int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    int *arrayB = elementsRelevantConditions(arrayA, numberElements, isSimple,1);
-    printArray(arrayB, numberElements, "из простых чисел", 1, false);
+    int *arrayB = elementsRelevantConditions(arrayA, numberElements, isSimple, 1);
+    if (arrayB == nullptr)
+    {
+        printArray(arrayB, numberElements, "из простых чисел", 1, false);
+        deleteArray(arrayB);
+    }
     deleteArray(arrayA);
-    deleteArray(arrayB);
     return 0;
 }
 
@@ -173,13 +176,15 @@ int task6()
     int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    int *arrayB = indexesRelevantConditions(arrayA,numberElements,isNegative,1);
-    
+    int *arrayB = indexesRelevantConditions(arrayA, numberElements, isNegative, 1);
+
     deleteArray(arrayA);
 
-    if (*arrayB == 0)
+    if (arrayB == nullptr)
+    {
         cout << "*Отрицательных чисел не найдено\n"
              << endl;
+    }
     else
         printArray(arrayB, numberElements, "из номеров отрицательных элементов", 1, false);
 
@@ -192,14 +197,14 @@ int task7()
     int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    int index = indexRelevantConditions(arrayA, numberElements, isDivideBy7,1);
+    int index = indexRelevantConditions(arrayA, numberElements, isDivideBy7, 1);
     deleteArray(arrayA);
 
     if (index == -1)
         cout << "*Чисел, кратных 7 не найдено\n"
              << endl;
     else
-        printf("Индекс числа кратного 7 = %d\n\n",index);
+        printf("Индекс числа кратного 7 = %d\n\n", index);
     return 0;
 }
 
@@ -208,7 +213,7 @@ int task8()
     int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    for (int *P = (arrayA + 2), i = 2; i < numberElements; P++, i++)
+    for (int i = 2; i < numberElements; i++)
     {
         if ((i - 1) % 2 == 0)
         {
@@ -247,29 +252,17 @@ int task10()
     int *arrayM = generationAndPrintArray("M", 1);
     short int numberElements = *arrayM;
 
-    int A, B;
-    cout << "Введите границы А,Б : ";
-    scanf("%d %d", &A, &B);
-    A++;
-    B++;
-    if (A > B)
-    {
-        int temp = A;
-        A = B;
-        B = temp;
-    }
-    if (A <= numberElements && B <= numberElements && A >= 0 && B >= 0)
-    {
-        int result = 1;
-        for (int *P = (arrayM + A), i = A; i <= B; P++, i++)
-        {
-            result *= *P;
-        }
-        cout << "Результат: " << result << "\n";
-    }
-    else
-        cout << "Введены некорректные значения.";
+    int *range = new int[2]();
+    getRangeUser(numberElements - 1, range);
 
+    range[0]++;
+    range[1]++;
+
+    int result = productElements(arrayM, range[1] + 1, range[0]);
+    cout << "Результат: " << result << "\n";
+
+    deleteArray(arrayM);
+    deleteArray(range);
     return 0;
 }
 int task11()
@@ -277,27 +270,16 @@ int task11()
     int *arrayA = generationAndPrintArray("A", 1);
     short int numberElements = *arrayA;
 
-    bool numberIsExist = false;
-    int *startAdress, startNumber;
-    for (int i = 1; i < numberElements; i++)
+    int start = indexRelevantConditions(arrayA, numberElements + 1, isEndsIn3, 1);
+    if (start == -1)
     {
-        if (arrayA[i] < 0 && abs(arrayA[i]) % 10 == 3)
-        {
-            startAdress = (&arrayA[i] + 1);
-            startNumber = (i + 1);
-            numberIsExist = true;
-        }
-    }
-    if (numberIsExist)
-    {
-        long long int result = 1;
-        for (int i = startNumber, *p = startAdress; i <= numberElements; i++, p++)
-        {
-            result *= *p;
-        }
-        cout << "Результат выполнения = " << result << "\n";
+        cout << "Отрезок, соответствующий условиям не найден \n";
     }
     else
-        cout << "Отрезок, соответствующий условиям не найден \n";
+    {
+        int product = productElements(arrayA,numberElements+1,start+2);
+        cout << "Результат: " << product << "\n\n";
+    }
+    deleteArray(arrayA);
     return 0;
 }
