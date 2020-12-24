@@ -18,13 +18,13 @@ int getLenghtRandom(int minN = 5, int maxN = 10);
 int getIndexUser(const int lnArray, const char *reason = "");
 int getElementUser(const char *reason = "");
 
-int *generateFromUser(int *ar, int ln);
-int *generateRandom(int *ar, int ln, int minN = -25, int maxN = 25);
+void generateFromUser(int *ar, int ln);
+void generateRandom(int *ar, int ln, int minN = -25, int maxN = 25);
 void print(const int *ar, const int ln, const char *text = "", const int offset = 0);
 
-int searchElement(const int *ar, const int ln, const int number);
-int searchMinMaxElement(const int *ar, int ln, bool comparator(int, int));
-int searchMinMaxElementWithConditions(const int *ar, int ln, bool comparator(int, int), bool condition(int));
+int indexElement(const int *ar, const int ln, const int number);
+int indexMinMaxElement(const int *ar, int ln, bool comparator(int, int));
+int indexMinMaxElementWithConditions(const int *ar, int ln, bool comparator(int, int), bool condition(int));
 
 //Возвращает массив с длиной в 1 элементе.
 int *searchIndexElements(const int *ar, const int ln, const int number);
@@ -32,10 +32,10 @@ int *searchIndexElements(const int *ar, const int ln, const int number);
 int *elementsRelevantConditions(int *ar, int ln, bool condition(int));
 
 //Возвращает массив с длиной в 1 элементе.
-int *deleteCoincidences(int *ar, int ln, int element);
-int *deleteElement(int *ar, int ln, int index);
+void deleteElements(int **par, int ln, int element,int offset);
+void deleteElement(int **par, int ln, int index,int offset);
 
-int *pasteElement(int *ar, int ln, int index, int element);
+void pasteElement(int **par, int ln, int index, int element);
 
 bool isMax(const int a, const int b);
 bool isMin(const int a, const int b);
