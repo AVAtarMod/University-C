@@ -13,15 +13,20 @@ namespace array2d
     int **fillRandom(int **array, int leftLim, int rightLim, const int rows, const int collumns);
 
     int searchSortRows(int **array, int rows, int collumns, bool condition(int, int));
-    
 
     void print(int **array, int rows, int collumns, const char *text = "", int maxElement = 0);
-    void checkWork(int **array,int *size, int *range);
+    void printCollumn(int **array, const int rows, const int collumn, const char *text = "");
+    void checkWork(int **array, int *size, int *range);
     int **copy(int **array, int rows, int collumns);
     void delete_(int **array, int rows);
+    void getCollumn(int **array, int rows, int *result, int collumn = 0);
+
+    int *compare(int **arrayA, int **arrayB, int rowsMin, int collumnsMin, bool comparator(int, int, int &));
+
+    bool isEqualElements(int elFrom1Ar, int elFrom2Ar, int &result);
 
 } // namespace array2d
 
-int getRandomNumber(int leftLim, int rightLim);
+int getRandomNumber();
 int numDigits(int number);
 #endif
