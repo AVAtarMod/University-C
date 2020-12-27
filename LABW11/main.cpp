@@ -13,7 +13,7 @@ void task6();
 void task8();
 void task9();
 void task10();
-void task11();
+void task12();
 void task13();
 
 int main(int argc, char const *argv[])
@@ -64,13 +64,17 @@ int main(int argc, char const *argv[])
             printf("Задание №6\n");
             task6();
             break;
+        case 8:
+            printf("Задание №8\n");
+            task8();
+            break;
         case 9:
             printf("Задание №9\n");
             task9();
             break;
-        case 11:
-            printf("Задание №11\n");
-            task11();
+        case 12:
+            printf("Задание №12\n");
+            task12();
             break;
         case 13:
             printf("Задание №13\n");
@@ -109,7 +113,7 @@ void task2()
     int *range = array2d::getRangeUser();
     int *size = array2d::getSizeUser();
     int **array = array2d::init(size[0], size[1]);
-    array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
+    array2d::fillRandom(array, range[0],range[1], size[0], size[1]);
     array2d::print(array, size[0], size[1], "", range[1]);
 
     int element = printAndScan<int>("Введите элемент чтобы найти количество его вхождений: ");
@@ -141,7 +145,7 @@ void task3()
     int *size = array2d::getSizeUser();
 
     int **array = array2d::init(size[0], size[1]);
-    array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
+    array2d::fillRandom(array, range[0],range[1], size[0], size[1]);
 
     int *arrayFromMaxNumOfRow = new int[size[0]];
     for (int row = 0; row < size[0]; row++)
@@ -163,43 +167,48 @@ void task4()
     int *size = array2d::getSizeUser();
 
     int **array = array2d::init(size[0], size[1]);
-    array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
+    array2d::fillRandom(array, range[0],range[1], size[0], size[1]);
 
     int minimalSum = INT32_MAX; //modules elements of row
-    int numberRow;              //with minimal sum;
-    for (int i = 0; i < size[0]; i++)
+    int numberColl;
+
+    int *collumn = new int[size[0]];
+    for (int i = 0; i < size[1]; i++)
     {
-        int currentSum = arrays1d::computeSumElements(array[i], size[1], arrays1d::alwaysTrue, arrays1d::doAbs);
+
+        array2d::getCollumn(array, size[0], collumn, i);
+
+        int currentSum = arrays1d::computeSumElements(collumn, size[0], arrays1d::alwaysTrue, arrays1d::doAbs);
+
         if (currentSum < minimalSum)
         {
             minimalSum = currentSum;
-            numberRow = i;
+            numberColl = i;
         }
     }
-
-    arrays1d::print(array[numberRow], size[1], "с минимальной суммой модулей");
-
+    array2d::printCollumn(array, size[0], numberColl, "с минимальной суммой модулей");
     array2d::checkWork(array, size, range);
     array2d::delete_(array, size[0]);
     delete[] size;
     delete[] range;
+    delete[] collumn;
 }
 void task5()
 {
     int *size = array2d::getSizeUser();
 
     int **array = array2d::init(size[0], size[1]);
-    array = array2d::fillRandom(array, -10, 10, size[0], size[1]);
+    array2d::fillRandom(array, -10, 10, size[0], size[1]);
 
     array2d::print(array, size[0], size[1], "(Исходный)", 10);
-
     for (int row = 0; row < size[0]; row++)
     {
+        int start = array[row][0];
         for (int col = 0; col < size[1]; col++)
         {
             if (array[row][col] > 0)
             {
-                array[row][col] *= array[row][0];
+                array[row][col] *= start;
             }
             else if (array[row][col] < 0)
             {
@@ -218,7 +227,7 @@ void task6()
     int *size = array2d::getSizeUser();
 
     int **array = array2d::init(size[0], size[1]);
-    array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
+    array2d::fillRandom(array, range[0],range[1], size[0], size[1]);
 
     int indexSortRow = array2d::searchSortRows(array, size[0], size[1], arrays1d::isMax);
     if (indexSortRow == -1)
@@ -233,33 +242,81 @@ void task6()
     delete[] range;
 }
 
+void task8()
+{
+    int *range = array2d::getRangeRandom(-50, 50);
+    int *size = array2d::getSizeUser();
+
+    int **array = array2d::init(size[0], size[1]);
+    array2d::fillUser(array, size[0], size[1], "#1");
+    int **arrayB = array2d::init(size[0], size[1]);
+    array2d::fillUser(arrayB, size[0], size[1], "#2");
+
+    int *compared = array2d::compare(array, arrayB, size[0], size[1], array2d::isEqualElements);
+
+    if (compared == nullptr)
+    {
+        printf("Совпадений не найдено\n");
+    }
+    else
+    {
+        arrays1d::print(compared, compared[0], "с одинаковыми элементами", 1);
+    }
+
+    array2d::delete_(array, size[0]);
+    array2d::delete_(arrayB, size[0]);
+    delete[] range;
+    delete[] size;
+}
+
+void task9()
+{
+    int *range = array2d::getRangeRandom(-100, 100);
+    int *size = array2d::getSizeUser();
+
+    int **array = array2d::init(size[0], size[1]);
+    array2d::fillRandom(array, range[0],range[1], size[0], size[1]);
+    array2d::print(array, size[0], size[1], "", range[1]);
+
+    array2d::invertRows(&array, size[0], true);
+    array2d::print(array, size[0], size[1], "(строки инвертированы через указатели) ", range[1]);
+    array2d::invertRows(&array, size[0], false, size[1]);
+    array2d::print(array, size[0], size[1], "(строки инвертированы поэлементно) ", range[1]);
+
+    array2d::delete_(array, size[0]);
+    delete[] range;
+    delete[] size;
+}
+
 void task12()
 {
     int *range = array2d::getRangeRandom(-100, 100);
     int *size = array2d::getSizeUser();
 
     int **array = array2d::init(size[0], size[1]);
-    array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
-    int **arrayWithoutRow = array2d::copy(array, size[0], size[1]);
+    array2d::fillRandom(array, range[0],range[1], size[0], size[1]);
+    array2d::print(array, size[0], size[1], "исходный", range[1]);
 
-    for (bool correctValue = false; !correctValue;)
+    bool correctValue = false;
+    while (!correctValue)
     {
-        int index = printAndScan<int>("Введите номер строки, чтобы ее удалить:");
+        int index = printAndScan<int>("Введите номер строки, чтобы ее удалить: ");
         if (index < size[0] && index >= 0)
         {
             correctValue = true;
-            delete[] arrayWithoutRow[index];
-            arrayWithoutRow[index] = nullptr;
+            delete[] array[index];
+            array[index] = nullptr;
+            array2d::rebalance(&array, size[0], size[1], size[0]);
         }
         else
-            printf("Допустимые значения : [%d;%d]",0,size[0]);
+        {
+            printf("Допустимые значения : [%d;%d]", 0, size[0]);
+        }
     }
 
-    array2d::print(arrayWithoutRow, size[0], size[1], "без удаленных строк", range[1]);
+    array2d::print(array, size[0] - 1, size[1], "без удаленных строк", range[1]);
 
-    array2d::checkWork(array, size, range);
-    array2d::delete_(array, size[0]);
-    array2d::delete_(arrayWithoutRow, size[0]);
+    array2d::delete_(array, size[0] - 1);
     delete[] size;
     delete[] range;
 }
@@ -270,7 +327,7 @@ void task13()
     int *size = array2d::getSizeUser();
 
     int **array = array2d::init(size[0], size[1]);
-    array = array2d::fillRandom(array, range[0], range[1], size[0], size[1]);
+    array2d::fillRandom(array, range[0],range[1], size[0], size[1]);
     array2d::print(array, size[0], size[1], "", range[1]);
 
     int element = printAndScan<int>("Введите элемент, который требуется найти:");
@@ -283,19 +340,21 @@ void task13()
             array[row] = nullptr;
         }
     }
+    array2d::rebalance(&array, size[0], size[1], size[0]);
+    if (array == nullptr)
+    {
+        printf("Были удалены все строки, массив пуст\n");
+    }
+    else
+    {
+        array2d::print(array, size[0], size[1], "без строк с искомыми элементами", range[1]);
+        array2d::delete_(array, size[0]);
+    }
 
-    array2d::print(array, size[0], size[1], "без строк с искомыми элементами", range[1]);
-
-    array2d::delete_(array, size[0]);
     delete[] size;
     delete[] range;
 }
-void task8()
-{
-}
-void task9()
-{
-}
+
 void task10()
 {
 }
