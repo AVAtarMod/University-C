@@ -12,7 +12,7 @@ namespace array2d
 
         std::printf("Введите числа А и В диапазона значений псевдо-случайных чисел [А;В] : ");
         std::scanf("%d %d", &choice[0], &choice[1]);
-        std::cin.ignore(32767, '\n');
+        std::cin.ignore(INT16_MAX, '\n');
         if (choice[0] > choice[1])
         {
             int temp = choice[0];
@@ -31,7 +31,7 @@ namespace array2d
         {
             printf("Введите размер массива (2 числа): ");
             scanf("%d %d", &size[0], &size[1]);
-            std::cin.ignore(32767, '\n');
+            std::cin.ignore(INT16_MAX, '\n');
             if (size[0] < 0 || size[1] < 0)
             {
                 printf("Введены некорректные значения. Попробуйте снова\n");
@@ -47,37 +47,60 @@ namespace array2d
     int *getRangeRandom(int A, int B)
     {
         int *range = new int[2]();
-        int number = abs(getRandomNumber()) % B + A;
 
-        range[0] = number * -1;
-        range[1] = number;
+        range[0] = getRandomNumber(A, B);
+        range[1] = getRandomNumber(A, B);
+
+        if (range[0] > range[1])
+        {
+            int t = range[0];
+            range[0] = range[1];
+            range[1] = t;
+        }
 
         return range;
     }
 
     int **init(const int rows, const int collumns)
     {
-        int **array = new int *[rows];
-        for (int i = 0; i < rows; i++)
+        if (rows == 0)
+            return nullptr;
+        else
         {
-            array[i] = new int[collumns]();
-        }
+            int **array = new int *[rows];
+            for (int i = 0; i < rows; i++)
+            {
+                array[i] = new int[collumns]();
+            }
 
-        return array;
+            return array;
+        }
     }
 
-    int **fillRandom(int **array, int leftLim, int rightLim, const int rows, const int collumns)
+    void fillRandom(int **array, int numbersFrom, int numbersTo, const int rows, const int collumns)
     {
 
         for (int row = 0; row < rows; row++)
         {
             for (int coll = 0; coll < collumns; coll++)
             {
-                array[row][coll] = getRandomNumber() % leftLim + rightLim;
+                array[row][coll] = getRandomNumber(numbersFrom, numbersTo);
             }
         }
+    }
 
-        return array;
+    void fillUser(int **array, const int rows, const int collumns, const char *text)
+    {
+        printf("\n\nВведите значения массива %s\n", text);
+        for (int row = 0; row < rows; row++)
+        {
+            printf("Строка %d/%d [%d числа(ел)]: ", row + 1, rows, collumns);
+            for (int coll = 0; coll < collumns; coll++)
+            {
+                scanf("%d", &array[row][coll]);
+            }
+            std::cin.ignore(INT16_MAX, '\n');
+        }
     }
 
     int searchSortRows(int **array, int rows, int collumns, bool condition(int, int))
@@ -107,24 +130,72 @@ namespace array2d
         }
     }
 
+    void invertRows(int ***array, int rows, bool fast, int collumns)
+    {
+        const int lastRow = rows / 2 + 1;
+        const int rowsIndex = rows - 1;
+        if (fast)
+        {
+            for (int row = 0; row < lastRow; row++)
+            {
+                int *temp = (*array)[row];
+                (*array)[row] = (*array)[rowsIndex - row];
+                (*array)[rowsIndex - row] = temp;
+            }
+        }
+        else
+        {
+            for (int row = 0; row < lastRow; row++)
+            {
+                for (int col = 0; col < collumns; col++)
+                {
+                    int tempElement = (*array)[row][col];
+                    (*array)[row][col] = (*array)[rowsIndex - row][col];
+                    (*array)[rowsIndex - row][col] = tempElement;
+                }
+            }
+        }
+    }
+
     int *compare(int **arrayA, int **arrayB, int rowsMin, int collumnsMin, bool comparator(int, int, int &))
     {
-        //Перераспределить память и обработатать результат
-        int *arrayResult = new int[rowsMin * collumnsMin];
-        for (int row = 0, iterResult = 0; row < rowsMin; row++)
+        int ln = 0;
+        for (int row = 0; row < rowsMin; row++)
         {
             for (int col = 0; col < collumnsMin; col++)
             {
-                int resultCompare;
-                if (comparator(arrayA[row][col], arrayB[row][col], resultCompare))
+                int i;
+                if (comparator(arrayA[row][col], arrayB[row][col], i))
                 {
-                    arrayResult[iterResult] = resultCompare;
+                    ln++;
+                }
+            }
+        }
+
+        int *arrayResult = new int[ln + 1];
+        arrayResult[0] = ln + 1;
+        int iterResult = 1;
+
+        for (int row = 0; row < rowsMin; row++)
+        {
+            for (int col = 0; col < collumnsMin; col++)
+            {
+                if (comparator(arrayA[row][col], arrayB[row][col], arrayResult[iterResult]))
+                {
                     iterResult++;
                 }
             }
         }
 
-        return arrayResult;
+        if (!ln)
+        {
+            delete[] arrayResult;
+            return nullptr;
+        }
+        else
+        {
+            return arrayResult;
+        }
     }
 
     void print(int **array, int rows, int collumns, const char *text, int maxElement)
@@ -146,25 +217,25 @@ namespace array2d
             }
         }
     }
-    
-    void printCollumn(int **array,const int rows, const int collumn,const char *text)
+
+    void printCollumn(int **array, const int rows, const int collumn, const char *text)
     {
-        printf("Столбец %s: [ ",text);
+        printf("Столбец %s: [ ", text);
         for (int row = 0; row < rows; row++)
         {
-            printf("%d; ",array[row][collumn]);
+            printf("%d; ", array[row][collumn]);
         }
         printf("]\n");
     }
 
-    void checkWork(int **array, int *size, int *range)
+    void checkWork(int **array, int *size, int *range, const char *text)
     {
-        printf("Вывести исходный массив для проверки?[1 = да][0 = нет]: ");
+        printf("Вывести исходный массив %s для проверки?[1 = да][0 = нет]: ", text);
         int choice;
 
         int i = 0;
         scanf("%d", &choice);
-        std::cin.ignore(32767, '\n');
+        std::cin.ignore(INT16_MAX, '\n');
         if (choice == 1)
         {
             array2d::print(array, size[0], size[1], "", range[1]);
@@ -176,61 +247,89 @@ namespace array2d
         }
     }
 
-    int **copy(int **array, int rows, int collumns)
+    void copy(int **source, int rows, int collumns, int **destination)
     {
-        int **newArray = new int *[rows];
-        for (int row = 0; row < rows; row++)
+        for (int destRow = 0, srcRow = 0; srcRow < rows; srcRow++)
         {
-            newArray[row] = new int[collumns]();
-        }
-
-        for (int row = 0; row < rows; row++)
-        {
-            if (array[row])
+            if (source[srcRow] != nullptr)
+            {
                 for (int col = 0; col < collumns; col++)
                 {
-                    newArray[row][col] = array[row][col];
+                    destination[destRow][col] = source[srcRow][col];
                 }
-            else
-            {
-                --rows;
-                --row;
+                destRow++;
             }
         }
-        return newArray;
     }
 
     void delete_(int **array, int rows)
     {
         for (int row = 0; row < rows; row++)
         {
-            delete[] array[row];
+            if (array[row] != nullptr)
+            {
+                delete[] array[row];
+            }
         }
         delete[] array;
     }
 
+    void rebalance(int ***array, int rows, int collumns, int &newCollumns)
+    {
+        //Add link rows
+        int counter = 0;
+        for (int row = 0; row < rows; row++)
+        {
+            if (array[0][row] == nullptr)
+                counter++;
+        }
+        if (rows - counter <= 0)
+        {
+            delete_(array[0], rows);
+            array[0] = nullptr;
+            newCollumns = 0;
+        }
+        else
+        {
+            int **result = init(rows - counter, collumns);
+            copy(array[0], rows, collumns, result);
+            delete_(array[0], rows);
+            array[0] = result;
+            newCollumns = rows - counter;
+        }
+    }
+
     bool isEqualElements(int elFrom1Ar, int elFrom2Ar, int &result)
     {
-        bool bresult = false;
         if (elFrom1Ar == elFrom2Ar)
         {
-            result = elFrom1Ar;
-            result = true;
+            result = elFrom2Ar;
+            return true;
         }
 
-        return bresult;
+        return false;
     }
 
 } // namespace array2d
 
-int getRandomNumber()
+int getRandomNumber(int from, int to)
 {
-    unsigned int now = static_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count() % 10000);
-    std::default_random_engine engine(now);
-    std::uniform_int_distribution<int> random;
-    int result = random(engine);
+    try
+    {
+        if (from > to)
+            throw "Incorrect couple 'from - to' for generating random numbers";
+    }
+    catch (const char *message)
+    {
+        std::cerr << message << '\n';
+        exit(1);
+    }
 
-    return result;
+    unsigned int now = static_cast<unsigned>(std::chrono::high_resolution_clock::now().time_since_epoch().count() % 10000);
+    std::mt19937 engine(now);
+    std::uniform_int_distribution<int> random(from, to);
+
+    return random(engine);
 }
 
 int numDigits(int number)

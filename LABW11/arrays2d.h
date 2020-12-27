@@ -10,16 +10,19 @@ namespace array2d
     int *getRangeRandom(int A, int B);
 
     int **init(const int rows, const int collumns);
-    int **fillRandom(int **array, int leftLim, int rightLim, const int rows, const int collumns);
+    void fillRandom(int **array, int numbersFrom, int numbersTo, const int rows, const int collumns);
+    void fillUser(int **array, const int rows, const int collumns, const char *text = "");
 
     int searchSortRows(int **array, int rows, int collumns, bool condition(int, int));
 
     void print(int **array, int rows, int collumns, const char *text = "", int maxElement = 0);
     void printCollumn(int **array, const int rows, const int collumn, const char *text = "");
-    void checkWork(int **array, int *size, int *range);
-    int **copy(int **array, int rows, int collumns);
+    void invertRows(int ***array, int rows, bool fast = true, int collumns = 0);
+    void checkWork(int **array, int *size, int *range, const char *text = "");
+    void copy(int **source, int rows, int collumns, int **destination);
     void delete_(int **array, int rows);
     void getCollumn(int **array, int rows, int *result, int collumn = 0);
+    void rebalance(int ***array, int rows, int collumns, int &newCollumns);
 
     int *compare(int **arrayA, int **arrayB, int rowsMin, int collumnsMin, bool comparator(int, int, int &));
 
@@ -27,6 +30,6 @@ namespace array2d
 
 } // namespace array2d
 
-int getRandomNumber();
+int getRandomNumber(int from,int to);
 int numDigits(int number);
 #endif
