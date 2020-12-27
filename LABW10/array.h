@@ -32,10 +32,10 @@ int *searchIndexElements(const int *ar, const int ln, const int number);
 int *elementsRelevantConditions(int *ar, int ln, bool condition(int));
 
 //Возвращает массив с длиной в 1 элементе.
-void deleteElements(int **par, int &ln, int element,int offset);
-void deleteElement(int **par, int ln, int index,int offset);
+void deleteElements(int **array, int &numberElements, int element, int offset);
+void deleteElement(int **array, int &numberElements, int element, int offset);
 
-void pasteElement(int **par, int ln, int index, int element);
+void pasteElement(int **array, int &numberElements, int index, int element);
 
 bool isAMax(const int a, const int b);
 bool isAMin(const int a, const int b);

@@ -6,13 +6,26 @@
 
 int getLenghtUser()
 {
-    printf("Введите длину массива: ");
     int length;
-
-    scanf("%d", &length);
-    std::cin.ignore(32767, '\n');
-
-    return length;
+    while (true)
+    {
+        printf("Введите длину массива: ");
+        scanf("%d", &length);
+        if (length < 0)
+        {
+            std::cin.ignore(32767, '\n');
+            printf("Некорректное значение длины\n");
+        }
+        if (length == 0){
+            printf("Длина = 0, работа программы будет завершена\n");
+            return 0;
+        }
+        else
+        {
+            std::cin.ignore(32767, '\n');
+            return length;
+        }
+    }
 }
 
 int getLenghtRandom(int minN, int maxN)
@@ -34,14 +47,15 @@ int getLenghtRandom(int minN, int maxN)
 
 int getIndexUser(const int numberElementsArray, const char *reason)
 {
-    printf("Введите индекс (%s): ", reason);
+
     int index;
-    scanf("%d", &index);
     while (true)
     {
-        if (index < 0 && index > numberElementsArray)
+        printf("Введите индекс %s: ", reason);
+        scanf("%d", &index);
+        if (index < 0 || index > numberElementsArray)
         {
-            printf("Введен некорректный индекс. Он должен быть числом от 0 до %d", numberElementsArray);
+            printf("Введен некорректный индекс. Он должен быть числом от 0 до %d\n", numberElementsArray);
         }
         else
         {
@@ -215,13 +229,14 @@ int *elementsRelevantConditions(int *array, int numberElements, bool condition(i
     }
 }
 
-void deleteElement(int **array, int numberElements, int index, int offset)
+void deleteElement(int **array, int &numberElements, int element, int offset)
 {
-    int *arrayResult = new int[numberElements - 1];
+    --numberElements;
+    int *arrayResult = new int[numberElements];
 
     for (int i = offset, iRes = 0; i < numberElements; i++)
     {
-        if (i != index)
+        if ((*array)[i] != element)
         {
             arrayResult[iRes] = (*array)[i];
             iRes++;
@@ -243,10 +258,9 @@ void deleteElements(int **array, int &numberElements, int element, int offset)
         }
     }
 
-    bool needDelete = (counter >= numberElements - offset) ? false : true;
+    bool needDelete = (counter == numberElements - offset) ? false : true;
     if (needDelete)
     {
-        numberElements = counter;
 
         int *arrayResult = new int[counter];
 
@@ -260,6 +274,8 @@ void deleteElements(int **array, int &numberElements, int element, int offset)
             }
         }
 
+        numberElements = counter;
+
         delete[] * array;
         *array = arrayResult;
     }
@@ -270,7 +286,7 @@ void pasteElement(int **array, int &numberElements, int index, int element)
     ++numberElements;
     int *arrayResult = new int[numberElements];
 
-    for (int i = 0, iRes = 0; i < numberElements; i++)
+    for (int i = 0, iRes = 0; i < numberElements - 1; i++)
     {
         if (i == index)
         {
