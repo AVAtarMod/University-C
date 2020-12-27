@@ -12,7 +12,7 @@ namespace arrays1d
         int length;
 
         scanf("%d", &length);
-        std::cin.ignore(32767, '\n');
+        std::cin.ignore(INT16_MAX, '\n');
 
         return length;
     }
@@ -47,7 +47,7 @@ namespace arrays1d
             }
             else
             {
-                std::cin.ignore(32767, '\n');
+                std::cin.ignore(INT16_MAX, '\n');
                 return index;
             }
         }
@@ -59,7 +59,7 @@ namespace arrays1d
 
         printf("Введите элемент (%s): ", reason);
         scanf("%d", &element);
-        std::cin.ignore(32767, '\n');
+        std::cin.ignore(INT16_MAX, '\n');
 
         return element;
     }
@@ -74,7 +74,7 @@ namespace arrays1d
             scanf("%d", &value);
             array[i] = value;
         }
-        std::cin.ignore(32767, '\n');
+        std::cin.ignore(INT16_MAX, '\n');
         return array;
     }
 
@@ -250,12 +250,10 @@ namespace arrays1d
 
     void print(const int *array, const int numberElements, const char *text, const int offset)
     {
-        array = (array + offset);
         printf("Значения массива %s : [ ", text);
-        for (int i = 0; i < numberElements; i++)
+        for (int i = offset; i < numberElements; i++)
         {
-            printf("%d, ", *array);
-            array++;
+            printf("%d, ",array[i]);
         }
         printf("\b\b ]\n");
     }
