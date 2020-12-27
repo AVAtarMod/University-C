@@ -1,7 +1,7 @@
 //9 лабораторная работа, все вспомогательные функции в functions.h
 //В данной лабораторной работе массив увеличен на 1 индекс, так как размер массива хранится в 1 элементе.
 
-//TODO: доделать старт
+//OPT: доделать старт
 
 #include <iostream>
 #include <random>
@@ -254,7 +254,7 @@ int task10()
 
     int *range = new int[2]();
     getRangeUser(numberElements - 1, range);
-
+    //OPT исправить ошибки
     range[0]++;
     range[1]++;
 
