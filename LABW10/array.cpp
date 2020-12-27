@@ -130,19 +130,20 @@ int minMaxElement(const int *array, int numberElements, bool comparator(int, int
 
 int indexMinMaxElementWithConditions(const int *array, int numberElements, bool comparator(int, int), bool condition(int))
 {
-    int firstNumber = *array;
-    int result = 0;
-
+    int result = -1;
+    int iFirstNumber = 0;
     for (int i = 1; i < numberElements; i++)
     {
-        array++;
-        int secondNumber = *array;
-        if (comparator(firstNumber, secondNumber))
+        int secNum = array[i];
+        if (condition(array[i]))
         {
-            if (condition(secondNumber))
+            if (comparator(array[iFirstNumber], secNum))
             {
-                firstNumber = secondNumber;
-                result = i;
+                result = iFirstNumber;
+            }
+            else
+            {
+                result = iFirstNumber = i;
             }
         }
     }
@@ -202,8 +203,8 @@ int *elementsRelevantConditions(int *array, int numberElements, bool condition(i
     }
     else
     {
-        int *result = new int[lnResult];
-        result[0] = lnResult;
+        int *result = new int[lnResult - 1];
+        result[0] = lnResult - 1;
         for (int i = 1; i <= lnResult; i++)
         {
             result[i] = arrayResult[i];
@@ -214,7 +215,7 @@ int *elementsRelevantConditions(int *array, int numberElements, bool condition(i
     }
 }
 
-void deleteElement(int **array, int numberElements, int index,int offset)
+void deleteElement(int **array, int numberElements, int index, int offset)
 {
     int *arrayResult = new int[numberElements - 1];
 
@@ -222,7 +223,7 @@ void deleteElement(int **array, int numberElements, int index,int offset)
     {
         if (i != index)
         {
-            arrayResult[iRes] = array[0][i];
+            arrayResult[iRes] = (*array)[i];
             iRes++;
         }
     }
@@ -231,36 +232,43 @@ void deleteElement(int **array, int numberElements, int index,int offset)
     *array = arrayResult;
 }
 
-void deleteElements(int **array, int numberElements, int element,int offset)
+void deleteElements(int **array, int &numberElements, int element, int offset)
 {
-    int counter=0;
+    int counter = 0;
     for (int i = offset; i < numberElements; i++)
     {
-        if (array[0][i] != element)
+        if ((*array)[i] != element)
         {
             counter++;
         }
     }
 
-    int *arrayResult = new int[counter + 1];
-    arrayResult[0] = counter + 1;
-
-    for (int i = offset, iRes = 1; i < numberElements; i++)
+    bool needDelete = (counter >= numberElements - offset) ? false : true;
+    if (needDelete)
     {
-        if (array[0][i] != element)
-        {
-            arrayResult[iRes] = array[0][i];
-            iRes++;
-        }
-    }
+        numberElements = counter;
 
-    delete[] * array;
-    *array = arrayResult;
+        int *arrayResult = new int[counter];
+
+        int iRes = 0;
+        for (int i = offset; i < numberElements; i++)
+        {
+            if ((*array)[i] != element)
+            {
+                arrayResult[iRes] = (*array)[i];
+                iRes++;
+            }
+        }
+
+        delete[] * array;
+        *array = arrayResult;
+    }
 }
 
-void pasteElement(int **array, int numberElements, int index, int element)
+void pasteElement(int **array, int &numberElements, int index, int element)
 {
-    int *arrayResult = new int[numberElements + 1];
+    ++numberElements;
+    int *arrayResult = new int[numberElements];
 
     for (int i = 0, iRes = 0; i < numberElements; i++)
     {
@@ -269,7 +277,7 @@ void pasteElement(int **array, int numberElements, int index, int element)
             arrayResult[iRes] = element;
             iRes++;
         }
-        arrayResult[iRes] = array[0][i];
+        arrayResult[iRes] = (*array)[i];
         iRes++;
     }
 
@@ -287,14 +295,14 @@ void print(const int *array, const int numberElements, const char *text, const i
     printf("\b\b ]\n");
 }
 
-bool isMax(const int a, const int b)
-{
-    return (a < b);
-}
-
-bool isMin(const int a, const int b)
+bool isAMax(const int a, const int b)
 {
     return (a > b);
+}
+
+bool isAMin(const int a, const int b)
+{
+    return (a < b);
 }
 
 bool isOdd(const int number)
