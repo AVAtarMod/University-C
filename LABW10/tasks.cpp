@@ -136,31 +136,44 @@ void task5()
     generateRandom(array, ln, -30, 30);
     print(array, ln);
 
-    int maxElement = array[indexMinMaxElement(array, ln, isMax)];
+    int maxElement = array[indexMinMaxElement(array, ln, isAMax)];
     printf("\nМаксимальный элемент = %d\n", maxElement);
 
-    int minElement = array[indexMinMaxElement(array, ln, isMin)];
+    int minElement = array[indexMinMaxElement(array, ln, isAMin)];
     printf("\nМинимальный элемент  = %d\n", minElement);
 
     delete[] array;
 }
 void task6()
 {
-    const int ln = getLenghtRandom(5, 12);
+    const int ln = getLenghtUser();
 
     int *array = new int[ln];
-    generateRandom(array, ln, -30, 30);
+    generateFromUser(array, ln);
     print(array, ln);
 
-    int indexMax = indexMinMaxElementWithConditions(array, ln, isMax, isOdd);
-    int maxElement = array[indexMax];
-    printf("\nМаксимальный нечетный элемент = %d\n", maxElement);
+    int indexMax = indexMinMaxElementWithConditions(array, ln, isAMax, isOdd);
+    if (indexMax == -1)
+    {
+        printf("Нечетных элементов нет\n");
+    }
+    else
+    {
+        int maxElement = array[indexMax];
+        printf("\nМаксимальный нечетный элемент = %d\n", maxElement);
+    }
 
-    int indexMin = indexMinMaxElementWithConditions(array, ln, isMin, isEven);
-    int minElement = array[indexMin];
-
-    printf("\nМинимальный четный элемент  = %d\n", minElement);
-    delete[] array;
+    int indexMin = indexMinMaxElementWithConditions(array, ln, isAMin, isEven);
+    if (indexMin == -1)
+    {
+        printf("Четных элементов нет\n");
+    }
+    else
+    {
+        int minElement = array[indexMin];
+        printf("\nМинимальный четный элемент  = %d\n", minElement);
+        delete[] array;
+    }
 }
 void task7()
 {
@@ -180,17 +193,23 @@ void task7()
 }
 void task8()
 {
-    const int ln = getLenghtRandom(5, 12);
+    const int ln = getLenghtUser();
     int *array = new int[ln];
-    generateRandom(array, ln, -30, 30);
+    generateFromUser(array, ln);
     print(array, ln);
 
     int *arrayResult = elementsRelevantConditions(array, ln, isOdd);
-    print(arrayResult, arrayResult[0], "элементов из нечетных чисел", 1);
+    if (arrayResult == nullptr)
+    {
+        printf("Элементы не найдены");
+    }
+    else
+    {
+        print(arrayResult, arrayResult[0], "элементов из нечетных чисел", 1);
+    }
 
     delete[] array;
     delete[] arrayResult;
-
 }
 void task9()
 {
@@ -199,7 +218,7 @@ void task9()
     int *array = new int[ln];
 
     generateFromUser(array, ln);
-    deleteElement(&array, ln, getIndexUser(ln, "Для удаления элемента"),1);
+    deleteElement(&array, ln, getIndexUser(ln, "Для удаления элемента"), 1);
 
     print(array, ln - 1, "без удаленного элемента");
 
@@ -207,18 +226,18 @@ void task9()
 }
 void task10()
 {
-}
-void task11()
-{
-    const int ln = getLenghtUser();
+    int ln = getLenghtUser();
     int *array = new int[ln];
 
     generateFromUser(array, ln);
-    deleteElements(&array, ln, getElementUser("Для удаления элементов, равных введенному"),0);
+    deleteElements(&array, ln, getElementUser("Для удаления элементов, равных введенному"), 0);
 
-    print(array, *array, "с удаленными элементами", 1);
-
+    print(array, ln, "с удаленными элементами", 0);
+    
     delete[] array;
+}
+void task11()
+{
 }
 void task12()
 {
