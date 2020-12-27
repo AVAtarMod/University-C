@@ -6,7 +6,7 @@
 template<class T>
 T printAndScan(const char* text){
     T data;
-    printf("%s",text);
+    std::cout << text;
     std::cin >> data;
     std::cin.ignore(32767, '\n');
     std::cin.clear();
