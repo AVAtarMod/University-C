@@ -158,13 +158,40 @@ void task3()
 }
 void task4cstr()
 {
+    char *line = cstr::getStringUser(true);
+    int sizeArray = 0;
+    int *symbols = cstr::countSymbols(line, sizeArray);
+
+    for (int i = 0; i < sizeArray - 1; i += 2)
+    {
+        cout << "Symbol '" << static_cast<char>(symbols[i]) << "' = " << symbols[i + 1] << "\n";
+    }
+
+    delete[] line;
+    delete[] symbols;
 }
 void task4()
 {
+    std::string str = classStr::getString(true);
+    int sizeptr;
+    int *chars = classStr::countSymbols(str, sizeptr);
+    for (int i = 0; i < sizeptr - 1; i += 2)
+    {
+        cout << "Symbol '" << static_cast<char>(chars[i]) << "' = " << chars[i + 1] << "\n";
+    }
+
+    delete[] chars;
 }
 void task7cstr()
 {
+    char *line = cstr::getStringUser(true);
+    const char* b = (cstr::isPalindrome(line)) ? "Строка является палиндромом" : "Строка не является палиндромом";
+    cout << b << std::endl;
+    delete[] line;
 }
 void task7()
 {
+    std::string str = classStr::getString(true);
+    const char* b = (classStr::isPalindrome(str)) ? "Строка является палиндромом" : "Строка не является палиндромом";
+    cout << b << std::endl;
 }
