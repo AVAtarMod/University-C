@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstring>
-#include <locale>
+#include <memory>
 
 #include "string.h"
 
@@ -66,6 +66,85 @@ void doChangeCase(T &string, uint8_t choice, uint16_t ln)
     default:
         break;
     }
+}
+
+template <class T>
+int *doCountSymbols(T str, int &sizeArray, uint16_t ln)
+{
+    uint16_t lnSt = ln * 2u + 1u;
+    int *storage = new int[lnSt];
+    int realsize = 0;
+
+    for (uint16_t i = 0; i < ln; i++)
+    {
+        char current = str[i];
+        bool exist = false;
+        for (uint16_t iSt = 0; iSt < lnSt && !exist; iSt += 2)
+        {
+            if (storage[iSt] == current)
+            {
+                ++storage[iSt + 1];
+                exist = true;
+            }
+        }
+        if (!exist)
+        {
+            int iSt = 0;
+            while (storage[iSt] != 0 && iSt < lnSt)
+            {
+                iSt += 2;
+            }
+
+            storage[iSt] = current;
+            storage[iSt + 1] = 1;
+            realsize += 2;
+        }
+    }
+
+    sizeArray = realsize;
+    int *result = new int[realsize];
+    for (int i = 0; i < realsize; i++)
+    {
+        result[i] = storage[i];
+    }
+    delete[] storage;
+
+    return result;
+}
+
+char *getInvert(char *string, int ln)
+{
+    char *invert = new char[ln];
+    for (uint32_t i = 0; i < uint32_t(uint32_t(ln)); i++)
+    {
+        invert[i] = string[uint32_t(ln) - i];
+    }
+    return invert;
+}
+
+std::string getInvert(std::string string, int ln)
+{
+    std::string invert;
+    for (uint32_t i = 0; i < uint32_t(ln); i++)
+    {
+        invert[i] = string[uint32_t(ln) - i];
+    }
+    return invert;
+}
+
+template <class T>
+bool checkPalindrome(T string, int ln)
+{
+    T invert = getInvert(string, ln);
+    bool isPalindrome = false;
+    for (uint32_t i = 0; i < uint32_t(ln) && !isPalindrome; i++)
+    {
+        if (string[i] != invert[i])
+        {
+            isPalindrome = true;
+        }
+    }
+    return isPalindrome;
 }
 
 namespace cstr
@@ -152,11 +231,18 @@ namespace cstr
         return indexes;
     }
 
+    int *countSymbols(char *string, int &sizeArray)
+    {
+        uint16_t ln = strlen(string);
+        int *result = doCountSymbols(string, sizeArray, ln);
+        return result;
+    }
+
     void changeCase(char *string)
     {
         uint8_t choice = static_cast<uint8_t>(choiceCase());
         uint16_t ln = strlen(string);
-        doChangeCase(string,choice,ln);
+        doChangeCase(string, choice, ln);
     }
 
     void replace(char *string, int *indexes, int lnIndexes, char symbol)
@@ -183,6 +269,27 @@ namespace cstr
         }
     }
 
+    bool isPalindrome(char *str)
+    {
+        int ln = strlen(str);
+        doChangeCase(str, 2, ln);
+        int numOffset = 0;
+        for (int i = 0; i < ln; i++)
+        {
+            if (isspace(str[i]) || ispunct(str[i]))
+            {
+                numOffset++;
+                for (int offset = i; offset < ln - numOffset; offset++)
+                {
+                    str[offset] = str[offset + 1];
+                    str[offset+1] = ' ';
+                }
+            }
+        }
+        bool result = checkPalindrome(str, ln);
+        return result;
+    }
+
 } // namespace cstr
 
 namespace classStr
@@ -199,6 +306,7 @@ namespace classStr
             cin.ignore(INT16_MAX, '\n');
             str = {c_string};
             delete[] c_string;
+            cin.clear();
         }
         else
         {
@@ -267,7 +375,14 @@ namespace classStr
     void changeCase(string &str)
     {
         uint8_t choice = static_cast<uint8_t>(choiceCase());
-        doChangeCase(str,choice,uint16_t(str.length()+1));
+        doChangeCase(str, choice, uint16_t(str.length() + 1));
+    }
+
+    int *countSymbols(string str, int &sizeArray)
+    {
+        uint16_t ln = str.size();
+        int *result = doCountSymbols(str, sizeArray, ln);
+        return result;
     }
 
     void replace(string &str, uint8_t *indexes, uint8_t numberReplaces, char replace)
@@ -283,6 +398,30 @@ namespace classStr
         cout << str;
         if (str.find('\n') == str.npos)
             cout << "\n";
+    }
+
+    bool isPalindrome(string str)
+    {
+        uint32_t ln = str.size() + 1;
+        doChangeCase(str, 2, ln);
+        uint32_t numOffset = 0;
+        uint32_t realsize = ln;
+        for (uint32_t i = 0; i < ln; i++)
+        {
+            if (isspace(str[i]) || ispunct(str[i]))
+            {
+                numOffset++;
+                for (uint32_t offset = i; offset < ln - numOffset; offset++)
+                {
+                    str[offset] = str[offset + 1];
+                    str[offset+1] = ' ';
+                }
+                --realsize;
+            }
+        }
+        str.resize(realsize);
+        bool result = checkPalindrome(str, int(realsize));
+        return result;
     }
 
 } // namespace classStr
@@ -305,4 +444,3 @@ int choiceCase()
             cout << "Incorrect values.Try again\n";
     }
 }
-

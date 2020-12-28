@@ -10,9 +10,11 @@ namespace cstr
     int *indexSymbols(char *string, char symbol, int &count);
 
     void changeCase(char *string);
+    int *countSymbols(char *str, int &sizeArray);
     void replace(char *string, int *indexes, int lengthIndexes, char symbol);
     void print(const char *string);
     void doOffset(char *string, int offset);
+    bool isPalindrome(char *str);
 } // namespace cstr
 
 namespace classStr
@@ -26,9 +28,12 @@ namespace classStr
 
     uint8_t *indexSymbols(string str, char symbol, uint8_t &numberMatches);
 
+    int *countSymbols(string str, int &sizeArray);
     void changeCase(string &str);
+    int *countSymbols(string str, int &sizeArray);
     void replace(string &str, uint8_t *indexes, uint8_t numberReplaces, char replace);
     void print(string str);
+    bool isPalindrome(string str);
 } // namespace classStr
 
 int choiceCase();
