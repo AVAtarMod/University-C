@@ -4,12 +4,14 @@
 
 #include "files.h"
 #include "arrays2d.h"
+#include "useful.h"
 
 void task1();
 void task2();
 void task3();
 void task4();
 void task6();
+void task7();
 
 int main(int argc, char const *argv[])
 {
@@ -36,26 +38,29 @@ int main(int argc, char const *argv[])
         switch (choice)
         {
         case 1:
-            printf("Задание №1\n");
+            printf("Задание №1 #");
             task1();
             break;
         case 2:
-            printf("Задание №2\n");
+            printf("Задание №2 #");
             task2();
             break;
         case 3:
-            printf("Задание №3\n");
+            printf("Задание №3 #");
             task3();
             break;
         case 4:
-            printf("Задание №4\n");
+            printf("Задание №4 #");
             task4();
             break;
         case 6:
-            printf("Задание №6\n");
+            printf("Задание №6 #");
             task6();
             break;
-
+        case 7:
+            printf("Задание №7 #");
+            task7();
+            break;
         default:
             printf("Номер задачи введен не верно либо не удалось конвертировать введенные данные\n");
             break;
@@ -104,6 +109,13 @@ void task2()
 }
 void task3()
 {
+    // char file[255];
+    // getFileAdressUser(file, 255);
+    // std::ifstream in1(file);
+    // getFileAdressUser(file, 255);
+    // std::ifstream in2(file);
+    // getFileAdressUser(file, 255);
+    // std::fstream out(file);
     std::ifstream in1("files/1.txt");
     std::ifstream in2("files/2.txt");
     std::fstream out("files/3.txt");
@@ -117,10 +129,11 @@ void task3()
         while (!in1.eof() && out.good())
         {
             in1 >> number1txt;
-            out << number1txt << ' ';
+            out << ' ' << number1txt;
         }
 
         out.seekg(0, out.beg);
+        out.seekp(0, out.beg);
         while (!in2.eof())
         {
             in2 >> number2txt;
@@ -132,12 +145,16 @@ void task3()
                     matchExist = true;
             }
             if (!matchExist)
-                out << number2txt << ' ';
+                out << ' ' << number2txt;
             out.seekg(0, out.beg);
+            out.seekp(0, out.beg);
         }
+        out.close();
+        in1.close();
+        in2.close();
     }
     else
-        std::cout << "Incorrect filename";
+        std::cout << "Incorrect filename\n";
     in1.close();
     in2.close();
     out.close();
@@ -204,4 +221,51 @@ void task6()
 
         std::cout << "\n\nMax line: " << max << "\n";
     }
+}
+void task7()
+{
+    std::string word;
+    std::cout << "Enter word: ";
+    std::cin >> word;
+    std::ifstream in("files/text.in");
+    if (!in.good())
+        in.open("/home/grigory/Programming/C++/Laboratory/LABW13/files/text.in");
+    if (in.good())
+    {
+        bool wordIsFound = false;
+        while (in.good() && !wordIsFound)
+        {
+            std::string line;
+            getline(in, line);
+
+            int lengthWord = word.size();
+            int indexStr = line.find(word);
+
+            if (line.find(word) != line.npos)
+            {
+                bool isEndAlpha = isalpha(line[uint32_t(indexStr + lengthWord)]);
+                bool isFirstWord = (indexStr == 0) ? true : false;
+                bool isEndAlphaFirst = (isFirstWord && !isEndAlpha) ? true : false;
+                bool isPrevCharAlpha = false;
+
+                if (!isFirstWord)
+                    isPrevCharAlpha = isalpha(line[uint32_t(indexStr - 1)]);
+
+                bool isWord = (isEndAlphaFirst || (!isEndAlpha && !isPrevCharAlpha));
+                if (isWord)
+                {
+                    wordIsFound = true;
+                }
+            }
+        }
+
+        std::string isfound = word + fgGreen + " was found " + reset;
+        std::string notfound = word + fgRed + " was not found" + reset;
+        std::cout << ((wordIsFound) ? isfound : notfound) << "\n";
+    }
+    else
+    {
+        std::cout << "File not exist\n";
+    }
+    in.close();
 }
