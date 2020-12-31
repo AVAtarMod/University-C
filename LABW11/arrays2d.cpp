@@ -132,7 +132,7 @@ namespace array2d
 
     void invertRows(int ***array, int rows, bool fast, int collumns)
     {
-        const int lastRow = rows / 2 + 1;
+        const int lastRow = rows / 2;
         const int rowsIndex = rows - 1;
         if (fast)
         {
