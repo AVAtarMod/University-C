@@ -36,6 +36,4 @@ namespace classStr
     bool isPalindrome(string str);
 } // namespace classStr
 
-int choiceCase();
-
 #endif

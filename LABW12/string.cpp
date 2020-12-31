@@ -45,7 +45,10 @@ void doChangeCase(T &string, uint8_t choice, uint16_t ln)
         break;
 
     case 4:
-        string[0] = toupper(string[0]);
+        if (isalpha(string[0]))
+        {
+            string[0] = toupper(string[0]);
+        }
         for (uint16_t i = 1; i < ln; i++)
         {
             if (string[uint16_t(i - 1)] == ' ' && isalpha(string[i]))
@@ -132,6 +135,15 @@ std::string getInvert(std::string string, int ln)
     return invert;
 }
 
+void deletestr(char *str)
+{
+    delete[] str;
+}
+void deletestr(std::string str)
+{
+    str.resize(0);
+}
+
 template <class T>
 bool checkPalindrome(T string, int ln)
 {
@@ -144,7 +156,27 @@ bool checkPalindrome(T string, int ln)
             isPalindrome = true;
         }
     }
+    deletestr(invert);
     return isPalindrome;
+}
+
+int choiceCase()
+{
+    int choice;
+    while (true)
+    {
+        cout << "Выберите способ изменения текста:\n"
+                "1)Как в предложениях\n"
+                "2)все строчные\n"
+                "3)ВСЕ ПРОПИСНЫЕ\n"
+                "4)Начинать С Прописных\n"
+                "5)иЗМЕНИТЬ РЕГИСТР\n";
+        cin >> choice;
+        if (choice > 0 && choice < 6)
+            return choice;
+        else
+            cout << "Incorrect values.Try again\n";
+    }
 }
 
 namespace cstr
@@ -192,8 +224,8 @@ namespace cstr
 
         for (int i = 0; i < ln - 1; i++)
         {
-            bool normalMatch = (string[i] == ' ' && std::isalpha(string[i + 1], ru));
-            bool firstWord = (std::isalpha(string[i], ru) && string[i + 1] == ' ' && count == 0);
+            bool normalMatch = (isspace(string[i]) && isalpha(string[i + 1], ru));
+            bool firstWord = (isalpha(string[i], ru) && count == 0);
             if (normalMatch || firstWord)
                 ++count;
         }
@@ -282,7 +314,7 @@ namespace cstr
                 for (int offset = i; offset < ln - numOffset; offset++)
                 {
                     str[offset] = str[offset + 1];
-                    str[offset+1] = ' ';
+                    str[offset + 1] = ' ';
                 }
             }
         }
@@ -414,7 +446,7 @@ namespace classStr
                 for (uint32_t offset = i; offset < ln - numOffset; offset++)
                 {
                     str[offset] = str[offset + 1];
-                    str[offset+1] = ' ';
+                    str[offset + 1] = ' ';
                 }
                 --realsize;
             }
@@ -425,22 +457,3 @@ namespace classStr
     }
 
 } // namespace classStr
-
-int choiceCase()
-{
-    int choice;
-    while (true)
-    {
-        cout << "Выберите способ изменения текста:\n"
-                "1)Как в предложениях\n"
-                "2)все строчные\n"
-                "3)ВСЕ ПРОПИСНЫЕ\n"
-                "4)Начинать С Прописных\n"
-                "5)иЗМЕНИТЬ РЕГИСТР\n";
-        cin >> choice;
-        if (choice > 0 && choice < 6)
-            return choice;
-        else
-            cout << "Incorrect values.Try again\n";
-    }
-}
