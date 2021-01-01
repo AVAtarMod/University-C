@@ -3,14 +3,34 @@
 
 #include <iostream>
 
-template<class T>
-T printAndScan(const char* text){
+template <class T>
+T printAndScan(const char *text)
+{
     T data;
     std::cout << text;
     std::cin >> data;
     std::cin.ignore(32767, '\n');
 
     return data;
+}
+
+int reverseNumber(int number)
+{
+    int maxDigit = 1;
+    while (number % maxDigit != number)
+    {
+        maxDigit *= 10;
+    }
+    maxDigit /=10;
+
+    int result = 0;
+    while (number != 0)
+    {
+        result += (number % 10) * maxDigit;
+        number /= 10;
+        maxDigit /= 10;
+    }
+    return result;
 }
 
 std::string reset = "\033[0m";
