@@ -10,16 +10,16 @@ std::vector<Member> userInput()
     {
         std::cout << "Enter number members (must be greater than 0): ";
         std::cin >> numberMembers;
-        std::cout << "\n";
+
         if (numberMembers < 1)
             std::cerr << "Number members less than 1\n";
     }
 
     std::vector<Member> members;
-    members.reserve(numberMembers);
+    members.resize(numberMembers);
     for (uint32_t i = 0; i < numberMembers; i++)
     {
-        std::cout << "Member " << i << std::endl;
+        std::cout << "Member #" << i << std::endl;
         std::cin >> members.at(i);
     }
     return members;
@@ -34,13 +34,13 @@ void print(std::vector<Member> members)
     }
 }
 
-void binPrint(const char *file, std::vector<Member> storage)
+void binPrint(std::string file, std::vector<Member> storage)
 {
     binInput(file, storage, true);
     print(storage);
 }
 
-void binInput(const char *file, std::vector<Member> storage, bool readUntilEof)
+void binInput(std::string file, std::vector<Member> storage, bool readUntilEof)
 {
     std::ifstream input(file, std::ios::binary);
 
@@ -68,7 +68,7 @@ void binInput(const char *file, std::vector<Member> storage, bool readUntilEof)
     input.close();
 }
 
-void binOutput(const char *file, std::vector<Member> storage)
+void binOutput(std::string file, std::vector<Member> storage)
 {
     std::ofstream output(file, std::ios_base::binary);
 

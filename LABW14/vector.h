@@ -6,9 +6,9 @@
 #include "struct.h"
 
 std::vector<Member> userInput();
-void binInput(const char *file, std::vector<Member> storage, bool readUntilEof);
+void binInput(std::string file, std::vector<Member> storage, bool readUntilEof);
 
 void print(std::vector<Member>);
-void binOutput(const char *file, std::vector<Member> storage);
+void binOutput(std::string file, std::vector<Member> storage);
 
 #endif
