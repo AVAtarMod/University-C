@@ -7,7 +7,8 @@ std::istream &operator>>(std::istream &input, Member &member)
 {
     setlocale(LC_ALL,"");
     std::cout << "Enter\n- fullname: ";
-    input >> member.fullName;
+    //TODO Add getline impl
+    // input.getline(member.fullName);
     std::cout << "\n- country: ";
     input >> member.country;
     std::cout << "\n- city: ";
