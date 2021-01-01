@@ -5,9 +5,10 @@
 #include "files.h"
 #include "useful.h"
 
-void menu();
+void menu(std::string fileIn, std::string fileOut);
 void help();
 void getLackData(bool inputExist, std::string &input, bool outputExist, std::string &output);
+void handleActions(uint32_t choice, std::string fileIn, std::string fileOut);
 
 int main(int argc, char const *argv[])
 {
@@ -68,26 +69,27 @@ int main(int argc, char const *argv[])
         }
     }
     if (canContinue)
-        menu();
+        menu(fileIn, fileOut);
     else
     {
         while (!isFileExist(fileIn.c_str()))
         {
             getLackData(inputExist, fileIn, outputExist, fileOut);
-            if (!isFileExist(fileIn.c_str())) std::cout << fgRed << "Oops. Input file incorrect." << reset << "\n";
+            if (!isFileExist(fileIn.c_str()))
+                std::cout << fgRed << "Oops. Input file incorrect." << reset << "\n";
         }
-        std::cout <<"----------------\n" <<fgGreen << "Sucess! Files correct." << reset <<  ((isFileExist(fileOut.c_str())) ? " " : "The output file will create if you do save data.") << "\n";
-        menu();
+        std::cout << "----------------\n"
+                  << fgGreen << "Sucess! Files correct." << reset << ((isFileExist(fileOut.c_str())) ? " " : "The output file will create if you do save data.") << "\n";
+        menu(fileIn, fileOut);
     }
 
     return 0;
 }
 
-void menu()
+void menu(std::string fileIn, std::string fileOut)
 {
-    uint16_t choice;
-    std::cout << "Choice act:\n\t"
-                 "1)Add member\n\t"
+    std::cout << "Choice action:\n\t"
+                 "1)Add members\n\t"
                  "2)Display list of the members\n\t"
                  "3)Delete member\n\t"
                  "4)Find member\n\t"
@@ -96,8 +98,52 @@ void menu()
                  "----------------\n\t"
                  "7)Save to file\n\t"
                  "8)Add members from file\n"
-                 "Enter: ";
+                 "Enter (you can select several actions, ex 147): ";
+
+    uint32_t choice;
     std::cin >> choice;
+    handleActions(uint32_t(reverseNumber(int(choice))), fileIn, fileOut);
+}
+
+void handleActions(uint32_t choice, std::string fileIn, std::string fileOut)
+{
+    std::vector<Member> members;
+    while (choice != 0u)
+    {
+        uint8_t act = choice % 10u;
+        switch (act)
+        {
+        case 1:
+            members = userInput();
+            break;
+        case 2:
+            print(members);
+            break;
+        case 3:
+
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            binOutput(fileOut, members);
+            break;
+        case 8:
+            bool readAll;
+            std::cout << "Read all file (1 = yes, 0 = no)? Enter: ";
+            std::cin >> readAll;
+            binInput(fileIn, members, readAll);
+            break;
+
+        default:
+            std::cerr << fgRed << "Action " << act << " not recognized" << reset << "\n";
+            break;
+        }
+        choice /= 10u;
+    }
 }
 
 void help()
