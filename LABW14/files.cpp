@@ -12,6 +12,7 @@ bool isFileExist(const char *file)
     {
         exist = true;
     }
+    in.close();
     
     return exist;
 }
