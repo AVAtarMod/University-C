@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
                     fileIn.replace(fileIn.find('\n'), 1, "\0");
             }
         }
-        
+
         else if (arg == ou && argv[i + 1])
         {
             outputEntered = true;
@@ -108,6 +108,7 @@ std::string menu()
         "----------------\n\t"
         "7)Save to file\n\t"
         "8)Add members from file\n\t"
+        "9)Display members from file\n\t"
         "Enter (you can select several actions, ex 1 4 7): ";
     char *storage = new char[UINT8_MAX];
     printAndScan(menu.c_str(), storage, UINT8_MAX);
@@ -158,7 +159,8 @@ void handleActions(std::string choice, std::string fileIn, std::string fileOut)
                 members = userInput();
                 break;
             case 2:
-                print(members);
+                if (!isEmpty(members))
+                    print(members);
                 break;
             case 3:
 
@@ -166,11 +168,14 @@ void handleActions(std::string choice, std::string fileIn, std::string fileOut)
             case 4:
                 break;
             case 5:
+                if (!isEmpty(members))
+                    sort(members);
                 break;
             case 6:
                 break;
             case 7:
-                binOutput(fileOut, members);
+                if (!isEmpty(members))
+                    binOutput(fileOut, members);
                 break;
             case 8:
                 bool readAll;
@@ -180,6 +185,7 @@ void handleActions(std::string choice, std::string fileIn, std::string fileOut)
                 binInput(fileIn, members, readAll);
                 break;
             case 9:
+                binPrint(fileIn, members);
                 break;
 
             default:
