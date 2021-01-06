@@ -3,34 +3,47 @@
 
 #include <iostream>
 
+/**
+*   @brief  Print text and return user answer.
+*   @param  text  Text for user
+*   @param  storage  Variable for store result.
+*   @param  size  Size of returned line (for string/c-string)
+*   @return  Any type
+*/
+template <class T>
+void printAndScan(const char *text, T &storage, int size)
+{
+    std::cout << text;
+    {
+        std::cin.getline(storage, size);
+    }
+
+    std::cin.ignore(32767, '\n');
+    if (!std::cin.good())
+    {
+        std::cin.clear();
+    }
+}
+/**
+*   @brief  Print text and return user answer.
+*   @param  text  Text for user
+*   @return  Your type
+*/
 template <class T>
 T printAndScan(const char *text)
 {
     T data;
     std::cout << text;
-    std::cin >> data;
+    {
+        std::cin >> data;
+    }
+
     std::cin.ignore(32767, '\n');
-
+    if (!std::cin.good())
+    {
+        std::cin.clear();
+    }
     return data;
-}
-
-int reverseNumber(int number)
-{
-    int maxDigit = 1;
-    while (number % maxDigit != number)
-    {
-        maxDigit *= 10;
-    }
-    maxDigit /=10;
-
-    int result = 0;
-    while (number != 0)
-    {
-        result += (number % 10) * maxDigit;
-        number /= 10;
-        maxDigit /= 10;
-    }
-    return result;
 }
 
 std::string reset = "\033[0m";
@@ -77,7 +90,7 @@ std::string fgBrightCyan = "\033[36;1m";
 std::string bgCyan = "\033[46m";
 std::string bgBrightCyan = "\033[46;1m";
 
-// White
+//White
 std::string fgWhite = "\033[37m";
 std::string fgBrightWhite = "\033[37;1m";
 std::string bgWhite = "\033[47m";
