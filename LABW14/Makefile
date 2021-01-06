@@ -15,26 +15,28 @@ OBJDIR = build/
 SRC = $(wildcard $(SRCDIR)/*$(EXT))
 OBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.o)
 DEP = $(OBJ:$(OBJDIR)/%.o=%.d)
+
+SRCDEV = $(wildcard $(SRCDIR)/*$(EXT))
+OBJDEV = $(SRCDEV:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.odg)
+DEPDEV = $(OBJDEV:$(OBJDIR)/%.odg=%.dg)
 # UNIX-based OS variables & settings
 RM = rm
 DELOBJ = $(OBJ)
-# Windows OS variables & settings
-DEL = del
-EXE = .exe
-WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
+
+DELOBJDEV = $(OBJDEV)
 
 ########################################################################
 ####################### Targets beginning here #########################
 
-all: $(APPNAME) cleandep
+all: $(APPNAME) cleandep cleandepdev
 
-dev: $(APPNAMEDEV) cleandepdev
+dev: $(APPNAMEDEV) cleandepdev cleandep
 
 # Builds the app
 $(APPNAME): $(OBJ)
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(APPNAMEDEV) : $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.odg)
+$(APPNAMEDEV): $(OBJDEV)
 	$(CC) $(DEVFLAGS) -o $@ $^ $(LDFLAGS)
 
 # Creates the dependecy rules
@@ -46,6 +48,8 @@ $(APPNAMEDEV) : $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.odg)
 
 # Includes all .h files
 -include $(DEP)
+
+-include $(DEPDEV)
 
 # Building rule for .o files and its .c/.cpp in combination with all .h
 $(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
@@ -65,5 +69,6 @@ clean:
 cleandep:
 	$(RM) $(DEP)
 
+.PHONY: cleandepdev
 cleandepdev:
-	$(RM) $(OBJ:$(OBJDIR)/%.odg=%.dg)
+	$(RM) $(DEPDEV)
