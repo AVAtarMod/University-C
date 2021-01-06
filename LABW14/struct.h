@@ -6,21 +6,6 @@
 #define STR_SIZE 255
 #define BUFFER_SIZE 1032 /** @def BUFFER_SIZE 1032 @brief 1032 bytes*/
 
-template <class T>
-std::unique_ptr<char[]> numberBinary(T number)
-{
-    //TODO Строка результата больше предпологаемого размера;
-    auto bin = std::make_unique<char[]>(sizeof(number));
-    strncpy(bin.get(), std::to_string(number).c_str(), sizeof(number));
-    return bin;
-}
-
-template <class T>
-T numberDecimal(char* numberBinary)
-{
-    return static_cast<T>(atoll(numberBinary));
-}
-
 struct Member
 {
     char fullName[STR_SIZE];
@@ -36,8 +21,10 @@ struct Member
      */
     operator std::unique_ptr<char[]>()
     {
-        auto ageBuf = numberBinary(age);
-        auto phoneNumberBuf = numberBinary(phoneNumber);
+        char ageBuf[sizeof(age)]{0};
+        char phoneNumberBuf[sizeof(phoneNumber)]{0};
+        strncpy(ageBuf,(char *)(&age),sizeof(age));
+        strncpy(phoneNumberBuf,(char *)(&phoneNumber),sizeof(phoneNumber));
 
         auto buffer = std::make_unique<char[]>(BUFFER_SIZE);
         char *ptrCopy = buffer.get();
@@ -49,17 +36,27 @@ struct Member
         memcpy(ptrCopy += STR_SIZE, country, STR_SIZE);
         memcpy(ptrCopy += STR_SIZE, city, STR_SIZE);
         memcpy(ptrCopy += STR_SIZE, work, STR_SIZE);
-        memcpy(ptrCopy += STR_SIZE, (char *)(&age), sizeof(age));
-        memcpy(ptrCopy += sizeof(age),(char *)(&phoneNumber),
+        memcpy(ptrCopy += STR_SIZE, ageBuf, sizeof(age));
+        memcpy(ptrCopy += sizeof(age),phoneNumberBuf,
         sizeof(phoneNumber));
 
         return buffer;
     }
 
     /**
-     * @brief Default constructor
+     * @brief Default constructor with support user values
      */
-    Member(){}
+    Member(const char fn[STR_SIZE] = "",const char cn[STR_SIZE] = "",
+           const char ct[STR_SIZE] = "",const char wk[STR_SIZE] = "",
+           uint32_t ag = 0,uint64_t pN = 0)
+           {
+               strncpy(fullName,fn,STR_SIZE);
+               strncpy(country,ct,STR_SIZE);
+               strncpy(city,cn,STR_SIZE);
+               strncpy(work,wk,STR_SIZE);
+               age = ag;
+               phoneNumber = pN;
+           }
 
     /**
      * @brief Construct from buffer
@@ -78,6 +75,22 @@ struct Member
         strncpy(numberPhoneBuff,ptrBuffer+=sizeof(age), sizeof(phoneNumber));
         age = *((uint32_t *)(ageBuff));
         phoneNumber = *((uint64_t *)(numberPhoneBuff));
+    }
+};
+
+struct leastAge
+{
+    inline bool operator() (const Member &member1,const Member &member2)
+    {
+        return (member1.age < member2.age);
+    }
+};
+
+struct biggerAge
+{
+    inline bool operator() (const Member &member1,const Member &member2)
+    {
+        return (member1.age > member2.age);
     }
 };
 

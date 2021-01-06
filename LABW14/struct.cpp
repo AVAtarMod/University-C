@@ -57,7 +57,7 @@ std::istream &operator>>(std::istream &input, Member &member)
 std::ostream &operator<<(std::ostream &output, Member &member)
 {
     setlocale(LC_ALL, "");
-    std::cout << member.fullName << " " << member.age << "y.o"
+    output << member.fullName << " " << member.age << "y.o"
               << "\nCountry, city: " << member.country << "," << member.city << "\nWork place: " << member.work
               << "\nPhone number: " << member.phoneNumber << "\n";
     return output;
