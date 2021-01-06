@@ -4,3 +4,4 @@ Documents/
 *.d
 *.app
 files/
+build/

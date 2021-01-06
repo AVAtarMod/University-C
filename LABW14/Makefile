@@ -1,10 +1,12 @@
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++17 -Wall -Weffc++ -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized
-LDFLAGS = 
+CXXFLAGS = -std=c++17 -O2
+LDFLAGS =
+DEVFLAGS = -std=c++17 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3
 
 # Makefile settings - Can be customized.
 APPNAME = labwork14.app
+APPNAMEDEV = labwork14dbg.app
 EXT = .cpp
 SRCDIR = .
 OBJDIR = build/
@@ -26,13 +28,21 @@ WDELOBJ = $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)\\%.o)
 
 all: $(APPNAME) cleandep
 
+dev: $(APPNAMEDEV) cleandepdev
+
 # Builds the app
 $(APPNAME): $(OBJ)
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
+$(APPNAMEDEV) : $(SRC:$(SRCDIR)/%$(EXT)=$(OBJDIR)/%.odg)
+	$(CC) $(DEVFLAGS) -o $@ $^ $(LDFLAGS)
+
 # Creates the dependecy rules
 %.d: $(SRCDIR)/%$(EXT)
-	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
+	@$(CPP) $(CXXFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
+
+%.dg: $(SRCDIR)/%$(EXT)
+	@$(CPP) $(DEVFLAGS) $< -MM -MT $(@:%.dg=$(OBJDIR)/%.odg) >$@
 
 # Includes all .h files
 -include $(DEP)
@@ -40,6 +50,9 @@ $(APPNAME): $(OBJ)
 # Building rule for .o files and its .c/.cpp in combination with all .h
 $(OBJDIR)/%.o: $(SRCDIR)/%$(EXT)
 	$(CC) $(CXXFLAGS) -o $@ -c $<
+
+$(OBJDIR)/%.odg: $(SRCDIR)/%$(EXT)
+	$(CC) $(DEVFLAGS) -o $@ -c $<
 
 ################### Cleaning rules for Unix-based OS ###################
 # Cleans complete project
@@ -51,3 +64,6 @@ clean:
 .PHONY: cleandep
 cleandep:
 	$(RM) $(DEP)
+
+cleandepdev:
+	$(RM) $(OBJ:$(OBJDIR)/%.odg=%.dg)
