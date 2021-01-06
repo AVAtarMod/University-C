@@ -15,11 +15,11 @@ std::vector<Member> userInput()
             std::cerr << "Number members less than 1\n";
     }
 
-    std::vector<Member> members;
-    members.resize(numberMembers);
+    std::vector<Member> members(numberMembers);
+
     for (uint32_t i = 0; i < numberMembers; i++)
     {
-        std::cout << "Member #" << i << std::endl;
+        std::cout << "Member #" << i + 1 << std::endl;
         std::cin >> members.at(i);
     }
     return members;
@@ -27,9 +27,9 @@ std::vector<Member> userInput()
 
 void print(std::vector<Member> members)
 {
-    uint16_t numberMembers = members.size();
-    for (uint16_t i = 0; i < numberMembers; i++)
+    for (uint16_t i = 0; i < members.size(); i++)
     {
+        std::cout << "Member #" << i + 1 << "\n";
         std::cout << members.at(i);
     }
 }
@@ -40,29 +40,43 @@ void binPrint(std::string file, std::vector<Member> storage)
     print(storage);
 }
 
-void binInput(std::string file, std::vector<Member> storage, bool readUntilEof)
+void binInput(std::string file, std::vector<Member> &storage, bool readUntilEof)
 {
     std::ifstream input(file, std::ios::binary);
 
     if (input.good())
     {
-        uint16_t size = storage.size();
-        for (uint16_t i = 0; i < size && !input.eof(); i++)
-        {
-            bool lastFill = (i == size - 1u);
-            if (lastFill && readUntilEof)
-            {
-                storage.reserve(size + 1u);
-            }
+        char sizeString[8];
+        input.read(sizeString, 8);
+        size_t sizeNumeric = static_cast<size_t>(atoi(sizeString));
 
-            Member *current = &storage.at(i);
-            input.read((char *)(current), sizeof(Member));
+        if (readUntilEof)
+        {
+            if (storage.size() != sizeNumeric)
+                storage.resize(sizeNumeric);
+            for (size_t i = 0; i < sizeNumeric && input.good(); i++)
+            {
+                if (!binReadMember(input, storage.at(i)))
+                {
+                    std::cerr << "Error at write Member #" << i + 1 << "!\n";
+                }
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < storage.size() && input.good(); i++)
+            {
+                if (!binReadMember(input, storage.at(i)))
+                {
+                    std::cerr << "Error at read Member #" << i + 1 << "!\n";
+                }
+            }
         }
     }
 
     else
     {
-        std::cerr << "File not exist\n";
+        std::cerr << "File not exist or corrupt\n";
     }
 
     input.close();
@@ -74,13 +88,20 @@ void binOutput(std::string file, std::vector<Member> storage)
 
     if (output.good())
     {
-        for (uint16_t i = 0; i < storage.size(); i++)
+        size_t sizeNumeric = storage.size();
+        auto sizeBinary = numberBinary(sizeNumeric);
+
+        output.write(sizeBinary.get(), sizeof(sizeNumeric));
+        for (uint16_t i = 0; i < sizeNumeric; i++)
         {
-            output.write(static_cast<const char *>(storage.at(i)), sizeof(Member));
+            if (!binWriteMember(output, storage.at(i)))
+            {
+                std::cerr << "Error at write Member #" << i + 1 << "!\n";
+            }
         }
     }
     else
-        std::cerr << "File not exist";
+        std::cerr << "File not exist or corrupt\n";
 
     output.close();
 }
