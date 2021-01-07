@@ -12,6 +12,8 @@ void handleActions(std::string choice, std::string fileIn, std::string fileOut);
 
 int main(int argc, char const *argv[])
 {
+    setlocale(LC_ALL, "");
+    
     bool inputEntered = false;
     bool inputExist = false;
     bool outputEntered = false;
@@ -102,9 +104,9 @@ std::string menu()
         "1)Add members\n\t"
         "2)Display list of the members\n\t"
         "3)Delete member\n\t"
-        "4)Find member\n\t"
+        "4)Find members\n\t"
         "5)Sort members\n\t"
-        "6)Filter members\n\t"
+        "6)Edit member\n\t"
         "----------------\n\t"
         "7)Save to file\n\t"
         "8)Add members from file\n\t"
@@ -156,25 +158,30 @@ void handleActions(std::string choice, std::string fileIn, std::string fileOut)
             switch (act)
             {
             case 1:
-                members = userInput();
+                userInput(members);
                 break;
             case 2:
-                if (!isEmpty(members))
+                if (!isEmpty(members,act))
                     print(members);
                 break;
             case 3:
-
+                if (!isEmpty(members,act))
+                    deleteElement(members);
                 break;
             case 4:
+                if (!isEmpty(members,act))
+                    find(members);
                 break;
             case 5:
-                if (!isEmpty(members))
+                if (!isEmpty(members,act))
                     sort(members);
                 break;
             case 6:
+                if (!isEmpty(members,act))
+                    edit(members);
                 break;
             case 7:
-                if (!isEmpty(members))
+                if (!isEmpty(members,act))
                     binOutput(fileOut, members);
                 break;
             case 8:
