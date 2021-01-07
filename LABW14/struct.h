@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <cstring>
+
 #define STR_SIZE 255
 #define BUFFER_SIZE 1032 /** @def BUFFER_SIZE 1032 @brief 1032 bytes*/
 
@@ -78,26 +79,13 @@ struct Member
     }
 };
 
-struct leastAge
-{
-    inline bool operator() (const Member &member1,const Member &member2)
-    {
-        return (member1.age < member2.age);
-    }
-};
-
-struct biggerAge
-{
-    inline bool operator() (const Member &member1,const Member &member2)
-    {
-        return (member1.age > member2.age);
-    }
-};
-
 std::istream &operator>>(std::istream &input, Member &member);
 std::ostream &operator<<(std::ostream &output, Member &member);
 
 bool binWriteMember(std::ofstream &output, Member &member);
 bool binReadMember(std::ifstream &input, Member &member);
+
+bool searchText(const char *source, const char *text);
+void editMember(Member &member);
 
 #endif
