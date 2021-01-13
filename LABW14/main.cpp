@@ -181,6 +181,7 @@ void handleActions(std::string choice, std::string fileIn, std::string fileOut)
                     edit(members);
                 break;
             case 7:
+                if (fileOut.empty()) getLackData(true,fileIn,false,fileOut);
                 if (!isEmpty(members,act))
                     binOutput(fileOut, members);
                 break;
@@ -196,7 +197,7 @@ void handleActions(std::string choice, std::string fileIn, std::string fileOut)
                 break;
 
             default:
-                std::cerr << fgRed << "Action " << act << " not recognized" << reset << "\n";
+                std::cerr << fgBrightRed << "Action " << act << " not recognized" << reset << "\n";
                 break;
             }
         }
