@@ -5,7 +5,7 @@
 
 #include "struct.h"
 
-void userInput(std::vector<Member> members);
+void userInput(std::vector<Member> &storage);
 
 void print(std::vector<Member> members, const char *text = "");
 void deleteElement(std::vector<Member> &storage);
