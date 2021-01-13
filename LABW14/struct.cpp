@@ -91,6 +91,18 @@ void editMember(Member &member)
     }
 }
 
+std::unique_ptr<char[]> getLastName(Member member)
+{
+    size_t beginLastName = -1;
+    for (size_t i = 0; i < STR_SIZE - 1 && beginLastName; i++)
+    {
+        if(isspace(member.fullName[i])) beginLastName = i+1;
+    }
+    auto lastName = std::make_unique<char[]>(STR_SIZE - beginLastName);
+    strncpy(lastName.get(),member.fullName + beginLastName,STR_SIZE - beginLastName);
+    return lastName;
+}
+
 std::istream &operator>>(std::istream &input, Member &member)
 {
 

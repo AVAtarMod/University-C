@@ -79,6 +79,18 @@ struct Member
     }
 };
 
+
+std::unique_ptr<char[]> getLastName(Member member);
+static bool sortFullnameA_Z(const Member &left, const Member &right)
+{
+    return (strcoll(getLastName(left.fullName).get(), getLastName(right.fullName).get()) < 0);
+}
+
+static bool sortFullnameZ_A(const Member &left, const Member &right)
+{
+    return (strcoll(getLastName(left.fullName).get(), getLastName(right.fullName).get()) > 0);
+}
+
 std::istream &operator>>(std::istream &input, Member &member);
 std::ostream &operator<<(std::ostream &output, Member &member);
 
