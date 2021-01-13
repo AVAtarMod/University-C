@@ -9,29 +9,29 @@ namespace COLORS
 } // namespace COLORS
 
 
-void userInput(std::vector<Member> storage)
+void userInput(std::vector<Member> &storage)
 {
     uint32_t numberMembers = 0;
     while (numberMembers < 1)
     {
-        std::cout << "Enter number members (must be greater than 0): ";
+        std::cout << "Enter number members: ";
         std::cin >> numberMembers;
 
         if (numberMembers < 1)
             std::cerr << COLORS::fgBrightRed << "Number members less than 1\n";
     }
 
-    uint32_t pos = storage.size() + 1;
-    while (pos > storage.size() + 1)
+    uint32_t pos = 0;
+    while (pos > storage.size() && !storage.empty())
     {
         std::cout << "Enter position (you can choice from ";
         for (uint16_t i = 0; i < storage.size() + 1; i++)
             std::cout << i << "; ";
         std::cout << "\b\b ): ";
 
-        std::cin >> numberMembers;
+        std::cin >> pos;
 
-        if (numberMembers < 1)
+        if (pos < 1)
             std::cerr << COLORS::fgBrightRed << "Position greater than " << storage.size() + 1 << "\n";
     }
 
@@ -79,12 +79,12 @@ void edit(std::vector<Member> &storage)
     std::cout << "Choice number member for edit it (";
     for (uint16_t i = 0; i < storage.size(); i++)
     {
-        std::cout << i << "; ";
+        std::cout << i + 1 << "; ";
     }
     std::cout << "\b\b)\nEnter: ";
     std::cin >> numberMember;
-    if (numberMember < storage.size())
-        editMember(storage.at(numberMember));
+    if (numberMember -1 < storage.size())
+        editMember(storage.at(numberMember - 1));
 
     finalAct(storage," (после редактирования)");
 }
@@ -94,35 +94,18 @@ void sort(std::vector<Member> &storage)
     uint32_t act;
     uint32_t sort;
     std::cout << "Avaliable actions:\n\t"
-                 "1) Sort for full name\n\t"
-                 "[1]lesser,[2]bigger\n\t"
-                 "Enter (ex 1 2 for bigger age): ";
+                 "1) Sort for full name [1]A-Z [2]Z-A \n\t"
+                 "Enter (ex 1 2 for sort A-Z (fullName)): ";
     std::cin >> act >> sort;
     switch (act)
     {
     case 1:
         if (sort == 1)
-            std::sort(storage.begin(), storage.end(), 
-            [](Member &left,Member &right)
-            {
-                for (size_t i = 0; i < STR_SIZE; i++)
-                {
-                    if (left.fullName[i] < right.fullName[i]) return true;
-                }
-                return false;
-            });
+            std::sort(storage.begin(),storage.end(),sortFullnameA_Z);
         else if (sort == 2)
-            std::sort(storage.begin(), storage.end(), 
-            [](Member &left,Member &right)
-            {
-                for (size_t i = 0; i < STR_SIZE; i++)
-                {
-                    if (left.fullName[i] > right.fullName[i]) return true;
-                }
-                return false;
-            });
+            std::sort(storage.begin(), storage.end(),sortFullnameZ_A);
+        else std::cerr << COLORS::fgBrightRed << "You not entered 2 option or enter incorrect value" << COLORS::reset << "\n";
         break;
-
     default:
         break;
     }
@@ -271,7 +254,7 @@ void txtOutput(std::string file, std::vector<Member> str)
     if (txtOut.good())
     {
         for (size_t i = 0; i < str.size(); i++)
-            txtOut << str.at(i);
+            txtOut << "Member #" << i + 1 << "\n" << str.at(i) << "\n\n";
     }
     else
         std::cerr << COLORS::fgBrightRed << "File " << file << " not exist or corrupt"<< COLORS::reset << "\n";
