@@ -73,6 +73,7 @@ void deleteElement(std::vector<Member> &storage)
 
     finalAct(storage);
 }
+
 void edit(std::vector<Member> &storage)
 {
     uint16_t numberMember;

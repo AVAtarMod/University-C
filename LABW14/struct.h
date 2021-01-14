@@ -7,8 +7,9 @@
 #define STR_SIZE 255
 #define BUFFER_SIZE 1032 /** @def BUFFER_SIZE 1032 @brief 1032 bytes*/
 
-struct Member
+class Member
 {
+    public:
     char fullName[STR_SIZE];
     char country[STR_SIZE];
     char city[STR_SIZE];
@@ -78,7 +79,6 @@ struct Member
         phoneNumber = *((uint64_t *)(numberPhoneBuff));
     }
 };
-
 
 std::unique_ptr<char[]> getLastName(Member member);
 static bool sortFullnameA_Z(const Member &left, const Member &right)
