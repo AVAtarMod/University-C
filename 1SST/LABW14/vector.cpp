@@ -51,6 +51,7 @@ void print(std::vector<Member> members, const char *text)
     std::cout <<  COLORS::fgGreen << "========= Members" << text << " =========" << COLORS::reset << "\n";
     for (uint16_t i = 0; i < members.size(); i++)
     {
+        std::cout << "";
         std::cout << "Member #" << i + 1 << "\n";
         std::cout << members.at(i) << "\n";
     }
