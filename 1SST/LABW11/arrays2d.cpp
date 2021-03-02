@@ -72,7 +72,6 @@ namespace array2d
             {
                 array[i] = new int[collumns]();
             }
-
             return array;
         }
     }
