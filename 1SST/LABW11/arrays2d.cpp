@@ -200,7 +200,7 @@ namespace array2d
     void print(int **array, int rows, int collumns, const char *text, int maxElement)
     {
         maxElement = numDigits(maxElement);
-        printf("\nМассив %d x %d %s :\n", collumns, rows, text);
+        printf("\nМассив %d x %d %s :\n", rows, collumns, text);
 
         for (int row = 0, printRow = row; row < rows; row++)
         {
