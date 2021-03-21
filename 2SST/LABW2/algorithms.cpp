@@ -79,6 +79,10 @@ Data boyerMoor(const char *search)
         stage.add(std::to_string(i.first));
     stage.endOfRow();
 
+    std::string charLast;
+    charLast = search[searchLength - 1];
+
+    bool lastCharIsDuplicated = false;
     for (int i = searchLength - 2; i >= 0; i--)
     {
         std::string charComparison = table[static_cast<uint32_t>(i)].second;
@@ -88,30 +92,16 @@ Data boyerMoor(const char *search)
             if (table[static_cast<uint32_t>(b)].second == charComparison)
                 table[static_cast<uint32_t>(b)].first = intComparison;
         }
-    }
-
-    stage.add("Stage 2");
-    for (auto i : table)
-        stage.add(std::to_string(i.first));
-    stage.endOfRow();
-
-    std::string charComparison;
-    std::string charLast;
-    charLast = search[searchLength - 1];
-
-    bool lastCharIsDuplicated = false;
-    for (int i = searchLength - 2; i >= 0; i--)
-    {
-        charComparison = table[static_cast<uint32_t>(i)].second;
         if (charComparison == charLast)
         {
             table[searchLength - 1u].first = table[static_cast<uint32_t>(i)].first;
             lastCharIsDuplicated = true;
         }
     }
-    if (!lastCharIsDuplicated) table[searchLength - 1u].first = searchLength;
+    if (!lastCharIsDuplicated)
+        table[searchLength - 1u].first = searchLength;
 
-    stage.add("Stage 3");
+    stage.add("Stage 2");
     for (auto i : table)
         stage.add(std::to_string(i.first));
     stage.endOfRow();
