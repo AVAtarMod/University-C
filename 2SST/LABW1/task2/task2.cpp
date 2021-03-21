@@ -3,8 +3,8 @@
 #include <string>
 #include <fstream>
 
-#include "extension/arrays2d.h"
-#include "extension/cpp-text-table/TextTable.h"
+#include "../extension/arrays2d.cpp"
+#include "../extension/cpp-text-table/TextTable.h"
 
 const int rows = 5;
 const int collumns = 5;
@@ -38,7 +38,7 @@ int main(int argc, char const *argv[])
         linearWithBorder(array, -1, resultBorder, 4);
 
         TextTable result = getResult(resultLinear, resultBorder);
-        std::ofstream out("files/task2_out.txt", out.trunc);
+        std::ofstream out("../files/task2_out.txt", out.trunc);
         if (out.good())
         {
             out << result;
