@@ -1,11 +1,14 @@
 #ifndef ALGORHITMS
 #define ALGORHITMS
 
-#include <bits/stdint-uintn.h>
 #include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
 
-struct Data
+class Data
 {
+public:
     bool stringWasFound;
     int indexString;
     uint32_t numberComparisons;
@@ -18,15 +21,25 @@ struct Data
         indexString = iString;
         numberComparisons = nComparisons;
     }
+    operator std::string()
+    {
+        std::ostringstream stream;
+        stream << std::boolalpha << this->stringWasFound << " " << this->numberComparisons;
+        return stream.str();
+    }
 };
 
-std::ostream &operator<<(std::ostream &out,Data Data);
-std::istream &operator>>(std::istream &out,Data Data);
+std::ostream &operator<<(std::ostream &out, Data Data);
+std::ostream &operator<<(std::ostream &out, std::vector<std::pair<int, std::string>> array);
 
 Data linearAccelerated(const char *string, const char *search);
 
 Data linear(const char *string, const char *search);
 
-Data boyerMoor(const char *search);
+Data boyerMoor(const char *string, const char *search);
+
+Data knuthMorisPratt(const char *string, const char *search);
+
+Data rabinKarp(const char *string, const char *search);
 
 #endif
