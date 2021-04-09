@@ -156,11 +156,6 @@ Data knuthMorisPratt(const char *string, const char *search)
             left++;
         }
     }
-    for (auto &&i : prefix)
-    {
-        std::cout << i << " ";
-    }
-    std::cout << std::endl;
 
     for (uint64_t iStart = 0, iStr = 0, iSearch = 0;
          iStr < stringLength && !result.stringWasFound;
