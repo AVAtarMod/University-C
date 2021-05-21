@@ -3,7 +3,7 @@
 
 #include "Data.hpp"
 #include "arrays1d.hpp"
-#include "algorithms.hpp"
+#include "sort.hpp"
 
 #define EXPECTED_SORT arrays1d::NOT_DECREASING
 
@@ -21,7 +21,7 @@ void task3(uint32_t n = 0, uint32_t m = 0);
 template <class T>
 void printTaskComplete(T task)
 {
-    std::cout << "\n\nTask #" << task << " complete.\n";
+    std::cout << "\nTask #" << task << " completed.\n";
 }
 
 int main(int argc, char const *argv[])
@@ -92,7 +92,7 @@ void task1(uint32_t n, uint32_t m)
 void task2(uint32_t n, uint32_t m)
 {
     uint16_t *array = new uint16_t[n];
-    arrays1d::generateRandom(array, n, -m, m);
+    arrays1d::generateRandom(array, n, 0, m);
     arrays1d::print(array, n);
 
     uint16_t *arraySorted = new uint16_t[n];
@@ -110,34 +110,53 @@ void task2(uint32_t n, uint32_t m)
             iS++;
         }
 
-    arrays1d::print(array, n);
+    arrays1d::print(arraySorted, n);
     delete[] array, delete[] arraySorted;
 }
 void task3(uint32_t n, uint32_t m)
 {
     int *ar = new int[n];
     arrays1d::generate(ar, n, arrays1d::RANDOMLY, 0, m);
+    int *arCopy = new int[n];
+    for (uint32_t i = 0; i < n; i++)
+        arCopy[i] = ar[i];
+
+    arrays1d::print(arCopy, n);
+    std::cout << "\nResults:\n";
+    std::cout << "Ecxchange " << simpleExchange(arCopy, n);
+    arrays1d::print(arCopy, n);
+
+    for (uint32_t i = 0; i < n; i++)
+        arCopy[i] = ar[i];
     std::cout << "\n";
-    arrays1d::print(ar, n);
-    std::cout << "Ecxchange " << simpleExchange(ar, n);
-    arrays1d::print(ar, n);
-    arrays1d::generate(ar, n, arrays1d::RANDOMLY, 0, m);
-    std::cout << "\n";
-    arrays1d::print(ar, n, "new");
-    std::cout << "Select " << simpleSelection(ar, n);
-    arrays1d::print(ar, n);
+    std::cout << "Select " << simpleSelection(arCopy, n);
+    arrays1d::print(arCopy, n);
 
     //----
-    arrays1d::generate(ar, n, arrays1d::RANDOMLY, 0, m);
+    for (uint32_t i = 0; i < n; i++)
+        arCopy[i] = ar[i];
     std::cout << "\n";
-    arrays1d::print(ar, n,"new");
-    std::cout << "Shaker " << shakerSort(ar, n);
-    arrays1d::print(ar, n);
-    arrays1d::generate(ar, n, arrays1d::RANDOMLY, 0, m);
+    std::cout << "Shaker " << shakerSort(arCopy, n);
+    arrays1d::print(arCopy, n);
+
+    for (uint32_t i = 0; i < n; i++)
+        arCopy[i] = ar[i];
     std::cout << "\n";
-    arrays1d::print(ar, n, "new");
-    std::cout << "Insertion " << insertion(ar, n);
-    arrays1d::print(ar, n);
+    std::cout << "Insertion " << insertion(arCopy, n);
+    arrays1d::print(arCopy, n);
+
+    for (uint32_t i = 0; i < n; i++)
+        arCopy[i] = ar[i];
+    std::cout << "\n";
+    std::cout << "Insertion imp " << insertionImproved(arCopy, n);
+    arrays1d::print(arCopy, n);
+    delete[] ar;
+
+    for (uint32_t i = 0; i < n; i++)
+        arCopy[i] = ar[i];
+    std::cout << "\n";
+    std::cout << "Quick sort " << quickSort(arCopy, n);
+    arrays1d::print(arCopy, n);
     delete[] ar;
 }
 

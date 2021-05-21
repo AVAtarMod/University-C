@@ -12,5 +12,8 @@ Data simpleExchangeImproved(int *ar, uint32_t ln);
 Data shakerSort(int *ar, uint32_t ln);
 
 Data insertion(int *ar, uint32_t ln);
+Data insertionImproved(int *ar, uint32_t ln);
+
+Data quickSort(int *ar, uint32_t ln);
 
 #endif

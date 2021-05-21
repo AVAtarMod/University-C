@@ -35,12 +35,11 @@ namespace arrays1d
     template <class T>
     void generateRandom(T *array, uint32_t numberElements, uint32_t minNumber, uint32_t maxNumber)
     {
-        std::minstd_rand engine(static_cast<unsigned long>(clock()));
-        std::uniform_int_distribution<T> random(static_cast<T>(minNumber), static_cast<T>(maxNumber));
-
+        srand(clock());
+        
         for (uint32_t i = 0; i < numberElements; i++)
-            array[i] = static_cast<T>(random(engine));
-
+            array[i] = random()%maxNumber + minNumber;
+        
         std::vector<T> container;
         container.resize(numberElements);
         for (uint32_t i = 0; i < numberElements; i++)

@@ -27,11 +27,13 @@ public:
     }
 };
 
-inline std::ostream &operator<<(std::ostream &out,Data data)
+inline std::ostream &operator<<(std::ostream &out, Data data)
 {
     out << "number comparisons: " << data.comparisons
         << " number replaces: " << data.replaces
         << std::endl;
     return out;
 }
+
+
 #endif
