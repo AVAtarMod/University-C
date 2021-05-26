@@ -4,7 +4,8 @@
 
 int main()
 {
-    Labyrinth test("files/fileldn1.txt");
+    Labyrinth test("/home/grigory/Programming/C++/Laboratory/2SST/LABW5/files/fieldn1.txt");
+    test.show();
     std::cout << test.shortestWay();
     return 0;
 }
