@@ -5,6 +5,7 @@
 
 #define isc static_cast<int>
 #define lusc static_cast<long unsigned>
+#define usc static_cast<unsigned>
 
 Labyrinth::Labyrinth(const char *filename)
 {
@@ -212,34 +213,25 @@ int Labyrinth::shortestWay()
         while (!isLastWayPassed)
         {
             int cLength = 0;
+            std::vector<Coordinate> blacklist;
             while (currentWay[currentWayI] != finish)
             {
                 //TODO: replace let -> ob.possibleWays
-                int let = 0, cX = currentWay[currentWayI].x, cY = currentWay[currentWayI].y;
-                // bool itRepetitionPast = false;
+                int cX = currentWay[currentWayI].x, cY = currentWay[currentWayI].y;
+                currentWay[currentWayI].possibleWays = 4;
                 for (int i = 0, hardLet = 0; i < 4; ++i)
                 {
                     Coordinate tempCurrent = returnOffset(currentWay[currentWayI], i).get()[0];
                     bool goodCoordinate = true;
-                    if (isEdge(tempCurrent, Lrows, Lcollumns))
+                    if (isEdge(tempCurrent, Lrows, Lcollumns) || bufferLabyrinth[tempCurrent.x][tempCurrent.y] == '1')
                     {
-                        ++let, ++hardLet;
+                        --currentWay[currentWayI].possibleWays;
+                        ++hardLet;
                         goodCoordinate = false;
                     }
-
-                    else if (bufferLabyrinth[tempCurrent.x][tempCurrent.y] == '1')
+                    else if (tempCurrent == currentWay[currentWayI] || std::find(currentWay.begin(), currentWay.end(), tempCurrent) != currentWay.end() || std::find(blacklist.begin(), blacklist.end(), tempCurrent) != blacklist.end())
                     {
-                        ++let, ++hardLet;
-                        goodCoordinate = false;
-                    }
-                    else if (tempCurrent == currentWay[currentWayI])
-                    {
-                        ++let;
-                        goodCoordinate = false;
-                    }
-                    else if (std::find(currentWay.begin(), currentWay.end(), tempCurrent) != currentWay.end())
-                    {
-                        ++let;
+                        --currentWay[currentWayI].possibleWays;
                         goodCoordinate = false;
                     }
                     if (goodCoordinate)
@@ -247,22 +239,19 @@ int Labyrinth::shortestWay()
                     if (hardLet == 3)
                         bufferLabyrinth[cX][cY] = '1';
                 }
-                temp.possibleWays = 4 - let;
 
                 /**
                  * @brief Pass way from end to begin; find first
                  * good coordinate
                  */
-                if (temp.possibleWays == 0)
+                if (currentWay[currentWayI].possibleWays == 0)
                 {
-                    if (bufferLabyrinth[cX][cY] != '1')
-                    {
-                        int i = currentWayI;
-                        while (currentWay.at(i).possibleWays - 1 <= 0 && i >= 0)
-                            --i;
-                        bufferLabyrinth[currentWay[i+1].x][currentWay[i+1].y] = '1';
-                        currentWay.resize(i + 1);
-                    }
+                    int i = isc(currentWayI);
+                    while (currentWay[usc(i)].possibleWays < 2 && i > 0)
+                        --i;
+                    blacklist.push_back(temp);
+                    currentWay.resize(lusc(i + 1));
+                    currentWayI = usc(i),cLength = i;
                 }
                 else
                 {
