@@ -25,6 +25,7 @@ int main(int argc, char const *argv[])
         argc++;
         noData = true;
     }
+    
     for (int i = 1; i < argc; i++)
     {
         int choice;
