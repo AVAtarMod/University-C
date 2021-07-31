@@ -5,8 +5,8 @@ LDFLAGS =
 DEVFLAGS = -std=c++17 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3
 
 # Makefile settings - Can be customized.
-APPNAME = algo6.app
-APPNAMEDEV = debug-algo6.app
+APPNAME = stable.app
+APPNAMEDEV = debug.app
 EXT = .cpp
 SRCDIR = .
 OBJDIR = build/

@@ -3,31 +3,47 @@
 
 namespace array2d
 {
-    int *getRangeUser();
-    int *getSizeUser();
 
-    int *getRangeRandom(int from, int to);
-    int *getSizeRandom();
+    template <class T>
+    void delete_(T **array, unsigned rows)
+    {
+        for (unsigned row = 0; row < rows; row++)
+        {
+            if (array[row] != nullptr)
+            {
+                delete[] array[row];
+            }
+        }
+        delete[] array;
+    }
 
-    int **init(const int rows, const int collumns);
-    void fillRandom(int **array, int numbersFrom, int numbersTo, const int rows, const int collumns);
-    void fillUser(int **array, const int rows, const int collumns, const char *text = "");
+    template <class T>
+    T **init(const unsigned rows, const unsigned collumns, T value = 0)
+    {
+        if (rows == 0 or collumns == 0)
+            return nullptr;
+        else
+        {
+            T **array = new T *[rows];
+            if (value == 0)
+            {
+                for (unsigned i = 0; i < rows; i++)
+                {
+                    array[i] = new T[collumns]();
+                }
+            }
+            else
+            {
+                for (unsigned i = 0; i < rows; i++)
+                {
+                    array[i] = new T[collumns]{value};
+                }
+            }
 
-    int searchSortRows(int **array, int rows, int collumns, bool condition(int, int));
-
-    void printCollumn(int **array, const int rows, const int collumn, const char *text = "");
-    void invertRows(int ***array, int rows, bool fast = true, int collumns = 0);
-    void copy(int **source, int rows, int collumns, int **destination);
-    void delete_(int **array, int rows);
-    void getCollumn(int **array, int rows, int *result, int collumn = 0);
-    void rebalance(int ***array, int rows, int collumns, int &newCollumns);
-
-    int *compare(int **arrayA, int **arrayB, int rowsMin, int collumnsMin, bool comparator(int, int, int &));
-
-    bool isEqualElements(int elFrom1Ar, int elFrom2Ar, int &result);
+            return array;
+        }
+    }
 
 } // namespace array2d
 
-int getRandomNumber(int from,int to);
-int numDigits(int number);
 #endif

@@ -79,38 +79,38 @@ std::string task3(const char *filename)
     return 0;
 }
 
-std::string task11(const char *filename)
-{
-    if (isFileExist(filename))
-    {
-        std::ifstream in(filename);
-        std::string result;
-        int k, n;
-        in >> n >> k;
-        if (k == n)
-            return std::to_string(k);
-        else if (k == 1)
-            return std::to_string(n);
-        else if (k > n)
-            return std::to_string(0) + " - Impossible way!";
-        else
-        {
-            int result = 1;
-            bool end = false;
-            while (!end)
-            {
-                for (unsigned i = 2; i <= k; ++i)
-                {
-                    for (unsigned numberMaxSteps = 1; numberMaxSteps <= n / i; ++numberMaxSteps)
-                    {
-                        result += n - numberMaxSteps * i;
-                    }
-                }
-            }
-        }
-    }
-    return "";
-}
+// std::string task11(const char *filename)
+// {
+//     if (isFileExist(filename))
+//     {
+//         std::ifstream in(filename);
+//         std::string result;
+//         int k, n;
+//         in >> n >> k;
+//         if (k == n)
+//             return std::to_string(k);
+//         else if (k == 1)
+//             return std::to_string(n);
+//         else if (k > n)
+//             return std::to_string(0) + " - Impossible way!";
+//         else
+//         {
+//             int result = 1;
+//             bool end = false;
+//             while (!end)
+//             {
+//                 for (unsigned i = 2; i <= k; ++i)
+//                 {
+//                     for (unsigned numberMaxSteps = 1; numberMaxSteps <= n / i; ++numberMaxSteps)
+//                     {
+//                         result += n - numberMaxSteps * i;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     return "";
+// }
 
 bool isFileExist(const char *file)
 {
@@ -131,26 +131,77 @@ int kindsPartitions(int lnFeild, int lnWay)
     return lnFeild / lnWay;
 }
 
-int d = 0;
-
-void stairs(int numberLayer, int n)
+unsigned maxLayer(unsigned n)
 {
-    if (n == 0)
+    const unsigned nConst = n;
+    unsigned layers = 0;
+    for (unsigned i = 0; n <= nConst; ++i, n -= i)
+        ++layers;
+    if (n > nConst)
+        --layers;
+    return layers;
+}
+
+unsigned maxTop(unsigned n, unsigned layers)
+{
+    unsigned *stairSerialized = new unsigned[layers]{0};
+    for (unsigned i = 0; i < layers; ++i)
     {
-        d++;
+        stairSerialized[i] = i + 1;
+        n -= i + 1;
     }
-    for (int i = numberLayer; i <= n; i++)
+    while (n > 0)
+        for (unsigned i = layers - 1u; i < 0u - 1u && n != 0; --i)
+        {
+            ++stairSerialized[i];
+            --n;
+        }
+
+    unsigned result = stairSerialized[0];
+    delete[] stairSerialized;
+    return result;
+}
+
+unsigned getNumberStairs(unsigned n, unsigned layers, unsigned top = 0)
+{
+    unsigned result = 0;
+
+    if (layers > 2)
     {
-        stairs(i + 1, n - i);
+        unsigned max_top = maxTop(n, layers);
+        for (unsigned i = 1; i <= max_top; ++i)
+        {
+            result += getNumberStairs(n - i, layers - 1, i);
+        }
     }
+    else
+    {
+        unsigned stairSerialized = (top + 1) * 10 + (n - top - 1);
+        while (stairSerialized / 10 < stairSerialized % 10)
+        {
+            ++result;
+            stairSerialized += 10;
+            --stairSerialized;
+        }
+    }
+    return result;
+}
+
+unsigned stairs(unsigned n, unsigned numberLayer = 2, unsigned sum = 0)
+{
+    if (numberLayer <= maxLayer(n))
+        sum += stairs(n, numberLayer + 1, getNumberStairs(n, numberLayer));
+    return sum;
 }
 
 std::string task12(const char *filename)
 {
-    std::ifstream in(filename);
-    std::string result;
-    int k, n;
-    in >> n;
-    stairs(1,n);
-    return std::to_string(d);
+    if (isFileExist(filename))
+    {
+        std::ifstream in(filename);
+        unsigned n;
+        in >> n;
+        return std::to_string(stairs(n));
+    }
+    return "file not exist";
 }
