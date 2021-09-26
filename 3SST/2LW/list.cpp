@@ -3,11 +3,18 @@
 
 #include "list.hpp"
 
-void prntFB_1D(const intList1D_element *begin, bool start);
-void prntFB_2D(const intList2D_element *begin, bool start);
-void prntFE_2D(const intList2D_element *end, bool start);
-bool insertUpperSortedRecursion(intList1D_element *begin, int number);
-bool insertUpperSortedCycle(intList1D_element *begin, int number);
+void DEL(intList2D_element *begin);
+void DEL(intList1D_element *begin);
+
+void PRINT_begin(const intList1D_element *begin, bool start);
+void PRINT_begin(const intList2D_element *begin, bool start);
+void PRINT_end(const intList2D_element *end, bool start);
+
+bool INS_UpperSortedRecursion(intList1D_element *begin, int number);
+bool INS_UpperSortedCycle(intList1D_element *begin, int number);
+
+void APPEND_Copy(intList1D_element *end, intList1D_element *appendList);
+void PUSH_Back(intList1D_element *begin, int number);
 
 int sumChain(const intList2D_element *begin)
 {
@@ -61,68 +68,78 @@ int maxElementData(const intList2D_element *begin)
 void printFromBegin(const intList2D list)
 {
     if (list != nullptr)
-        prntFB_2D(*list, true);
+        PRINT_begin(*list, true);
 }
 
 void printFromBegin(const intList1D list)
 {
     if (list != nullptr)
-        prntFB_1D(*list, true);
+        PRINT_begin(*list, true);
 }
 
 void printFromEnd(const intList2D list)
 {
     if (list != nullptr)
-        prntFE_2D(*list, true);
+        PRINT_end(*list, true);
 }
 
-void prntFB_1D(const intList1D_element *begin, bool start)
+bool insertUpperSorted(intList1D list, int number, FLAGS mode)
 {
-    if (begin != nullptr)
+    if (list != nullptr)
     {
-        if (start)
-            std::cout << begin->data;
+        if (*list == nullptr)
+        {
+            *list = new intList1D_element(number);
+            return true;
+        }
         else
-            std::cout << " " << begin->data;
-        prntFB_1D(begin->next, false);
+        {
+            if (mode == USE_RECURSION)
+                return INS_UpperSortedRecursion(*list, number);
+            else if (mode == USE_CYCLE)
+                return INS_UpperSortedCycle(*list, number);
+        }
     }
+    return false;
 }
 
-void prntFB_2D(const intList2D_element *begin, bool start)
+intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB)
 {
-    if (begin != nullptr)
+    intList1D merged = new intList1D_element *;
+    *merged = new intList1D_element;
+
+    intList1D_element *listptrM = *merged;
+    intList1D_element *listptrA = *sortedListA;
+    intList1D_element *listptrB = *sortedListB;
+    while (listptrA != nullptr && listptrB != nullptr)
     {
-        if (start)
-            std::cout << begin->data;
+        if (listptrA->data < listptrB->data)
+        {
+            listptrM->next = new intList1D_element;
+            listptrM = listptrM->next;
+
+            listptrM->data = listptrA->data;
+            listptrA = listptrA->next;
+        }
         else
-            std::cout << " " << begin->data;
-        prntFB_2D(begin->next, false);
-    }
-}
+        {
+            listptrM->next = new intList1D_element;
+            listptrM = listptrM->next;
 
-void prntFE_2D(const intList2D_element *end, bool start)
-{
-    if (end != nullptr)
-    {
-        if (start)
-            std::cout << end->data;
-        else
-            std::cout << " " << end->data;
-        prntFE_2D(end->previous, false);
+            listptrM->data = listptrB->data;
+            listptrB = listptrB->next;
+        }
     }
-}
+    intList1D_element *empty = *merged, *begin = (*merged)->next;
+    delete empty;
+    *merged = begin;
 
-void del(intList2D_element *begin)
-{
-    intList2D_element *prev = begin, *temp = begin->next;
-    while (temp != nullptr)
-    {
-        delete prev;
-        prev = temp;
-        temp = temp->next;
-    }
-    delete prev;
-    begin = nullptr;
+    if (listptrA != nullptr)
+        APPEND_Copy(listptrM, listptrA);
+    else if (listptrB != nullptr)
+        APPEND_Copy(listptrM, listptrB);
+
+    return merged;
 }
 
 std::list<int> readArrayFile(std::string filename)
@@ -193,7 +210,116 @@ bool insert(intList1D_element *begin, int index, int number)
         return false;
 }
 
-bool insertBefore(intList1D_element *current, int number)
+bool pushBack(intList1D list, int number)
+{
+    if (list != nullptr)
+    {
+        if (*list == nullptr)
+        {
+            *list = new intList1D_element(number);
+            return true;
+        }
+        else
+        {
+            PUSH_Back(*list, number);
+        }
+    }
+    return false;
+}
+
+void deleteList(intList2D list)
+{
+    if (*list != nullptr)
+        DEL(*list);
+    delete list;
+}
+
+void deleteList(intList1D list)
+{
+    if (*list != nullptr)
+        DEL(*list);
+    delete list;
+}
+
+// ########################################################
+// ########################################################
+// ########## Private functions ###########################
+// ########################################################
+// ########################################################
+
+void APPEND_Copy(intList1D_element *end, intList1D_element *appendList)
+{
+    while (appendList != nullptr)
+    {
+        end->next = new intList1D_element(appendList->data);
+        end = end->next;
+        appendList = appendList->next;
+    }
+}
+
+void PRINT_begin(const intList1D_element *begin, bool start)
+{
+    if (begin != nullptr)
+    {
+        if (start)
+            std::cout << begin->data;
+        else
+            std::cout << " " << begin->data;
+        PRINT_begin(begin->next, false);
+    }
+}
+
+void PRINT_begin(const intList2D_element *begin, bool start)
+{
+    if (begin != nullptr)
+    {
+        if (start)
+            std::cout << begin->data;
+        else
+            std::cout << " " << begin->data;
+        PRINT_begin(begin->next, false);
+    }
+}
+
+void PRINT_end(const intList2D_element *end, bool start)
+{
+    if (end != nullptr)
+    {
+        if (start)
+            std::cout << end->data;
+        else
+            std::cout << " " << end->data;
+        PRINT_end(end->previous, false);
+    }
+}
+
+void DEL(intList1D_element *begin)
+{
+    intList1D_element *prev = begin, *temp = begin->next;
+    while (temp != nullptr)
+    {
+        delete prev;
+        prev = temp;
+        temp = temp->next;
+    }
+    delete prev;
+    begin = nullptr;
+}
+
+void DEL(intList2D_element *begin)
+{
+    intList2D_element *prev = begin, *temp = begin->next;
+    while (temp != nullptr)
+    {
+        delete prev;
+        prev = temp;
+        temp = temp->next;
+    }
+    delete prev;
+    begin = nullptr;
+}
+
+bool INS_Before(intList1D_element *current, int number)
 {
     if (current != nullptr)
     {
@@ -207,69 +333,43 @@ bool insertBefore(intList1D_element *current, int number)
         return false;
 }
 
-bool pushBack(intList1D_element *begin, int number)
+void PUSH_Back(intList1D_element *begin, int number)
 {
     while (begin->next != nullptr)
     {
         begin = begin->next;
     }
-    intList1D_element *tmp = new intList1D_element(number);
-    begin->next = tmp;
-    if (begin->next == tmp)
-        return true;
-    else
-        return false;
+    begin->next = new intList1D_element(number);
 }
 
-bool insertUpperSorted(intList1D list, int number, FLAGS mode)
-{
-    if (list != nullptr)
-    {
-        if (*list == nullptr)
-        {
-            *list = new intList1D_element(number);
-            return true;
-        }
-        else
-        {
-            if (mode == USE_RECURSION)
-                return insertUpperSortedRecursion(*list, number);
-            else if (mode == USE_CYCLE)
-                return insertUpperSortedCycle(*list, number);
-        }
-    }
-    return false;
-}
-
-bool insertUpperSortedCycle(intList1D_element *current, int number)
+bool INS_UpperSortedCycle(intList1D_element *current, int number)
 {
     while (current->next != nullptr && current->data <= number)
         current = current->next;
 
     if (current->data > number)
-        return insertBefore(current, number);
+        return INS_Before(current, number);
 
     else if (current->next == nullptr)
-        return pushBack(current, number);
+    {
+        PUSH_Back(current, number);
+        return true;
+    }
 
     return false;
 }
 
-bool insertUpperSortedRecursion(intList1D_element *current, int number)
+bool INS_UpperSortedRecursion(intList1D_element *current, int number)
 {
     if (current->data > number)
-        return insertBefore(current, number);
+        return INS_Before(current, number);
 
     else if (current->next == nullptr)
-        return pushBack(current, number);
+    {
+        PUSH_Back(current, number);
+        return true;
+    }
 
     else
-        return insertUpperSortedRecursion(current->next, number);
-}
-
-intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB)
-{
-    intList1D_element *listptrA = *sortedListA;
-    intList1D_element *listptrB = *sortedListB;
-    
+        return INS_UpperSortedRecursion(current->next, number);
 }

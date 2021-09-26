@@ -9,6 +9,8 @@ struct intList1D_element
     int data;
     intList1D_element *next = nullptr;
 
+    intList1D_element(){};
+
     intList1D_element(int data, intList1D_element *next = nullptr)
     {
         this->data = data;
@@ -44,13 +46,20 @@ enum FLAGS
     USE_RECURSION
 };
 
-void printFromBegin(const intList2D list);
+void deleteList(intList1D list);
+void deleteList(intList2D list);
+
 void printFromBegin(const intList1D list);
+void printFromBegin(const intList2D list);
 void printFromEnd(const intList2D list);
+
+bool pushBack(intList1D list, int number);
 
 std::list<int> readArrayFile(std::string filename);
 std::list<int> readArrayKeyboard(MODE_STOP mode = ZERO);
 
 bool insertUpperSorted(intList1D begin, int number, FLAGS mode);
+
+intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB);
 
 #endif //LIST_LIB

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "functions.hpp"
 #include "list.hpp"
@@ -95,10 +96,49 @@ void task1()
     std::cout << "\nCycle: ";
     printFromBegin(list2);
     std::cout << "\n";
+
+    deleteList(list1);
+    deleteList(list2);
 }
 
 void task2()
 {
+    const int BUFFSIZE = 255;
+    intList1D list1 = new intList1D_element *;
+    intList1D list2 = new intList1D_element *;
+    int userInput;
+    std::cout << "[INFO] Entered data must be lesser than " << BUFFSIZE + 1 << "\n";
+    std::cout << "Enter list #1:\n";
+    std::stringstream stream;
+
+    char buffer[BUFFSIZE];
+    std::cin.getline(buffer, BUFFSIZE);
+    stream.str(buffer);
+    while (!stream.eof())
+    {
+        stream >> userInput;
+        insertUpperSorted(list1, userInput, USE_CYCLE);
+    }
+
+    std::cout << "\nEnter list #2:\n";
+    std::cin.getline(buffer, BUFFSIZE);
+
+    stream.clear();
+    stream.str(buffer);
+
+    while (!stream.eof())
+    {
+        stream >> userInput;
+        insertUpperSorted(list2, userInput, USE_CYCLE);
+    }
+
+    intList1D merged = mergeUpperSorted(list1, list2);
+    std::cout << "\nMerged list: ";
+    printFromBegin(merged);
+    deleteList(list1);
+    deleteList(list2);
+    deleteList(merged);
+    std::cout << "\n";
 }
 
 void task3()
