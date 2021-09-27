@@ -1,6 +1,8 @@
-#include <iostream>
 #include <random>
 #include <chrono>
+#include <cstring>
+
+#include "functions.hpp"
 
 int getRandomNumber(int from, int to)
 {
@@ -20,4 +22,43 @@ int getRandomNumber(int from, int to)
     std::uniform_int_distribution<int> random(from, to);
 
     return random(engine);
+}
+
+void replace(char *string, int *indexes, int lnIndexes, char symbol)
+{
+    for (int i = 0; i < lnIndexes; i++)
+    {
+        int currentIndex = indexes[i];
+        string[currentIndex] = symbol;
+    }
+}
+
+int *indexSymbols(char *string, char symbol, int &count)
+{
+    int newLen = 0;
+    int length = strlen(string);
+    for (int iCh = 0; iCh < length; iCh++)
+    {
+        if (string[iCh] == symbol)
+            newLen++;
+    }
+    count = newLen;
+    int *indexes = nullptr;
+
+    if (newLen > 0)
+    {
+        indexes = new int[newLen];
+
+        int iIndexes = 0;
+        for (int iCh = 0; iCh < length; iCh++)
+        {
+            if (string[iCh] == symbol)
+            {
+                indexes[iIndexes] = iCh;
+                iIndexes++;
+            }
+        }
+    }
+
+    return indexes;
 }
