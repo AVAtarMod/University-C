@@ -1,7 +1,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "functions.hpp"
 #include "list.hpp"
 
 void task1();
@@ -80,8 +79,8 @@ int main(int argc, char const *argv[])
 
 void task1()
 {
-    intList1D list1 = new intList1D_element *;
-    intList1D list2 = new intList1D_element *;
+    intList1D list1 = nullptr;
+    intList1D list2 = nullptr;
     int userInput;
     while (true)
     {
@@ -92,9 +91,9 @@ void task1()
         insertUpperSorted(list2, userInput, USE_CYCLE);
     }
     std::cout << "Recursion: ";
-    printFromBegin(list1);
+    printBegin(list1);
     std::cout << "\nCycle: ";
-    printFromBegin(list2);
+    printBegin(list2);
     std::cout << "\n";
 
     deleteList(list1);
@@ -104,8 +103,8 @@ void task1()
 void task2()
 {
     const int BUFFSIZE = 255;
-    intList1D list1 = new intList1D_element *;
-    intList1D list2 = new intList1D_element *;
+    intList1D list1 = nullptr;
+    intList1D list2 = nullptr;
     int userInput;
     std::cout << "[INFO] Entered data must be lesser than " << BUFFSIZE + 1 << "\n";
     std::cout << "Enter list #1:\n";
@@ -134,7 +133,7 @@ void task2()
 
     intList1D merged = mergeUpperSorted(list1, list2);
     std::cout << "\nMerged list: ";
-    printFromBegin(merged);
+    printBegin(merged);
     deleteList(list1);
     deleteList(list2);
     deleteList(merged);
@@ -143,14 +142,53 @@ void task2()
 
 void task3()
 {
+    intList1D userInput = readArrayKeyboard(IO_EOF);
+    intList1D reversed = reverse(userInput);
+    intList1D positive = filter(userInput, comparator::positive);
+    intList1D negative_reversed = filter(reversed, comparator::negative);
+
+    std::cout << "List of positive numbers: ";
+    if (positive != nullptr)
+        printBegin(positive);
+    else
+        std::cout << "null";
+
+    std::cout << "\nReversed list of negative numbers: ";
+    if (negative_reversed != nullptr)
+        printBegin(negative_reversed);
+    else
+        std::cout << "null";
+
+    deleteList(userInput);
+    deleteList(reversed);
+    deleteList(positive);
+    deleteList(negative_reversed);
+    std::cout << "\n";
 }
 
 void task4()
 {
+    std::string path = printAndScan<std::string>("file path:");
+    std::list<intList1D> arLists = fileToLists(path, '|');
+    if (arLists.size() >= 2)
+    {
+        intList1D listA = *(arLists.begin());
+        arLists.pop_front();
+        intList1D listB = *(arLists.begin());
+        intList1D merged = mergeByAction(listA, listB, action::sum);
+
+        std::cout << "\nList merged by action: ";
+        printBegin(merged);
+        deleteList(merged);
+        deleteList(listA);
+        deleteList(listB);
+        std::cout << "\n";
+    }
 }
 
 void task5()
 {
+    
 }
 
 void task6()
