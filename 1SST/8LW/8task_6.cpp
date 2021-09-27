@@ -17,7 +17,5 @@ unsigned long long int computeOutputDecomposition(int number, int countDecomposi
     }
     printf("\n");
 
-    /*TODO  1.Умный цикл разбиения числа
-            2. Построение декомпозиции
-            120 1190201 11602010301  201*/
+
 }

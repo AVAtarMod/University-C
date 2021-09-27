@@ -1,5 +1,5 @@
 // Описать функцию вычисления корней квадратного уравнения. Функция должна возвращать количество корней, сами корни возвращаются через параметры.
-//TODO - показать задание
+
 #include <iostream>
 #include <cmath>
 int numberRootEquation(int a, int b, int c, float &firstRoot, float &secondRoot);
