@@ -98,18 +98,6 @@ void printFromEnd(intList2D_element *end, bool start)
     }
 }
 
-void printFromBegin(intList2D_element *begin, bool start)
-{
-    if (begin != nullptr)
-    {
-        if (start)
-            std::cout << begin->data;
-        else
-            std::cout << " " << begin->data;
-        printFromBegin(begin->next, false);
-    }
-}
-
 void del(intList2D_element *begin)
 {
     intList2D_element *prev = begin, *temp = begin->next;
