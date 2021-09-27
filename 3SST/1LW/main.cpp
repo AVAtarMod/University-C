@@ -57,8 +57,9 @@ int main(int argc, char const *argv[])
 
 void task5()
 {
-    const int LENGTH = 4;
-    intList2D_element *begin = new intList2D_element(nullptr, getRandomNumber(-100, 100)), *temp = begin, *prev;
+    const int LENGTH = 12;
+    const int RANGE[2] = {-20, 20};
+    intList2D_element *begin = new intList2D_element(nullptr, getRandomNumber(RANGE[0], RANGE[1])), *temp = begin, *prev;
 
     for (int currentLength = 1; currentLength < LENGTH; ++currentLength)
     {
@@ -67,7 +68,7 @@ void task5()
         temp->next = new intList2D_element;
         temp = temp->next;
         temp->previous = prev;
-        temp->data = getRandomNumber(-100, 100);
+        temp->data = getRandomNumber(RANGE[0], RANGE[1]);
     }
 
     std::cout << "sum:" << sumChain(begin) << "\nfrom begin: ";
