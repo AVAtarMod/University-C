@@ -98,6 +98,7 @@ void task1()
 
     deleteList(list1);
     deleteList(list2);
+    std::cin.clear();
 }
 
 void task2()
@@ -175,7 +176,7 @@ void task4()
         intList1D listA = *(arLists.begin());
         arLists.pop_front();
         intList1D listB = *(arLists.begin());
-        intList1D merged = mergeByAction(listA, listB, action::sum);
+        intList1D merged = mergeByAction(listA, listB, merge_actions::sum);
 
         std::cout << "\nList merged by action: ";
         printBegin(merged);
@@ -188,11 +189,55 @@ void task4()
 
 void task5()
 {
-    
+    intList1D list1 = readArrayKeyboard(NEWLINE, 255, true);
+    intList1D list2 = readArrayKeyboard(NEWLINE);
+    int numberSearch = printAndScan<int>("\nEnter number for search: ");
+
+    int indexOfCut = findFirstOf(list1, numberSearch) + 1;
+    intList1D sublist = cutByIndexRange(list1, indexOfCut, 0);
+
+    /**
+     * @brief Construct a new list by appending sublist before list2
+     * (link method)
+     */
+    appendFront(list2, sublist);
+
+    std::cout << "\nResult list: ";
+    printBegin(list2);
+
+    /**
+     * @brief Now we delete list2+sublist, 
+     * therefore we not need to delete sublist
+     */
+    deleteList(list2);
+
+    deleteList(list1);
+    std::cout << "\n";
 }
 
 void task6()
 {
+    intList1D list = readArrayKeyboard(NEWLINE, 255, true);
+    int numberSearch = printAndScan<int>("\nEnter number for search: ");
+
+    int indexOfZero = findFirstOf(list, 0);
+    intList1D indexes = getIndexesByData(list, numberSearch);
+    if (indexOfZero == -1)
+        indexOfZero = 0;
+    else
+    {
+        intList1D filtered_indexes = filter(indexes, comparator::lesserThanData, indexOfZero);
+        deleteList(indexes);
+        *indexes = *filtered_indexes;
+    }
+
+    doActionOnIndexes(list, indexes, index_actions::deleteElement);
+    std::cout << "\nResult list: ";
+    printBegin(list);
+
+    deleteList(list);
+    deleteList(indexes);
+    std::cout << "\n";
 }
 
 void task7()
