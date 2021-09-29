@@ -10,7 +10,7 @@ void replace(char *string, int *indexes, int lengthIndexes, char symbol);
 int *indexSymbols(char *string, char symbol, int &count);
 
 template<class T>
-T printAndScan(const char* text){
+T printAndScan(const char* text = ""){
     T data;
     std::cout << text;
     std::cin >> data;
