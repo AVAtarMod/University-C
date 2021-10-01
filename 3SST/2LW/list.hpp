@@ -84,7 +84,11 @@ void printBegin(const intList2D list);
 void printEnd(const intList2D list);
 
 void pushBack(intList1D &list, int number);
+void pushBack(intList1D &list, intList1D_element *element);
 void pushFront(intList1D &list, int number);
+
+intList1D_element *popBack(intList1D &list);
+intList1D popByIndexes(intList1D list, const intList1D indexes);
 
 void appendFront(intList1D list, intList1D appendList);
 void appendBack(intList1D list, intList1D appendList);
@@ -115,12 +119,13 @@ namespace merge_actions
 
 namespace index_actions
 {
-    void deleteElement(intList1D_element *prev, intList1D_element *current);
+    void pushBefore(intList1D_element **prev, intList1D_element **current, int data);
 } // namespace index_actions
 
 intList1D filter(const intList1D source, bool comparator(int));
 intList1D filter(const intList1D source, bool comparator(int, int), int comparator_data);
 
 void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(intList1D_element *prev, intList1D_element *current));
+void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(intList1D_element **prev, intList1D_element **current, int data), int index_action_data);
 
 #endif //LIST_LIB

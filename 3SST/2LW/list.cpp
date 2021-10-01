@@ -19,6 +19,8 @@ void APPEND_BACK_Link(intList1D_element *end, intList1D_element *appendList);
 void APPEND_FRONT_Link(intList1D list, intList1D appendList);
 
 void PUSH_Back(intList1D_element *begin, int number);
+void PUSH_Back(intList1D_element *begin, intList1D_element *element);
+bool PUSH_Before(intList1D_element *current, int number);
 void PUSH_Front(intList1D_element *begin, int number);
 
 intList1D_element *POP_Back(intList1D_element *begin);
@@ -32,11 +34,19 @@ bool init(intList1D &list, int number)
     if (list == nullptr)
     {
         list = new intList1D_element *;
-        if (*list == nullptr)
-        {
-            *list = new intList1D_element(number);
-            return true;
-        }
+        *list = new intList1D_element(number);
+        return true;
+    }
+    return false;
+}
+
+bool init(intList1D &list, intList1D_element *element)
+{
+    if (list == nullptr)
+    {
+        list = new intList1D_element *;
+        *list = element;
+        return true;
     }
     return false;
 }
@@ -407,10 +417,32 @@ void doActionOnIndexes(intList1D list, const intList1D indexes, void index_actio
     intList1D_element *indexes_ptr = *indexes;
 
     int index = 0;
-    while (current != nullptr)
+    while (current != nullptr && indexes_ptr != nullptr)
     {
         if (indexes_ptr->data == index)
+        {
             index_action(prev, current);
+            indexes_ptr = indexes_ptr->next;
+        }
+        prev = current;
+        current = current->next;
+        ++index;
+    }
+}
+
+void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(intList1D_element **prev, intList1D_element **current, int data), int index_action_data)
+{
+    intList1D_element *current = *list, *prev = nullptr;
+    intList1D_element *indexes_ptr = *indexes;
+
+    int index = 0;
+    while (current != nullptr && indexes_ptr != nullptr)
+    {
+        if (indexes_ptr->data == index)
+        {
+            index_action(&prev, &current, index_action_data);
+            indexes_ptr = indexes_ptr->next;
+        }
         prev = current;
         current = current->next;
         ++index;
@@ -423,6 +455,14 @@ void pushBack(intList1D &list, int number)
         init(list, number);
     else
         PUSH_Back(*list, number);
+}
+
+void pushBack(intList1D &list, intList1D_element *element)
+{
+    if (list == nullptr || *list == nullptr)
+        init(list, element);
+    else
+        PUSH_Back(*list, element);
 }
 
 void pushFront(intList1D &list, int number)
@@ -439,6 +479,44 @@ intList1D_element *popBack(intList1D &list)
         return POP_Back(*list);
     else
         return nullptr;
+}
+
+intList1D popByIndexes(intList1D list, const intList1D indexes)
+{
+    intList1D_element *current = *list, *prev = nullptr;
+    intList1D_element *indexes_ptr = *indexes;
+    intList1D deletedElements = nullptr;
+    int index = 0;
+    while (current != nullptr && indexes_ptr != nullptr)
+    {
+        if (indexes_ptr->data == index)
+        {
+            pushBack(deletedElements, current);
+            if (prev == nullptr)
+            {
+                *list = (*list)->next;
+                prev = nullptr;
+                current->next = nullptr;
+                current = *list;
+            }
+            else
+            {
+                intList1D_element *tmp = current->next;
+                prev->next = tmp;
+                current->next = nullptr;
+                current = tmp;
+            }
+            indexes_ptr = indexes_ptr->next;
+        }
+        else
+        {
+            prev = current;
+            current = current->next;
+        }
+
+        ++index;
+    }
+    return deletedElements;
 }
 
 void deleteList(intList2D list)
@@ -575,10 +653,10 @@ namespace merge_actions
 
 namespace index_actions
 {
-    void deleteElement(intList1D_element *prev, intList1D_element *current)
+    void pushBefore(intList1D_element **prev, intList1D_element **current, int data)
     {
-        prev = current->next;
-        delete current;
+        PUSH_Before(*current, data);
+        *current = (*current)->next;
     }
 } // namespace index_actions
 
@@ -598,7 +676,7 @@ intList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo)
     char *buffer = new char[buffer_size];
     std::cin.getline(buffer, buffer_size);
     stream.str(buffer);
-    delete buffer;
+    delete[] buffer;
     return CONV_sstreamToList1D(stream);
 }
 
@@ -720,6 +798,15 @@ void PUSH_Back(intList1D_element *begin, int number)
         begin = begin->next;
     }
     begin->next = new intList1D_element(number);
+}
+
+void PUSH_Back(intList1D_element *begin, intList1D_element *element)
+{
+    while (begin->next != nullptr)
+    {
+        begin = begin->next;
+    }
+    begin->next = element;
 }
 
 void PUSH_Front(intList1D_element *begin, int number)
