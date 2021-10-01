@@ -222,16 +222,23 @@ void task6()
 
     int indexOfZero = findFirstOf(list, 0);
     intList1D indexes = getIndexesByData(list, numberSearch);
+
     if (indexOfZero == -1)
+    {
         indexOfZero = 0;
+    }
     else
     {
         intList1D filtered_indexes = filter(indexes, comparator::lesserThanData, indexOfZero);
         deleteList(indexes);
-        *indexes = *filtered_indexes;
+        indexes = filtered_indexes;
     }
 
-    doActionOnIndexes(list, indexes, index_actions::deleteElement);
+    if (indexes != nullptr)
+    {
+        deleteList(popByIndexes(list, indexes));
+    }
+
     std::cout << "\nResult list: ";
     printBegin(list);
 
@@ -242,4 +249,20 @@ void task6()
 
 void task7()
 {
+    intList1D list = readArrayKeyboard(NEWLINE, 255, true);
+    int userInput[2] = {
+        printAndScan<int>("\nEnter number for search: "), printAndScan<int>("\nEnter X: ")};
+    intList1D indexes = getIndexesByData(list, userInput[0]);
+
+    if (indexes != nullptr)
+    {
+        doActionOnIndexes(list, indexes, index_actions::pushBefore, userInput[1]);
+    }
+
+    std::cout << "\nResult list: ";
+    printBegin(list);
+
+    deleteList(list);
+    deleteList(indexes);
+    std::cout << "\n";
 }
