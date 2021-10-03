@@ -11,33 +11,34 @@ namespace LIST_LIB
     const int BUFFER_SIZE = 255;
 } // namespace LIST_LIB
 
-struct IntList1D_element
+template <class T = int>
+struct List1D_element
 {
-    int data;
-    IntList1D_element *next = nullptr;
+    T data;
+    List1D_element<T> *next = nullptr;
 
-    IntList1D_element(){};
+    List1D_element<T>(){};
 
-    IntList1D_element(int data, IntList1D_element *next = nullptr)
-    {
-        this->data = data;
-        this->next = next;
-    }
+    List1D_element(T data, List1D_element<T> *next = nullptr)
+        : data(data),
+          next(next) {}
 };
 
-struct IntList2D_element
+template <class T = int>
+struct List2D_element
 {
-    IntList2D_element *previous = nullptr;
-    int data;
-    IntList2D_element *next = nullptr;
+    List2D_element<T> *previous = nullptr;
+    T data;
+    List2D_element<T> *next = nullptr;
 
-    IntList2D_element(IntList2D_element *previous = nullptr, int data = 0, IntList2D_element *next = nullptr)
-    {
-        this->previous = previous;
-        this->data = data;
-        this->next = next;
-    }
+    List2D_element(List2D_element<T> *previous = nullptr, T data = 0, List2D_element<T> *next = nullptr)
+        : previous(previous),
+          data(data),
+          next(next) {}
 };
+
+typedef List1D_element<int> IntList1D_element;
+typedef List2D_element<int> IntList2D_element;
 
 typedef IntList1D_element **IntList1D;
 typedef IntList2D_element **intList2D;
