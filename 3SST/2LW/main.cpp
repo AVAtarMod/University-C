@@ -79,8 +79,8 @@ int main(int argc, char const *argv[])
 
 void task1()
 {
-    intList1D list1 = nullptr;
-    intList1D list2 = nullptr;
+    IntList1D list1 = nullptr;
+    IntList1D list2 = nullptr;
     int userInput;
     while (true)
     {
@@ -104,8 +104,8 @@ void task1()
 void task2()
 {
     const int BUFFSIZE = 255;
-    intList1D list1 = nullptr;
-    intList1D list2 = nullptr;
+    IntList1D list1 = nullptr;
+    IntList1D list2 = nullptr;
     int userInput;
     std::cout << "[INFO] Entered data must be lesser than " << BUFFSIZE + 1 << "\n";
     std::cout << "Enter list #1:\n";
@@ -132,7 +132,7 @@ void task2()
         insertUpperSorted(list2, userInput, USE_CYCLE);
     }
 
-    intList1D merged = mergeUpperSorted(list1, list2);
+    IntList1D merged = mergeUpperSorted(list1, list2);
     std::cout << "\nMerged list: ";
     printBegin(merged);
     deleteList(list1);
@@ -143,10 +143,10 @@ void task2()
 
 void task3()
 {
-    intList1D userInput = readArrayKeyboard(IO_EOF);
-    intList1D reversed = reverse(userInput);
-    intList1D positive = filter(userInput, comparator::positive);
-    intList1D negative_reversed = filter(reversed, comparator::negative);
+    IntList1D userInput = readArrayKeyboard(IO_EOF);
+    IntList1D reversed = reverse(userInput);
+    IntList1D positive = filter(userInput, comparator::positive);
+    IntList1D negative_reversed = filter(reversed, comparator::negative);
 
     std::cout << "List of positive numbers: ";
     if (positive != nullptr)
@@ -170,13 +170,13 @@ void task3()
 void task4()
 {
     std::string path = printAndScan<std::string>("file path:");
-    std::list<intList1D> arLists = fileToLists(path, '|');
+    std::list<IntList1D> arLists = fileToLists(path, '|');
     if (arLists.size() >= 2)
     {
-        intList1D listA = *(arLists.begin());
+        IntList1D listA = *(arLists.begin());
         arLists.pop_front();
-        intList1D listB = *(arLists.begin());
-        intList1D merged = mergeByAction(listA, listB, merge_actions::sum);
+        IntList1D listB = *(arLists.begin());
+        IntList1D merged = mergeByAction(listA, listB, merge_actions::sum);
 
         std::cout << "\nList merged by action: ";
         printBegin(merged);
@@ -189,12 +189,12 @@ void task4()
 
 void task5()
 {
-    intList1D list1 = readArrayKeyboard(NEWLINE, 255, true);
-    intList1D list2 = readArrayKeyboard(NEWLINE);
+    IntList1D list1 = readArrayKeyboard(NEWLINE, 255, true);
+    IntList1D list2 = readArrayKeyboard(NEWLINE);
     int numberSearch = printAndScan<int>("\nEnter number for search: ");
 
     int indexOfCut = findFirstOf(list1, numberSearch) + 1;
-    intList1D sublist = cutByIndexRange(list1, indexOfCut, 0);
+    IntList1D sublist = cutByIndexRange(list1, indexOfCut, 0);
 
     /**
      * @brief Construct a new list by appending sublist before list2
@@ -217,11 +217,11 @@ void task5()
 
 void task6()
 {
-    intList1D list = readArrayKeyboard(NEWLINE, 255, true);
+    IntList1D list = readArrayKeyboard(NEWLINE, 255, true);
     int numberSearch = printAndScan<int>("\nEnter number for search: ");
 
     int indexOfZero = findFirstOf(list, 0);
-    intList1D indexes = getIndexesByData(list, numberSearch);
+    IntList1D indexes = getIndexesByData(list, numberSearch);
 
     if (indexOfZero == -1)
     {
@@ -229,7 +229,7 @@ void task6()
     }
     else
     {
-        intList1D filtered_indexes = filter(indexes, comparator::lesserThanData, indexOfZero);
+        IntList1D filtered_indexes = filter(indexes, comparator::lesserThanData, indexOfZero);
         deleteList(indexes);
         indexes = filtered_indexes;
     }
@@ -249,10 +249,10 @@ void task6()
 
 void task7()
 {
-    intList1D list = readArrayKeyboard(NEWLINE, 255, true);
+    IntList1D list = readArrayKeyboard(NEWLINE, 255, true);
     int userInput[2] = {
         printAndScan<int>("\nEnter number for search: "), printAndScan<int>("\nEnter X: ")};
-    intList1D indexes = getIndexesByData(list, userInput[0]);
+    IntList1D indexes = getIndexesByData(list, userInput[0]);
 
     if (indexes != nullptr)
     {
