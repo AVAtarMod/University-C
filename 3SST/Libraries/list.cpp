@@ -16,7 +16,7 @@ bool INS_UpperSortedCycle(IntList1D_element *begin, int number);
 
 void APPEND_BACK_Copy(IntList1D_element *end, IntList1D_element *appendList);
 void APPEND_BACK_Link(IntList1D_element *end, IntList1D_element *appendList);
-void APPEND_FRONT_Link(intList1D list, intList1D appendList);
+void APPEND_FRONT_Link(IntList1D list, IntList1D appendList);
 
 void PUSH_Back(IntList1D_element *begin, int number);
 void PUSH_Back(IntList1D_element *begin, IntList1D_element *element);
@@ -25,11 +25,11 @@ void PUSH_Front(IntList1D_element *begin, int number);
 
 IntList1D_element *POP_Back(IntList1D_element *begin);
 
-intList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo);
+IntList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo);
 
-intList1D CONV_sstreamToList1D(std::stringstream &sstream);
+IntList1D CONV_sstreamToList1D(std::stringstream &sstream);
 
-bool init(intList1D &list, int number)
+bool init(IntList1D &list, int number)
 {
     if (list == nullptr)
     {
@@ -40,7 +40,7 @@ bool init(intList1D &list, int number)
     return false;
 }
 
-bool init(intList1D &list, IntList1D_element *element)
+bool init(IntList1D &list, IntList1D_element *element)
 {
     if (list == nullptr)
     {
@@ -51,7 +51,7 @@ bool init(intList1D &list, IntList1D_element *element)
     return false;
 }
 
-bool is_inited(const intList1D list)
+bool is_inited(const IntList1D list)
 {
     if (list == nullptr && *list == nullptr)
         return false;
@@ -59,12 +59,12 @@ bool is_inited(const intList1D list)
         return true;
 }
 
-void appendFront(intList1D list, intList1D appendList)
+void appendFront(IntList1D list, IntList1D appendList)
 {
     APPEND_FRONT_Link(list, appendList);
 }
 
-void appendBack(intList1D list, intList1D appendList)
+void appendBack(IntList1D list, IntList1D appendList)
 {
     IntList1D_element *list_ptr = *list;
     while (list_ptr->next != nullptr)
@@ -130,7 +130,7 @@ void printBegin(const intList2D list)
         PRINT_begin(*list, true);
 }
 
-void printBegin(const intList1D list)
+void printBegin(const IntList1D list)
 {
     if (list != nullptr)
         PRINT_begin(*list, true);
@@ -142,7 +142,7 @@ void printEnd(const intList2D list)
         PRINT_end(*list, true);
 }
 
-bool insertUpperSorted(intList1D &list, int number, FLAGS mode)
+bool insertUpperSorted(IntList1D &list, int number, FLAGS mode)
 {
     if (list == nullptr || *list == nullptr)
     {
@@ -158,9 +158,9 @@ bool insertUpperSorted(intList1D &list, int number, FLAGS mode)
     return false;
 }
 
-intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB)
+IntList1D mergeUpperSorted(IntList1D sortedListA, IntList1D sortedListB)
 {
-    intList1D merged = new IntList1D_element *;
+    IntList1D merged = new IntList1D_element *;
     *merged = new IntList1D_element;
 
     IntList1D_element *listptrM = *merged;
@@ -197,10 +197,10 @@ intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB)
     return merged;
 }
 
-intList1D fileToList(const std::string filename)
+IntList1D fileToList(const std::string filename)
 {
     std::ifstream in(filename);
-    intList1D list = nullptr;
+    IntList1D list = nullptr;
     while (!in.eof())
     {
         if (in.fail())
@@ -213,7 +213,7 @@ intList1D fileToList(const std::string filename)
     return list;
 }
 
-std::list<intList1D> fileToLists(const std::string filename, const char delimiter)
+std::list<IntList1D> fileToLists(const std::string filename, const char delimiter)
 {
     std::ifstream in(filename);
     int countList = 0;
@@ -227,7 +227,7 @@ std::list<intList1D> fileToLists(const std::string filename, const char delimite
     in.clear();
     in.seekg(0);
 
-    std::list<intList1D> arrayLists;
+    std::list<IntList1D> arrayLists;
     std::stringstream temp;
     char buffer[LIST_LIB::BUFFER_SIZE];
     for (; countList > 0; --countList)
@@ -254,11 +254,11 @@ std::list<intList1D> fileToLists(const std::string filename, const char delimite
  * @param mode one from MODE_STOP
  * @param buffer_size optional, use if mode is NEWLINE
  * @param printInfo optional, use if mode is NEWLINE
- * @return intList1D 
+ * @return IntList1D 
  */
-intList1D readArrayKeyboard(MODE_STOP mode, uint buffer_size, bool printInfo)
+IntList1D readArrayKeyboard(MODE_STOP mode, uint buffer_size, bool printInfo)
 {
-    intList1D storage = nullptr;
+    IntList1D storage = nullptr;
     if (mode == ZERO || mode == EOF)
     {
         while (true)
@@ -322,9 +322,9 @@ bool insert(IntList1D_element *begin, int index, int number)
  * @param to end (index).
  * If:  0     list cutting to end
  *      -1    function abort;
- * @return intList1D sublist
+ * @return IntList1D sublist
  */
-intList1D cutByIndexRange(intList1D &list, int from, int to)
+IntList1D cutByIndexRange(IntList1D &list, int from, int to)
 {
     try
     {
@@ -339,7 +339,7 @@ intList1D cutByIndexRange(intList1D &list, int from, int to)
         return nullptr;
     }
 
-    intList1D sublist = new IntList1D_element *;
+    IntList1D sublist = new IntList1D_element *;
     *sublist = new IntList1D_element;
     IntList1D_element *list_ptr = *list;
 
@@ -374,7 +374,7 @@ intList1D cutByIndexRange(intList1D &list, int from, int to)
     return sublist;
 }
 
-int findFirstOf(const intList1D list, int number)
+int findFirstOf(const IntList1D list, int number)
 {
     IntList1D_element *list_ptr = *list;
     int index = 0;
@@ -394,12 +394,12 @@ int findFirstOf(const intList1D list, int number)
  * 
  * @param list list for search data
  * @param data 
- * @return intList1D list of indexes
+ * @return IntList1D list of indexes
  */
-intList1D getIndexesByData(const intList1D list, int data)
+IntList1D getIndexesByData(const IntList1D list, int data)
 {
     IntList1D_element *list_ptr = *list;
-    intList1D indexes = nullptr;
+    IntList1D indexes = nullptr;
     int index = 0;
     while (list_ptr != nullptr)
     {
@@ -411,7 +411,7 @@ intList1D getIndexesByData(const intList1D list, int data)
     return indexes;
 }
 
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element *prev, IntList1D_element *current))
+void doActionOnIndexes(IntList1D list, const IntList1D indexes, void index_action(IntList1D_element *prev, IntList1D_element *current))
 {
     IntList1D_element *current = *list, *prev = nullptr;
     IntList1D_element *indexes_ptr = *indexes;
@@ -430,7 +430,7 @@ void doActionOnIndexes(intList1D list, const intList1D indexes, void index_actio
     }
 }
 
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element **prev, IntList1D_element **current, int data), int index_action_data)
+void doActionOnIndexes(IntList1D list, const IntList1D indexes, void index_action(IntList1D_element **prev, IntList1D_element **current, int data), int index_action_data)
 {
     IntList1D_element *current = *list, *prev = nullptr;
     IntList1D_element *indexes_ptr = *indexes;
@@ -449,7 +449,7 @@ void doActionOnIndexes(intList1D list, const intList1D indexes, void index_actio
     }
 }
 
-void pushBack(intList1D &list, int number)
+void pushBack(IntList1D &list, int number)
 {
     if (list == nullptr || *list == nullptr)
         init(list, number);
@@ -457,7 +457,7 @@ void pushBack(intList1D &list, int number)
         PUSH_Back(*list, number);
 }
 
-void pushBack(intList1D &list, IntList1D_element *element)
+void pushBack(IntList1D &list, IntList1D_element *element)
 {
     if (list == nullptr || *list == nullptr)
         init(list, element);
@@ -465,7 +465,7 @@ void pushBack(intList1D &list, IntList1D_element *element)
         PUSH_Back(*list, element);
 }
 
-void pushFront(intList1D &list, int number)
+void pushFront(IntList1D &list, int number)
 {
     if (list == nullptr || *list == nullptr)
         init(list, number);
@@ -473,7 +473,7 @@ void pushFront(intList1D &list, int number)
         PUSH_Front(*list, number);
 }
 
-IntList1D_element *popBack(intList1D &list)
+IntList1D_element *popBack(IntList1D &list)
 {
     if (list != nullptr && *list == nullptr)
         return POP_Back(*list);
@@ -481,7 +481,7 @@ IntList1D_element *popBack(intList1D &list)
         return nullptr;
 }
 
-IntList1D_element *popFront(intList1D &list)
+IntList1D_element *popFront(IntList1D &list)
 {
     if (list != nullptr && *list == nullptr)
     {
@@ -493,11 +493,11 @@ IntList1D_element *popFront(intList1D &list)
         return nullptr;
 }
 
-intList1D popByIndexes(intList1D list, const intList1D indexes)
+IntList1D popByIndexes(IntList1D list, const IntList1D indexes)
 {
     IntList1D_element *current = *list, *prev = nullptr;
     IntList1D_element *indexes_ptr = *indexes;
-    intList1D deletedElements = nullptr;
+    IntList1D deletedElements = nullptr;
     int index = 0;
     while (current != nullptr && indexes_ptr != nullptr)
     {
@@ -544,7 +544,7 @@ void deleteList(intList2D list)
     }
 }
 
-void deleteList(intList1D list)
+void deleteList(IntList1D list)
 {
     if (list != nullptr)
     {
@@ -557,11 +557,11 @@ void deleteList(intList1D list)
     }
 }
 
-intList1D reverse(const intList1D source)
+IntList1D reverse(const IntList1D source)
 {
     if (is_inited(source))
     {
-        intList1D rotated = nullptr;
+        IntList1D rotated = nullptr;
         IntList1D_element *begin = *source;
         while (begin != nullptr)
         {
@@ -573,11 +573,11 @@ intList1D reverse(const intList1D source)
     return nullptr;
 }
 
-intList1D filter(const intList1D source, bool comparator(int))
+IntList1D filter(const IntList1D source, bool comparator(int))
 {
     if (is_inited(source))
     {
-        intList1D filtered = nullptr;
+        IntList1D filtered = nullptr;
         IntList1D_element *current = *source;
         int current_data;
 
@@ -593,11 +593,11 @@ intList1D filter(const intList1D source, bool comparator(int))
     return nullptr;
 }
 
-intList1D filter(const intList1D source, bool comparator(int, int), int comparator_data)
+IntList1D filter(const IntList1D source, bool comparator(int, int), int comparator_data)
 {
     if (is_inited(source))
     {
-        intList1D filtered = nullptr;
+        IntList1D filtered = nullptr;
         IntList1D_element *current = *source;
         int current_data;
 
@@ -613,9 +613,9 @@ intList1D filter(const intList1D source, bool comparator(int, int), int comparat
     return nullptr;
 }
 
-intList1D mergeByAction(const intList1D listA, const intList1D listB, int merge_actions(int fromA, int fromB))
+IntList1D mergeByAction(const IntList1D listA, const IntList1D listB, int merge_actions(int fromA, int fromB))
 {
-    intList1D merged = new IntList1D_element *;
+    IntList1D merged = new IntList1D_element *;
     *merged = new IntList1D_element;
 
     IntList1D_element *listptrM = *merged;
@@ -678,7 +678,7 @@ namespace index_actions
 // ########################################################
 // ########################################################
 
-intList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo)
+IntList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo)
 {
     if (printInfo)
         std::cout << "[INFO] Entered data must be lesser than " << buffer_size + 1 << "\n";
@@ -692,9 +692,9 @@ intList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo)
     return CONV_sstreamToList1D(stream);
 }
 
-intList1D CONV_sstreamToList1D(std::stringstream &sstream)
+IntList1D CONV_sstreamToList1D(std::stringstream &sstream)
 {
-    intList1D list = nullptr;
+    IntList1D list = nullptr;
     while (!sstream.eof())
     {
         int sstream_data;
@@ -720,7 +720,7 @@ void APPEND_BACK_Link(IntList1D_element *end, IntList1D_element *appendList)
     end->next = appendList;
 }
 
-void APPEND_FRONT_Link(intList1D list, intList1D appendList)
+void APPEND_FRONT_Link(IntList1D list, IntList1D appendList)
 {
     appendBack(appendList, list);
     *list = *appendList;

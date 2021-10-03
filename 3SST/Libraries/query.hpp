@@ -5,7 +5,7 @@
 
 struct query
 {
-    intList1D list;
+    IntList1D list;
     IntList1D_element *begin;
     IntList1D_element *end;
 };

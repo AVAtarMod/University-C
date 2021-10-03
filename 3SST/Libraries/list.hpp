@@ -39,7 +39,7 @@ struct IntList2D_element
     }
 };
 
-typedef IntList1D_element **intList1D;
+typedef IntList1D_element **IntList1D;
 typedef IntList2D_element **intList2D;
 
 enum MODE_STOP
@@ -68,42 +68,42 @@ enum RETURN_TYPE2D
     LIST2D
 };
 
-bool init(intList1D &list, int number);
-bool is_inited(const intList1D list);
+bool init(IntList1D &list, int number);
+bool is_inited(const IntList1D list);
 
 int maxElementData(const intList2D list);
 int greaterThenIndex(const intList2D list, int index);
 int sumChain(const intList2D list);
-int findFirstOf(const intList1D list, int number);
+int findFirstOf(const IntList1D list, int number);
 
-void deleteList(intList1D list);
+void deleteList(IntList1D list);
 void deleteList(intList2D list);
 
-void printBegin(const intList1D list);
+void printBegin(const IntList1D list);
 void printBegin(const intList2D list);
 void printEnd(const intList2D list);
 
-void pushBack(intList1D &list, int number);
-void pushBack(intList1D &list, IntList1D_element *element);
-void pushFront(intList1D &list, int number);
+void pushBack(IntList1D &list, int number);
+void pushBack(IntList1D &list, IntList1D_element *element);
+void pushFront(IntList1D &list, int number);
 
-IntList1D_element *popBack(intList1D &list);
-IntList1D_element *popFront(intList1D &list);
-intList1D popByIndexes(intList1D list, const intList1D indexes);
+IntList1D_element *popBack(IntList1D &list);
+IntList1D_element *popFront(IntList1D &list);
+IntList1D popByIndexes(IntList1D list, const IntList1D indexes);
 
-void appendFront(intList1D list, intList1D appendList);
-void appendBack(intList1D list, intList1D appendList);
+void appendFront(IntList1D list, IntList1D appendList);
+void appendBack(IntList1D list, IntList1D appendList);
 
-bool insertUpperSorted(intList1D &begin, int number, FLAGS mode = USE_CYCLE);
+bool insertUpperSorted(IntList1D &begin, int number, FLAGS mode = USE_CYCLE);
 
-intList1D cutByIndexRange(intList1D &list, int from, int to);
+IntList1D cutByIndexRange(IntList1D &list, int from, int to);
 
-intList1D readArrayKeyboard(MODE_STOP mode = IO_EOF, uint buffer_size = UINT8_MAX, bool printInfo = false);
-std::list<intList1D> fileToLists(const std::string filename, const char delimiter = '\n');
-intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB);
-intList1D mergeByAction(const intList1D listA, const intList1D listB, int action(int fromA, int fromB));
-intList1D reverse(const intList1D source);
-intList1D getIndexesByData(const intList1D list, int data);
+IntList1D readArrayKeyboard(MODE_STOP mode = IO_EOF, uint buffer_size = UINT8_MAX, bool printInfo = false);
+std::list<IntList1D> fileToLists(const std::string filename, const char delimiter = '\n');
+IntList1D mergeUpperSorted(IntList1D sortedListA, IntList1D sortedListB);
+IntList1D mergeByAction(const IntList1D listA, const IntList1D listB, int action(int fromA, int fromB));
+IntList1D reverse(const IntList1D source);
+IntList1D getIndexesByData(const IntList1D list, int data);
 
 namespace comparator
 {
@@ -123,10 +123,10 @@ namespace index_actions
     void pushBefore(IntList1D_element **prev, IntList1D_element **current, int data);
 } // namespace index_actions
 
-intList1D filter(const intList1D source, bool comparator(int));
-intList1D filter(const intList1D source, bool comparator(int, int), int comparator_data);
+IntList1D filter(const IntList1D source, bool comparator(int));
+IntList1D filter(const IntList1D source, bool comparator(int, int), int comparator_data);
 
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element *prev, IntList1D_element *current));
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element **prev, IntList1D_element **current, int data), int index_action_data);
+void doActionOnIndexes(IntList1D list, const IntList1D indexes, void index_action(IntList1D_element *prev, IntList1D_element *current));
+void doActionOnIndexes(IntList1D list, const IntList1D indexes, void index_action(IntList1D_element **prev, IntList1D_element **current, int data), int index_action_data);
 
 #endif //LIST_LIB
