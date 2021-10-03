@@ -1,26 +1,16 @@
 #include "stack.hpp"
 
-bool empty(stack stack_data)
+bool empty(Stack stack_data)
 {
     return (stack_data != nullptr && *stack_data != nullptr);
 }
 
-stack_element *pop(stack &stack_data)
+Stack_element *pop(Stack &stack_data)
 {
-    if (!empty(stack_data))
-    {
-        stack_element *first = *stack_data;
-        *stack_data = first->next;
-        return first;
-    }
+    return popFront(stack_data);
 }
 
-stack_element *push(stack &stack_data)
+void push(Stack &stack, int data)
 {
-    if (!empty(stack_data))
-    {
-        stack_element *first = *stack_data;
-        *stack_data = first->next;
-        return first;
-    }
+    pushFront(stack, data);
 }

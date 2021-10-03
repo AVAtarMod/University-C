@@ -3,7 +3,7 @@
 
 #include "list.hpp"
 
-typedef intList1D stack;
-typedef intList1D_element stack_element;
+typedef intList1D Stack;
+typedef IntList1D_element Stack_element;
     
 #endif //STACK_LIB

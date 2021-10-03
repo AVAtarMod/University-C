@@ -4,26 +4,26 @@
 
 #include "list.hpp"
 
-void DEL(intList2D_element *begin);
-void DEL(intList1D_element *begin);
+void DEL(IntList2D_element *begin);
+void DEL(IntList1D_element *begin);
 
-void PRINT_begin(const intList1D_element *begin, bool start);
-void PRINT_begin(const intList2D_element *begin, bool start);
-void PRINT_end(const intList2D_element *end, bool start);
+void PRINT_begin(const IntList1D_element *begin, bool start);
+void PRINT_begin(const IntList2D_element *begin, bool start);
+void PRINT_end(const IntList2D_element *end, bool start);
 
-bool INS_UpperSortedRecursion(intList1D_element *begin, int number);
-bool INS_UpperSortedCycle(intList1D_element *begin, int number);
+bool INS_UpperSortedRecursion(IntList1D_element *begin, int number);
+bool INS_UpperSortedCycle(IntList1D_element *begin, int number);
 
-void APPEND_BACK_Copy(intList1D_element *end, intList1D_element *appendList);
-void APPEND_BACK_Link(intList1D_element *end, intList1D_element *appendList);
+void APPEND_BACK_Copy(IntList1D_element *end, IntList1D_element *appendList);
+void APPEND_BACK_Link(IntList1D_element *end, IntList1D_element *appendList);
 void APPEND_FRONT_Link(intList1D list, intList1D appendList);
 
-void PUSH_Back(intList1D_element *begin, int number);
-void PUSH_Back(intList1D_element *begin, intList1D_element *element);
-bool PUSH_Before(intList1D_element *current, int number);
-void PUSH_Front(intList1D_element *begin, int number);
+void PUSH_Back(IntList1D_element *begin, int number);
+void PUSH_Back(IntList1D_element *begin, IntList1D_element *element);
+bool PUSH_Before(IntList1D_element *current, int number);
+void PUSH_Front(IntList1D_element *begin, int number);
 
-intList1D_element *POP_Back(intList1D_element *begin);
+IntList1D_element *POP_Back(IntList1D_element *begin);
 
 intList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo);
 
@@ -33,18 +33,18 @@ bool init(intList1D &list, int number)
 {
     if (list == nullptr)
     {
-        list = new intList1D_element *;
-        *list = new intList1D_element(number);
+        list = new IntList1D_element *;
+        *list = new IntList1D_element(number);
         return true;
     }
     return false;
 }
 
-bool init(intList1D &list, intList1D_element *element)
+bool init(intList1D &list, IntList1D_element *element)
 {
     if (list == nullptr)
     {
-        list = new intList1D_element *;
+        list = new IntList1D_element *;
         *list = element;
         return true;
     }
@@ -66,7 +66,7 @@ void appendFront(intList1D list, intList1D appendList)
 
 void appendBack(intList1D list, intList1D appendList)
 {
-    intList1D_element *list_ptr = *list;
+    IntList1D_element *list_ptr = *list;
     while (list_ptr->next != nullptr)
         list_ptr = list_ptr->next;
     APPEND_BACK_Link(list_ptr, *appendList);
@@ -74,7 +74,7 @@ void appendBack(intList1D list, intList1D appendList)
 
 int sumChain(const intList2D list)
 {
-    intList2D_element *begin = *list;
+    IntList2D_element *begin = *list;
     int sum = 0;
     while (begin != nullptr)
     {
@@ -86,12 +86,12 @@ int sumChain(const intList2D list)
 
 int greaterThenIndex(const intList2D list, int index)
 {
-    intList2D_element *begin = *list;
+    IntList2D_element *begin = *list;
     int cur_index = 0;
     int index_data = 0;
     int greater = 0;
 
-    const intList2D_element *tmp = begin;
+    const IntList2D_element *tmp = begin;
     for (int i = 0; i < index; ++i, tmp = tmp->next)
     {
     }
@@ -113,7 +113,7 @@ int greaterThenIndex(const intList2D list, int index)
 
 int maxElementData(const intList2D list)
 {
-    intList2D_element *begin = *list;
+    IntList2D_element *begin = *list;
     int max = 0;
     while (begin != nullptr)
     {
@@ -160,17 +160,17 @@ bool insertUpperSorted(intList1D &list, int number, FLAGS mode)
 
 intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB)
 {
-    intList1D merged = new intList1D_element *;
-    *merged = new intList1D_element;
+    intList1D merged = new IntList1D_element *;
+    *merged = new IntList1D_element;
 
-    intList1D_element *listptrM = *merged;
-    intList1D_element *listptrA = *sortedListA;
-    intList1D_element *listptrB = *sortedListB;
+    IntList1D_element *listptrM = *merged;
+    IntList1D_element *listptrA = *sortedListA;
+    IntList1D_element *listptrB = *sortedListB;
     while (listptrA != nullptr && listptrB != nullptr)
     {
         if (listptrA->data < listptrB->data)
         {
-            listptrM->next = new intList1D_element;
+            listptrM->next = new IntList1D_element;
             listptrM = listptrM->next;
 
             listptrM->data = listptrA->data;
@@ -178,14 +178,14 @@ intList1D mergeUpperSorted(intList1D sortedListA, intList1D sortedListB)
         }
         else
         {
-            listptrM->next = new intList1D_element;
+            listptrM->next = new IntList1D_element;
             listptrM = listptrM->next;
 
             listptrM->data = listptrB->data;
             listptrB = listptrB->next;
         }
     }
-    intList1D_element *empty = *merged, *begin = (*merged)->next;
+    IntList1D_element *empty = *merged, *begin = (*merged)->next;
     delete empty;
     *merged = begin;
 
@@ -275,7 +275,7 @@ intList1D readArrayKeyboard(MODE_STOP mode, uint buffer_size, bool printInfo)
     return storage;
 }
 
-bool insert(intList2D_element *begin, int index, int number)
+bool insert(IntList2D_element *begin, int index, int number)
 {
     while (index != 1 && begin != nullptr)
     {
@@ -284,7 +284,7 @@ bool insert(intList2D_element *begin, int index, int number)
     }
     if (index == 1)
     {
-        intList2D_element *temp = new intList2D_element(begin, number, begin->next);
+        IntList2D_element *temp = new IntList2D_element(begin, number, begin->next);
         begin->next = temp;
 
         if (begin->next != nullptr)
@@ -295,7 +295,7 @@ bool insert(intList2D_element *begin, int index, int number)
         return false;
 }
 
-bool insert(intList1D_element *begin, int index, int number)
+bool insert(IntList1D_element *begin, int index, int number)
 {
     while (index != 1 && begin != nullptr)
     {
@@ -304,7 +304,7 @@ bool insert(intList1D_element *begin, int index, int number)
     }
     if (index == 1)
     {
-        intList1D_element *temp = new intList1D_element(number, begin->next);
+        IntList1D_element *temp = new IntList1D_element(number, begin->next);
         begin->next = temp;
 
         return true;
@@ -339,9 +339,9 @@ intList1D cutByIndexRange(intList1D &list, int from, int to)
         return nullptr;
     }
 
-    intList1D sublist = new intList1D_element *;
-    *sublist = new intList1D_element;
-    intList1D_element *list_ptr = *list;
+    intList1D sublist = new IntList1D_element *;
+    *sublist = new IntList1D_element;
+    IntList1D_element *list_ptr = *list;
 
     for (int i = 0; i < from - 1; ++i)
     {
@@ -349,7 +349,7 @@ intList1D cutByIndexRange(intList1D &list, int from, int to)
             break;
         list_ptr = list_ptr->next;
     }
-    intList1D_element *begin_slice = list_ptr;
+    IntList1D_element *begin_slice = list_ptr;
 
     if (to == 0)
         to = INT16_MIN + from;
@@ -360,14 +360,14 @@ intList1D cutByIndexRange(intList1D &list, int from, int to)
         list_ptr = list_ptr->next;
     }
 
-    intList1D_element *end_slice = list_ptr->next;
+    IntList1D_element *end_slice = list_ptr->next;
 
     APPEND_BACK_Link(*sublist, begin_slice->next);
 
     begin_slice->next = end_slice;
     list_ptr->next = nullptr;
 
-    intList1D_element *empty = *sublist, *begin = (*sublist)->next;
+    IntList1D_element *empty = *sublist, *begin = (*sublist)->next;
     delete empty;
     *sublist = begin;
 
@@ -376,7 +376,7 @@ intList1D cutByIndexRange(intList1D &list, int from, int to)
 
 int findFirstOf(const intList1D list, int number)
 {
-    intList1D_element *list_ptr = *list;
+    IntList1D_element *list_ptr = *list;
     int index = 0;
     while (list_ptr != nullptr && list_ptr->data != number)
     {
@@ -398,7 +398,7 @@ int findFirstOf(const intList1D list, int number)
  */
 intList1D getIndexesByData(const intList1D list, int data)
 {
-    intList1D_element *list_ptr = *list;
+    IntList1D_element *list_ptr = *list;
     intList1D indexes = nullptr;
     int index = 0;
     while (list_ptr != nullptr)
@@ -411,10 +411,10 @@ intList1D getIndexesByData(const intList1D list, int data)
     return indexes;
 }
 
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(intList1D_element *prev, intList1D_element *current))
+void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element *prev, IntList1D_element *current))
 {
-    intList1D_element *current = *list, *prev = nullptr;
-    intList1D_element *indexes_ptr = *indexes;
+    IntList1D_element *current = *list, *prev = nullptr;
+    IntList1D_element *indexes_ptr = *indexes;
 
     int index = 0;
     while (current != nullptr && indexes_ptr != nullptr)
@@ -430,10 +430,10 @@ void doActionOnIndexes(intList1D list, const intList1D indexes, void index_actio
     }
 }
 
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(intList1D_element **prev, intList1D_element **current, int data), int index_action_data)
+void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element **prev, IntList1D_element **current, int data), int index_action_data)
 {
-    intList1D_element *current = *list, *prev = nullptr;
-    intList1D_element *indexes_ptr = *indexes;
+    IntList1D_element *current = *list, *prev = nullptr;
+    IntList1D_element *indexes_ptr = *indexes;
 
     int index = 0;
     while (current != nullptr && indexes_ptr != nullptr)
@@ -457,7 +457,7 @@ void pushBack(intList1D &list, int number)
         PUSH_Back(*list, number);
 }
 
-void pushBack(intList1D &list, intList1D_element *element)
+void pushBack(intList1D &list, IntList1D_element *element)
 {
     if (list == nullptr || *list == nullptr)
         init(list, element);
@@ -473,7 +473,7 @@ void pushFront(intList1D &list, int number)
         PUSH_Front(*list, number);
 }
 
-intList1D_element *popBack(intList1D &list)
+IntList1D_element *popBack(intList1D &list)
 {
     if (list != nullptr && *list == nullptr)
         return POP_Back(*list);
@@ -481,11 +481,11 @@ intList1D_element *popBack(intList1D &list)
         return nullptr;
 }
 
-intList1D_element *popFront(intList1D &list)
+IntList1D_element *popFront(intList1D &list)
 {
     if (list != nullptr && *list == nullptr)
     {
-        intList1D_element *pop = *list;
+        IntList1D_element *pop = *list;
         *list = pop->next;
         return pop;
     }
@@ -495,8 +495,8 @@ intList1D_element *popFront(intList1D &list)
 
 intList1D popByIndexes(intList1D list, const intList1D indexes)
 {
-    intList1D_element *current = *list, *prev = nullptr;
-    intList1D_element *indexes_ptr = *indexes;
+    IntList1D_element *current = *list, *prev = nullptr;
+    IntList1D_element *indexes_ptr = *indexes;
     intList1D deletedElements = nullptr;
     int index = 0;
     while (current != nullptr && indexes_ptr != nullptr)
@@ -513,7 +513,7 @@ intList1D popByIndexes(intList1D list, const intList1D indexes)
             }
             else
             {
-                intList1D_element *tmp = current->next;
+                IntList1D_element *tmp = current->next;
                 prev->next = tmp;
                 current->next = nullptr;
                 current = tmp;
@@ -562,7 +562,7 @@ intList1D reverse(const intList1D source)
     if (is_inited(source))
     {
         intList1D rotated = nullptr;
-        intList1D_element *begin = *source;
+        IntList1D_element *begin = *source;
         while (begin != nullptr)
         {
             pushFront(rotated, begin->data);
@@ -578,7 +578,7 @@ intList1D filter(const intList1D source, bool comparator(int))
     if (is_inited(source))
     {
         intList1D filtered = nullptr;
-        intList1D_element *current = *source;
+        IntList1D_element *current = *source;
         int current_data;
 
         while (current != nullptr)
@@ -598,7 +598,7 @@ intList1D filter(const intList1D source, bool comparator(int, int), int comparat
     if (is_inited(source))
     {
         intList1D filtered = nullptr;
-        intList1D_element *current = *source;
+        IntList1D_element *current = *source;
         int current_data;
 
         while (current != nullptr)
@@ -615,15 +615,15 @@ intList1D filter(const intList1D source, bool comparator(int, int), int comparat
 
 intList1D mergeByAction(const intList1D listA, const intList1D listB, int merge_actions(int fromA, int fromB))
 {
-    intList1D merged = new intList1D_element *;
-    *merged = new intList1D_element;
+    intList1D merged = new IntList1D_element *;
+    *merged = new IntList1D_element;
 
-    intList1D_element *listptrM = *merged;
-    intList1D_element *listptrA = *listA;
-    intList1D_element *listptrB = *listB;
+    IntList1D_element *listptrM = *merged;
+    IntList1D_element *listptrA = *listA;
+    IntList1D_element *listptrB = *listB;
     while (listptrA != nullptr || listptrB != nullptr)
     {
-        listptrM->next = new intList1D_element;
+        listptrM->next = new IntList1D_element;
         listptrM = listptrM->next;
         if (listptrA == nullptr)
         {
@@ -642,7 +642,7 @@ intList1D mergeByAction(const intList1D listA, const intList1D listB, int merge_
             listptrB = listptrB->next;
         }
     }
-    intList1D_element *empty = *merged, *begin = (*merged)->next;
+    IntList1D_element *empty = *merged, *begin = (*merged)->next;
     delete empty;
     *merged = begin;
 
@@ -665,7 +665,7 @@ namespace merge_actions
 
 namespace index_actions
 {
-    void pushBefore(intList1D_element **prev, intList1D_element **current, int data)
+    void pushBefore(IntList1D_element **prev, IntList1D_element **current, int data)
     {
         PUSH_Before(*current, data);
         *current = (*current)->next;
@@ -705,17 +705,17 @@ intList1D CONV_sstreamToList1D(std::stringstream &sstream)
     return list;
 }
 
-void APPEND_BACK_Copy(intList1D_element *end, intList1D_element *appendList)
+void APPEND_BACK_Copy(IntList1D_element *end, IntList1D_element *appendList)
 {
     while (appendList != nullptr)
     {
-        end->next = new intList1D_element(appendList->data);
+        end->next = new IntList1D_element(appendList->data);
         end = end->next;
         appendList = appendList->next;
     }
 }
 
-void APPEND_BACK_Link(intList1D_element *end, intList1D_element *appendList)
+void APPEND_BACK_Link(IntList1D_element *end, IntList1D_element *appendList)
 {
     end->next = appendList;
 }
@@ -727,7 +727,7 @@ void APPEND_FRONT_Link(intList1D list, intList1D appendList)
     delete appendList;
 }
 
-void PRINT_begin(const intList1D_element *begin, bool start)
+void PRINT_begin(const IntList1D_element *begin, bool start)
 {
     if (begin != nullptr)
     {
@@ -739,7 +739,7 @@ void PRINT_begin(const intList1D_element *begin, bool start)
     }
 }
 
-void PRINT_begin(const intList2D_element *begin, bool start)
+void PRINT_begin(const IntList2D_element *begin, bool start)
 {
     if (begin != nullptr)
     {
@@ -751,7 +751,7 @@ void PRINT_begin(const intList2D_element *begin, bool start)
     }
 }
 
-void PRINT_end(const intList2D_element *end, bool start)
+void PRINT_end(const IntList2D_element *end, bool start)
 {
     if (end != nullptr)
     {
@@ -763,9 +763,9 @@ void PRINT_end(const intList2D_element *end, bool start)
     }
 }
 
-void DEL(intList1D_element *begin)
+void DEL(IntList1D_element *begin)
 {
-    intList1D_element *prev = begin, *temp = begin->next;
+    IntList1D_element *prev = begin, *temp = begin->next;
     while (temp != nullptr)
     {
         delete prev;
@@ -776,9 +776,9 @@ void DEL(intList1D_element *begin)
     begin = nullptr;
 }
 
-void DEL(intList2D_element *begin)
+void DEL(IntList2D_element *begin)
 {
-    intList2D_element *prev = begin, *temp = begin->next;
+    IntList2D_element *prev = begin, *temp = begin->next;
     while (temp != nullptr)
     {
         delete prev;
@@ -789,11 +789,11 @@ void DEL(intList2D_element *begin)
     begin = nullptr;
 }
 
-bool PUSH_Before(intList1D_element *current, int number)
+bool PUSH_Before(IntList1D_element *current, int number)
 {
     if (current != nullptr)
     {
-        intList1D_element *temp = new intList1D_element(current->data, current->next);
+        IntList1D_element *temp = new IntList1D_element(current->data, current->next);
         current->data = number;
         current->next = temp;
 
@@ -803,16 +803,16 @@ bool PUSH_Before(intList1D_element *current, int number)
         return false;
 }
 
-void PUSH_Back(intList1D_element *begin, int number)
+void PUSH_Back(IntList1D_element *begin, int number)
 {
     while (begin->next != nullptr)
     {
         begin = begin->next;
     }
-    begin->next = new intList1D_element(number);
+    begin->next = new IntList1D_element(number);
 }
 
-void PUSH_Back(intList1D_element *begin, intList1D_element *element)
+void PUSH_Back(IntList1D_element *begin, IntList1D_element *element)
 {
     while (begin->next != nullptr)
     {
@@ -821,14 +821,14 @@ void PUSH_Back(intList1D_element *begin, intList1D_element *element)
     begin->next = element;
 }
 
-void PUSH_Front(intList1D_element *begin, int number)
+void PUSH_Front(IntList1D_element *begin, int number)
 {
     PUSH_Before(begin, number);
 }
 
-intList1D_element *POP_Back(intList1D_element *begin)
+IntList1D_element *POP_Back(IntList1D_element *begin)
 {
-    intList1D_element prev;
+    IntList1D_element prev;
     while (begin->next != nullptr)
     {
         prev = *begin;
@@ -839,7 +839,7 @@ intList1D_element *POP_Back(intList1D_element *begin)
     return begin;
 }
 
-bool INS_UpperSortedCycle(intList1D_element *current, int number)
+bool INS_UpperSortedCycle(IntList1D_element *current, int number)
 {
     while (current->next != nullptr && current->data <= number)
         current = current->next;
@@ -856,7 +856,7 @@ bool INS_UpperSortedCycle(intList1D_element *current, int number)
     return false;
 }
 
-bool INS_UpperSortedRecursion(intList1D_element *current, int number)
+bool INS_UpperSortedRecursion(IntList1D_element *current, int number)
 {
     if (current->data > number)
         return PUSH_Before(current, number);

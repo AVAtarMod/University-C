@@ -11,27 +11,27 @@ namespace LIST_LIB
     const int BUFFER_SIZE = 255;
 } // namespace LIST_LIB
 
-struct intList1D_element
+struct IntList1D_element
 {
     int data;
-    intList1D_element *next = nullptr;
+    IntList1D_element *next = nullptr;
 
-    intList1D_element(){};
+    IntList1D_element(){};
 
-    intList1D_element(int data, intList1D_element *next = nullptr)
+    IntList1D_element(int data, IntList1D_element *next = nullptr)
     {
         this->data = data;
         this->next = next;
     }
 };
 
-struct intList2D_element
+struct IntList2D_element
 {
-    intList2D_element *previous = nullptr;
+    IntList2D_element *previous = nullptr;
     int data;
-    intList2D_element *next = nullptr;
+    IntList2D_element *next = nullptr;
 
-    intList2D_element(intList2D_element *previous = nullptr, int data = 0, intList2D_element *next = nullptr)
+    IntList2D_element(IntList2D_element *previous = nullptr, int data = 0, IntList2D_element *next = nullptr)
     {
         this->previous = previous;
         this->data = data;
@@ -39,8 +39,8 @@ struct intList2D_element
     }
 };
 
-typedef intList1D_element **intList1D;
-typedef intList2D_element **intList2D;
+typedef IntList1D_element **intList1D;
+typedef IntList2D_element **intList2D;
 
 enum MODE_STOP
 {
@@ -84,11 +84,11 @@ void printBegin(const intList2D list);
 void printEnd(const intList2D list);
 
 void pushBack(intList1D &list, int number);
-void pushBack(intList1D &list, intList1D_element *element);
+void pushBack(intList1D &list, IntList1D_element *element);
 void pushFront(intList1D &list, int number);
 
-intList1D_element *popBack(intList1D &list);
-intList1D_element *popFront(intList1D &list);
+IntList1D_element *popBack(intList1D &list);
+IntList1D_element *popFront(intList1D &list);
 intList1D popByIndexes(intList1D list, const intList1D indexes);
 
 void appendFront(intList1D list, intList1D appendList);
@@ -120,13 +120,13 @@ namespace merge_actions
 
 namespace index_actions
 {
-    void pushBefore(intList1D_element **prev, intList1D_element **current, int data);
+    void pushBefore(IntList1D_element **prev, IntList1D_element **current, int data);
 } // namespace index_actions
 
 intList1D filter(const intList1D source, bool comparator(int));
 intList1D filter(const intList1D source, bool comparator(int, int), int comparator_data);
 
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(intList1D_element *prev, intList1D_element *current));
-void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(intList1D_element **prev, intList1D_element **current, int data), int index_action_data);
+void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element *prev, IntList1D_element *current));
+void doActionOnIndexes(intList1D list, const intList1D indexes, void index_action(IntList1D_element **prev, IntList1D_element **current, int data), int index_action_data);
 
 #endif //LIST_LIB
