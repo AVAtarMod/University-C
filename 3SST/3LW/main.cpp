@@ -1,7 +1,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "list.hpp"
+#include "stack.hpp"
+#include "query.hpp"
 
 void task1();
 void task2();
