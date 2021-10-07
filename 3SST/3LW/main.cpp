@@ -3,6 +3,8 @@
 
 #include "stack.hpp"
 #include "query.hpp"
+#include "useful.hpp"
+#include "LW_lib.hpp"
 
 void task1();
 void task2();
@@ -68,7 +70,21 @@ int main(int argc, char const *argv[])
 
 void task1()
 {
-    
+    const int BUFFER_SIZE = 255;
+    char buffer[BUFFER_SIZE];
+
+    std::cout << "Enter string: ";
+    std::cin.getline(buffer, BUFFER_SIZE - 1);
+    IntList1D invalidIdxs = checkBraces("()[]{}", buffer);
+
+    if (!is_inited(invalidIdxs))
+        std::cout << "Entered string is " << fgBrightGreen << "correct" << reset << "\n";
+    else
+    {
+        std::cout << "Entered string is " << fgBrightRed << "invalid" << reset << ":\n";
+        deleteList(invalidIdxs);
+    }
+    cinReset();
 }
 
 void task2()
