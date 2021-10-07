@@ -1,8 +1,8 @@
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++20 -O2
+CXXFLAGS = -std=c++17 -O2
 LDFLAGS =
-DEVFLAGS = -std=c++20 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3  -Wno-error=unused-but-set-parameter -Wno-error=unused-parameter
+DEVFLAGS = -std=c++17 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3  -Wno-error=unused-but-set-parameter -Wno-error=unused-parameter
 
 # Makefile settings - Can be customized.
 APPNAME = realease.app
