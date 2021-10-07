@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "list.hpp"
+#include "useful.hpp"
 
 void task1();
 void task2();
@@ -165,6 +166,8 @@ void task3()
     deleteList(positive);
     deleteList(negative_reversed);
     std::cout << "\n";
+    std::cin.ignore(INT16_MAX, '\n');
+    std::cin.clear();
 }
 
 void task4()
@@ -185,6 +188,8 @@ void task4()
         deleteList(listB);
         std::cout << "\n";
     }
+    std::cin.ignore(INT16_MAX, '\n');
+    std::cin.clear();
 }
 
 void task5()
@@ -213,6 +218,8 @@ void task5()
 
     deleteList(list1);
     std::cout << "\n";
+    std::cin.ignore(INT16_MAX, '\n');
+    std::cin.clear();
 }
 
 void task6()
@@ -245,6 +252,8 @@ void task6()
     deleteList(list);
     deleteList(indexes);
     std::cout << "\n";
+    std::cin.ignore(INT16_MAX, '\n');
+    std::cin.clear();
 }
 
 void task7()
