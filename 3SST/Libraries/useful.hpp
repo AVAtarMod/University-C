@@ -3,14 +3,21 @@
 
 #include <iostream>
 
-template<class T>
-T printAndScan(const char* text){
+template <class T>
+T printAndScan(const char *text = "")
+{
     T data;
     std::cout << text;
     std::cin >> data;
     std::cin.ignore(32767, '\n');
-
     return data;
+}
+
+void cinReset()
+{
+    std::cin.ignore();
+    if (std::cin.eof())
+        std::cin.clear();
 }
 
 std::string reset = "\033[0m";
