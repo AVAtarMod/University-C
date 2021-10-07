@@ -3,13 +3,49 @@
 
 #include "list.hpp"
 
-struct query
+template <class T>
+struct Query
 {
-    IntList1D list;
-    IntList1D_element *begin;
-    IntList1D_element *end;
+    List1D<T> list;
+    List1D_element<T> *begin;
+    List1D_element<T> *end;
 };
 
-typedef IntList1D_element query_element;
+typedef Query<int> IntQuery;
+typedef IntList1D_element IntQuery_element;
 
-#endif //QUER_LIB
+template <class T>
+using Query_element = List1D_element<T>;
+
+template <class T>
+bool isEmpty(Query<T> query)
+{
+    return (query.list == nullptr || *query.list == nullptr);
+}
+
+template <class T>
+Query_element<T> *pop(Query<T> &query)
+{
+    if (query != nullptr && *query == nullptr)
+    {
+        Query_element<T> *begin = *query.list;
+        Query_element<T> prev;
+        while (begin->next != nullptr)
+        {
+            prev = *begin;
+            begin = begin->next;
+        }
+        prev.next = nullptr;
+        return begin;
+    }
+    else
+        return nullptr;
+}
+
+template <class T>
+void push(Query<T> &query, T data)
+{
+    pushFront(query, data);
+}
+
+#endif //QUERY_LIB
