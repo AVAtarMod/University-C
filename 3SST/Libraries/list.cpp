@@ -53,7 +53,7 @@ bool init(IntList1D &list, IntList1D_element *element)
 
 bool is_inited(const IntList1D list)
 {
-    if (list == nullptr && *list == nullptr)
+    if (list == nullptr || *list == nullptr)
         return false;
     else
         return true;
@@ -64,12 +64,20 @@ void appendFront(IntList1D list, IntList1D appendList)
     APPEND_FRONT_Link(list, appendList);
 }
 
-void appendBack(IntList1D list, IntList1D appendList)
+void appendBack(IntList1D &list, IntList1D appendList)
 {
-    IntList1D_element *list_ptr = *list;
-    while (list_ptr->next != nullptr)
-        list_ptr = list_ptr->next;
-    APPEND_BACK_Link(list_ptr, *appendList);
+    if (is_inited(appendList))
+    {
+        if (is_inited(list))
+        {
+            IntList1D_element *list_ptr = *list;
+            while (list_ptr->next != nullptr)
+                list_ptr = list_ptr->next;
+            APPEND_BACK_Link(list_ptr, *appendList);
+        }
+        else
+            init(list, *appendList);
+    }
 }
 
 int sumChain(const intList2D list)
@@ -158,14 +166,25 @@ bool insertUpperSorted(IntList1D &list, int number, FLAGS mode)
     return false;
 }
 
-IntList1D mergeUpperSorted(IntList1D sortedListA, IntList1D sortedListB)
+IntList1D mergeUpperSorted(IntList1D listA, IntList1D listB, bool listsAlreadySorted)
 {
     IntList1D merged = new IntList1D_element *;
     *merged = new IntList1D_element;
 
     IntList1D_element *listptrM = *merged;
-    IntList1D_element *listptrA = *sortedListA;
-    IntList1D_element *listptrB = *sortedListB;
+    IntList1D_element *listptrA;
+    IntList1D_element *listptrB;
+
+    if (is_inited(listA))
+        listptrA = *listA;
+    else
+        listptrA = nullptr;
+
+    if (is_inited(listB))
+        listptrA = *listB;
+    else
+        listptrA = nullptr;
+
     while (listptrA != nullptr && listptrB != nullptr)
     {
         if (listptrA->data < listptrB->data)
@@ -190,9 +209,63 @@ IntList1D mergeUpperSorted(IntList1D sortedListA, IntList1D sortedListB)
     *merged = begin;
 
     if (listptrA != nullptr)
-        APPEND_BACK_Copy(listptrM, listptrA);
+    {
+        if (listsAlreadySorted)
+            APPEND_BACK_Copy(listptrM, listptrA);
+        else
+            while (listptrA != nullptr)
+            {
+                insertUpperSorted(merged, listptrA->data);
+                listptrA = listptrA->next;
+            }
+    }
     else if (listptrB != nullptr)
-        APPEND_BACK_Copy(listptrM, listptrB);
+    {
+        if (listsAlreadySorted)
+            APPEND_BACK_Copy(listptrM, listptrB);
+        else
+            while (listptrB != nullptr)
+            {
+                insertUpperSorted(merged, listptrB->data);
+                listptrB = listptrB->next;
+            }
+    }
+
+    return merged;
+}
+
+IntList1D mergeByAction(const IntList1D listA, const IntList1D listB, int merge_actions(int fromA, int fromB))
+{
+    IntList1D merged = new IntList1D_element *;
+    *merged = new IntList1D_element;
+
+    IntList1D_element *listptrM = *merged;
+    IntList1D_element *listptrA = *listA;
+    IntList1D_element *listptrB = *listB;
+    while (listptrA != nullptr || listptrB != nullptr)
+    {
+        listptrM->next = new IntList1D_element;
+        listptrM = listptrM->next;
+        if (listptrA == nullptr)
+        {
+            listptrM->data = merge_actions(0, listptrB->data);
+            listptrB = listptrB->next;
+        }
+        else if (listptrB == nullptr)
+        {
+            listptrM->data = merge_actions(listptrA->data, 0);
+            listptrA = listptrA->next;
+        }
+        else
+        {
+            listptrM->data = merge_actions(listptrA->data, listptrB->data);
+            listptrA = listptrA->next;
+            listptrB = listptrB->next;
+        }
+    }
+    IntList1D_element *empty = *merged, *begin = (*merged)->next;
+    delete empty;
+    *merged = begin;
 
     return merged;
 }
@@ -259,7 +332,7 @@ std::list<IntList1D> fileToLists(const std::string filename, const char delimite
 IntList1D readArrayKeyboard(MODE_STOP mode, uint buffer_size, bool printInfo)
 {
     IntList1D storage = nullptr;
-    if (mode == ZERO || mode == EOF)
+    if (mode == ZERO || mode == IO_EOF)
     {
         while (true)
         {
@@ -328,7 +401,7 @@ IntList1D cutByIndexRange(IntList1D &list, int from, int to)
 {
     try
     {
-        if (from > to && to != -1)
+        if (from > to && to != 0)
             throw "cut(): Incorrect couple 'from - to' for cutting list";
         if (from == -1 || to == -1)
             throw "cut(): special argument (-1) given, abort";
@@ -483,7 +556,7 @@ IntList1D_element *popBack(IntList1D &list)
 
 IntList1D_element *popFront(IntList1D &list)
 {
-    if (list != nullptr && *list == nullptr)
+    if (list != nullptr && *list != nullptr)
     {
         IntList1D_element *pop = *list;
         *list = pop->next;
@@ -611,42 +684,6 @@ IntList1D filter(const IntList1D source, bool comparator(int, int), int comparat
         return filtered;
     }
     return nullptr;
-}
-
-IntList1D mergeByAction(const IntList1D listA, const IntList1D listB, int merge_actions(int fromA, int fromB))
-{
-    IntList1D merged = new IntList1D_element *;
-    *merged = new IntList1D_element;
-
-    IntList1D_element *listptrM = *merged;
-    IntList1D_element *listptrA = *listA;
-    IntList1D_element *listptrB = *listB;
-    while (listptrA != nullptr || listptrB != nullptr)
-    {
-        listptrM->next = new IntList1D_element;
-        listptrM = listptrM->next;
-        if (listptrA == nullptr)
-        {
-            listptrM->data = merge_actions(0, listptrB->data);
-            listptrB = listptrB->next;
-        }
-        else if (listptrB == nullptr)
-        {
-            listptrM->data = merge_actions(listptrA->data, 0);
-            listptrA = listptrA->next;
-        }
-        else
-        {
-            listptrM->data = merge_actions(listptrA->data, listptrB->data);
-            listptrA = listptrA->next;
-            listptrB = listptrB->next;
-        }
-    }
-    IntList1D_element *empty = *merged, *begin = (*merged)->next;
-    delete empty;
-    *merged = begin;
-
-    return merged;
 }
 
 namespace comparator
