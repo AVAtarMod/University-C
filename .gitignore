@@ -2,6 +2,8 @@ Documents/
 *.zip
 *.o
 *.d
+*.dg
 *.app
 files/
 build/
+vgcore*
