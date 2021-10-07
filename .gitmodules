@@ -1,0 +1,3 @@
+[submodule "2SST/1LW/extension/cpp-text-table"]
+	path = 2SST/1LW/extension/cpp-text-table
+	url = https://github.com/haarcuba/cpp-text-table.git
