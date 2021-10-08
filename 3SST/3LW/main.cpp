@@ -76,14 +76,13 @@ void task1()
 
     std::cout << "Enter string: ";
     std::cin.getline(buffer, BUFFER_SIZE - 1);
-    IntList1D invalidIdxs = checkBraces("()[]{}", buffer);
+    bool strIsValid = checkBraces("()[]{}", buffer);
 
-    if (!is_inited(invalidIdxs))
-        std::cout << "Entered string is " << fgBrightGreen << "correct" << reset << "\n";
+    if (strIsValid)
+        std::cout << "Entered string is " << fgBrightGreen << "correct" << reset;
     else
     {
-        std::cout << "Entered string is " << fgBrightRed << "invalid" << reset << ":\n";
-        deleteList(invalidIdxs);
+        std::cout << "Entered string is " << fgBrightRed << "invalid" << reset;
     }
     cinReset();
 }

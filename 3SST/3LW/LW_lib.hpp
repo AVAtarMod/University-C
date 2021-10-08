@@ -4,6 +4,6 @@
 #include "stack.hpp"
 #include "query.hpp"
 
-IntList1D checkBraces(const std::string braces,const std::string strWithBraces);
+bool checkBraces(const std::string braces,const std::string strWithBraces);
 
 #endif //LW_LIB
