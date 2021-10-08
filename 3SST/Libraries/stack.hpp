@@ -32,4 +32,10 @@ void push(Stack<T> &stack, T data)
     pushFront(stack, data);
 }
 
+template <class T>
+void deleteStack(Stack<T> &stack)
+{
+    deleteList(stack);
+}
+
 #endif //STACK_LIB
