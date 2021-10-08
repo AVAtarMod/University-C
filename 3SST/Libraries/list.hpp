@@ -177,7 +177,18 @@ template <class T>
 List1D_element<T> *popBack(List1D<T> &list)
 {
     if (list != nullptr && *list == nullptr)
-        return POP_Back(*list);
+    {
+        List1D_element<T> begin = *list;
+        List1D_element<T> prev;
+        while (begin->next != nullptr)
+        {
+            prev = *begin;
+            begin = begin->next;
+        }
+
+        prev.next = nullptr;
+        return begin;
+    }
     else
         return nullptr;
 }

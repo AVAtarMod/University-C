@@ -26,20 +26,7 @@ bool isEmpty(Query<T> query)
 template <class T>
 Query_element<T> *pop(Query<T> &query)
 {
-    if (query != nullptr && *query == nullptr)
-    {
-        Query_element<T> *begin = *query.list;
-        Query_element<T> prev;
-        while (begin->next != nullptr)
-        {
-            prev = *begin;
-            begin = begin->next;
-        }
-        prev.next = nullptr;
-        return begin;
-    }
-    else
-        return nullptr;
+    return popBack(query);
 }
 
 template <class T>
