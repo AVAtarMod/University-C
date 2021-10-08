@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
 #include "stack.hpp"
@@ -97,8 +98,14 @@ void task3()
 
 void task4()
 {
+    std::string path = printAndScan<std::string>("file path:");
+    std::string pathOut = path + ".out";
+    std::ifstream in(path);
 }
 
 void task5()
 {
+    std::string path = printAndScan<std::string>("file path:");
+    std::string pathOut = path + ".out";
+    std::ifstream in(path);
 }
