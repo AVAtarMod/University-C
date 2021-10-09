@@ -1,10 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
+#include <iomanip>
 
 #include "stack.hpp"
 #include "query.hpp"
-#include "useful.hpp"
 #include "LW_lib.hpp"
 
 void task1();
@@ -89,6 +88,26 @@ void task1()
 
 void task2()
 {
+    const int BUFFER_SIZE = 255;
+    const int type =
+        printAndScan<int>("Supported types RPN expressions:\n"
+                          "1) char\n"
+                          "2) positive numbers\n"
+                          "3) negative numbers\n"
+                          "4) float numbers\n"
+                          "Enter type: ");
+    char buffer[BUFFER_SIZE];
+
+    std::cout << "Enter expression: ";
+    std::cin.getline(buffer, BUFFER_SIZE - 1);
+
+    if (1 <= type && type <= 2)
+        std::cout << "Result: " << evalRpnExpression<int>(buffer);
+    else if (type == 3)
+        std::cout << "Result: " << evalRpnExpression<long>(buffer);
+    else if (type == 4)
+        std::cout << std::setprecision(8) << "Result: " << evalRpnExpression<float>(buffer);
+    cinReset();
 }
 
 void task3()
