@@ -143,9 +143,10 @@ void doActionOnIndexes(IntList1D list, const IntList1D indexes, void index_actio
 template <class T>
 bool init(List1D<T> &list, T data)
 {
-    if (list == nullptr)
+    if (list == nullptr || *list == nullptr)
     {
-        list = new List1D_element<T> *;
+        if (list == nullptr)
+            list = new List1D_element<T> *;
         *list = new List1D_element<T>(data);
         return true;
     }
@@ -196,7 +197,7 @@ List1D_element<T> *popBack(List1D<T> &list)
 template <class T>
 List1D_element<T> *popFront(List1D<T> &list)
 {
-    if (list != nullptr && *list == nullptr)
+    if (list != nullptr && *list != nullptr)
     {
         List1D_element<T> *pop = *list;
         *list = pop->next;

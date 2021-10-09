@@ -31,9 +31,10 @@ IntList1D CONV_sstreamToList1D(std::stringstream &sstream);
 
 bool init(IntList1D &list, int number)
 {
-    if (list == nullptr)
+    if (list == nullptr || *list == nullptr)
     {
-        list = new IntList1D_element *;
+        if (list == nullptr)
+            list = new IntList1D_element *;
         *list = new IntList1D_element(number);
         return true;
     }
