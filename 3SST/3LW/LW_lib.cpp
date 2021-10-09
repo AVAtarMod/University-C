@@ -1,4 +1,5 @@
 #include "LW_lib.hpp"
+#include "functions.hpp"
 
 bool checkBraces(const std::string braces, const std::string strWithBraces)
 {
@@ -36,3 +37,36 @@ bool checkBraces(const std::string braces, const std::string strWithBraces)
 
     return strIsValid;
 }
+
+namespace RPN_ENGINE
+{
+    float evalOperator(char operatorChar, Stack<float> &stack)
+    {
+        Stack_element<float> *A = pop(stack);
+        Stack_element<float> *B = pop(stack);
+        if (A == nullptr || B == nullptr)
+            throw std::runtime_error("evalOperator: A||B nullptr");
+
+        float result;
+        switch (operatorChar)
+        {
+        case '+':
+            result = B->data + A->data;
+            break;
+        case '-':
+            result = B->data - A->data;
+            break;
+        case '*':
+            result = B->data * A->data;
+            break;
+        case '/':
+            result = B->data / A->data;
+            break;
+        default:
+            break;
+        }
+        delete A;
+        delete B;
+        return result;
+    }
+} // namespace RPN_ENGINE
