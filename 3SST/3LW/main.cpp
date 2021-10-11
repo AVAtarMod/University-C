@@ -94,24 +94,63 @@ void task2()
                           "1) char\n"
                           "2) positive numbers\n"
                           "3) negative numbers\n"
-                          "4) float numbers\n"
+                          "4) float numbers\n\n"
                           "Enter type: ");
     char buffer[BUFFER_SIZE];
 
     std::cout << "Enter expression: ";
     std::cin.getline(buffer, BUFFER_SIZE - 1);
 
-    if (1 <= type && type <= 2)
-        std::cout << "Result: " << evalRpnExpression<int>(buffer);
-    else if (type == 3)
-        std::cout << "Result: " << evalRpnExpression<long>(buffer);
-    else if (type == 4)
-        std::cout << std::setprecision(8) << "Result: " << evalRpnExpression<float>(buffer);
+    try
+    {
+        if (1 <= type && type <= 2)
+            std::cout << "Result: " << evalRpnExpression<int>(buffer);
+        else if (type == 3)
+            std::cout << "Result: " << evalRpnExpression<long>(buffer);
+        else if (type == 4)
+            std::cout << std::setprecision(8) << "Result: " << evalRpnExpression<float>(buffer);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << fgBrightRed << "Error: " << reset << ex.what() << '\n';
+    }
+
     cinReset();
 }
 
 void task3()
 {
+    const int BUFFER_SIZE = 255;
+    char buffer[BUFFER_SIZE];
+
+    std::cout << "Enter expression: ";
+    std::cin.getline(buffer, BUFFER_SIZE - 1);
+    const int type =
+        printAndScan<int>("Supported types RPN expressions:\n"
+                          "1) char\n"
+                          "2) positive numbers\n"
+                          "3) negative numbers\n"
+                          "4) float numbers\n\n"
+                          "Enter type: ");
+    try
+    {
+        std::string rpnExpression = convertToRpnExpression(buffer);
+        std::cout << "RPN Expression: "
+                  << rpnExpression
+                  << "\n";
+        std::cout << "Result of evaluating RPN expression: ";
+        if (1 <= type && type <= 2)
+            std::cout << evalRpnExpression<int>(rpnExpression);
+        else if (type == 3)
+            std::cout << evalRpnExpression<long>(rpnExpression);
+        else if (type == 4)
+            std::cout << std::setprecision(8) << evalRpnExpression<float>(rpnExpression);
+    }
+    catch (const std::exception &ex)
+    {
+        std::cerr << fgBrightRed << "Error: " << reset << ex.what() << '\n';
+    }
+    cinReset();
 }
 
 void task4()
