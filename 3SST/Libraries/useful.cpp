@@ -2,6 +2,7 @@
 
 void cinReset()
 {
+    std::cout << "\n\nPress Enter to continue";
     std::cin.ignore();
     if (std::cin.eof())
         std::cin.clear();
