@@ -19,7 +19,7 @@ namespace RPN_ENGINE
         Stack_element<T> *A = pop(stack);
         Stack_element<T> *B = pop(stack);
         if (A == nullptr || B == nullptr)
-            throw "evalOperator: A||B nullptr";
+            throw std::runtime_error("evalOperator: A||B nullptr");
 
         T result;
         switch (operatorChar)
@@ -143,5 +143,7 @@ T evalRpnExpression(const std::string expression)
         throw std::runtime_error("evalRpnExpression: Unsupported type RPN expression.");
     return 0;
 }
+
+std::string convertToRpnExpression(std::string postfixExpression);
 
 #endif //LW_LIB
