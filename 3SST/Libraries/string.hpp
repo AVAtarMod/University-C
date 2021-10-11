@@ -24,6 +24,7 @@ namespace conversion
         else
             return 0;
     }
+
 } // namespace conversion
 
 #endif //STRING_LIB
