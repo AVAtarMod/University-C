@@ -134,6 +134,14 @@ void task3()
                           "Enter type: ");
     try
     {
+        /**
+         * Examples:
+         * 1a) 2.5 + ( 3 * 4 ^ ( 3 + 2 ) ) * 4
+         * 1b) 2.5 3 4 3 2 + ^ * 4 * +
+         * 
+         * 2a) 2.5 + 5 * 4 - 3
+         * 2b) 2.5 5 * 4 + 3 -
+         */
         std::string rpnExpression = convertToRpnExpression(buffer);
         std::cout << "RPN Expression: "
                   << rpnExpression
@@ -158,6 +166,13 @@ void task4()
     std::string path = printAndScan<std::string>("file path:");
     std::string pathOut = path + ".out";
     std::ifstream in(path);
+
+    Queue<int> a;
+
+    in.close();
+    std::ofstream out(pathOut);
+
+    out.close();
 }
 
 void task5()
