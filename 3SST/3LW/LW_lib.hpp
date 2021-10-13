@@ -2,7 +2,7 @@
 #define LW_LIB
 
 #include "stack.hpp"
-#include "query.hpp"
+#include "queue.hpp"
 #include "string.hpp"
 #include "useful.hpp"
 
@@ -40,7 +40,9 @@ namespace RPN_ENGINE
             result = B->data % A->data;
             break;
         case '^':
-            result = pow(B->data, A->data);
+            if (A->data < 0)
+                throw std::runtime_error("power must be >= 0");
+            result = pow(B->data, static_cast<uint>(A->data));
             break;
         default:
             break;
@@ -71,9 +73,9 @@ namespace RPN_ENGINE
             if (std::is_same_v<T, float>)
             {
                 if (operatorRpn == '%')
-                    throw std::runtime_error("recognizeAction: recognize %, but type float");
+                    throw std::runtime_error("recognizeAction: recognized %, but type float");
                 else if (operatorRpn == '^')
-                    throw std::runtime_error("recognizeAction: recognize %, but type float");
+                    throw std::runtime_error("recognizeAction: recognized ^, but type float");
             }
             return TYPE_RPN_DATA::TRPN_OPERATOR;
         }

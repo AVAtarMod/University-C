@@ -40,7 +40,7 @@ bool checkBraces(const std::string braces, const std::string strWithBraces)
 
 namespace PostfixExpression
 {
-    std::string operators = "^%*/+-";
+    const std::string operators = "^%*/+-";
 
     uint indexEndFirstExpression(std::string postfixExpression)
     {
@@ -81,21 +81,25 @@ std::string convertToRpnExpression(std::string postfixExpression)
     Stack<char> operators = nullptr;
     const uint strLen = postfixExpression.size();
 
+    /**
+     * @brief This cycle can be rewrited to new
+     * function
+     */
     for (uint index = 0; index < strLen; ++index)
     {
         char current = postfixExpression[index];
+        char next = postfixExpression[index + 1];
         if (current == ' ')
             continue;
         else if (current == '(')
         {
             std::string subExpr = postfixExpression.substr(index);
             subExpr.resize(PostfixExpression::indexEndFirstExpression(subExpr) + 1);
-            subExpr.erase(0, 1);
-            subExpr.pop_back();
+            subExpr = subExpr.substr(1, subExpr.size() - 2);
             push(numbers, convertToRpnExpression(subExpr));
             index += subExpr.size() + 1;
         }
-        else if (isdigit(current))
+        else if (isdigit(current) || (current == '-' && isdigit(next)))
         {
             uint endNumberIdx = postfixExpression.find_first_of(' ', index);
             std::string number = postfixExpression.substr(index, endNumberIdx - index);
@@ -104,75 +108,93 @@ std::string convertToRpnExpression(std::string postfixExpression)
         }
         else if (PostfixExpression::operators.find(current) != std::string::npos)
         {
-            if (!isEmpty(operators))
-            {
-                auto prevOperator = pop(operators);
-                uint prevOperatorIdx = PostfixExpression::operators.find(prevOperator->data);
-                uint currOperatorIdx = PostfixExpression::operators.find(current);
-
-                auto subExpr = postfixExpression.substr(index + 1);
-                auto currNumber = pop(numbers);
-                auto prevNumber = pop(numbers);
-                if (prevNumber == nullptr || currNumber == nullptr)
-                    throw std::runtime_error("cannot construct RPN expression");
-                if (prevOperatorIdx < currOperatorIdx)
-                {
-                    rpnExpression +=
-                        prevNumber->data +
-                        " " +
-                        currNumber->data +
-                        " " +
-                        prevOperator->data +
-                        " " +
-                        convertToRpnExpression(subExpr) +
-                        " " +
-                        current;
-                }
-                else
-                {
-                    rpnExpression +=
-                        prevNumber->data +
-                        " " +
-                        currNumber->data +
-                        " " +
-                        convertToRpnExpression(subExpr) +
-                        " " +
-                        current +
-                        " " +
-                        prevOperator->data;
-                }
-                delete prevNumber;
-                delete currNumber;
-                break;
-            }
-            else
-                push(operators, current);
+            push(operators, current);
+            index += 1;
         }
     }
-    if (!isEmpty(operators))
+
+    /**
+     * @brief This cycle and "if" above can be rewrited to new
+     * function
+     */
+    uint nextOperatorIdx = PostfixExpression::operators.size() + 1;
+    while (!isEmpty(operators))
     {
-        auto lastOperator = pop(operators);
+        auto currOperator = pop(operators);
+        auto prevOperator = pop(operators);
+
+        uint currOperatorIdx = PostfixExpression::operators.find(currOperator->data);
+
         auto currNumber = pop(numbers);
         auto prevNumber = pop(numbers);
+
         if (prevNumber == nullptr || currNumber == nullptr)
             throw std::runtime_error("cannot construct RPN expression");
-        rpnExpression +=
-            prevNumber->data +
-            " " +
-            currNumber->data +
-            " " +
-            lastOperator->data;
 
-        delete lastOperator;
+        if (prevOperator != nullptr)
+        {
+            uint prevOperatorIdx = PostfixExpression::operators.find(prevOperator->data);
+            nextOperatorIdx = prevOperatorIdx;
+
+            if (prevOperatorIdx < currOperatorIdx)
+                rpnExpression =
+                    prevNumber->data +
+                    " " +
+                    prevOperator->data +
+                    " " +
+                    currNumber->data +
+                    " " +
+                    currOperator->data +
+                    rpnExpression;
+            else
+                rpnExpression =
+                    prevNumber->data +
+                    " " +
+                    currNumber->data +
+                    " " +
+                    currOperator->data +
+                    " " +
+                    prevOperator->data +
+                    rpnExpression;
+
+            delete prevOperator;
+        }
+        else
+        {
+
+            if (currOperatorIdx < nextOperatorIdx)
+                rpnExpression =
+                    prevNumber->data +
+                    " " +
+                    currNumber->data +
+                    " " +
+                    currOperator->data +
+                    " " +
+                    rpnExpression;
+            else
+                rpnExpression =
+                    prevNumber->data +
+                    " " +
+                    currNumber->data +
+                    " " +
+                    rpnExpression +
+                    " " +
+                    currOperator->data;
+        }
+
+        delete currOperator;
+
         delete prevNumber;
         delete currNumber;
     }
 
     if (!isEmpty(numbers))
     {
-        auto lastNumber = pop(numbers);
-        rpnExpression += lastNumber->data;
-        delete lastNumber;
+        auto currNumber = pop(numbers);
+        rpnExpression =
+            currNumber->data +
+            " " +
+            rpnExpression;
     }
 
     deleteStack(numbers);
