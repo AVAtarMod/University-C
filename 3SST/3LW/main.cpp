@@ -3,7 +3,7 @@
 #include <iomanip>
 
 #include "stack.hpp"
-#include "query.hpp"
+#include "queue.hpp"
 #include "LW_lib.hpp"
 
 void task1();
@@ -136,23 +136,27 @@ void task3()
     {
         /**
          * Examples:
-         * 1a) 2.5 + ( 3 * 4 ^ ( 3 + 2 ) ) * 4
+         * 1a) 25 + ( 3 * 4 ^ ( 3 + 2 ) ) * 4
          * 1b) 2.5 3 4 3 2 + ^ * 4 * +
          * 
          * 2a) 2.5 + 5 * 4 - 3
          * 2b) 2.5 5 * 4 + 3 -
+         * 
+         * @todo 3a) 2 + 5 * 3 - 10
+         * 3b) 2 5 3 * 10 - +
          */
         std::string rpnExpression = convertToRpnExpression(buffer);
         std::cout << "RPN Expression: "
                   << rpnExpression
                   << "\n";
-        std::cout << "Result of evaluating RPN expression: ";
+        std::string resultEval;
         if (1 <= type && type <= 2)
-            std::cout << evalRpnExpression<int>(rpnExpression);
+            resultEval = std::to_string(evalRpnExpression<int>(rpnExpression));
         else if (type == 3)
-            std::cout << evalRpnExpression<long>(rpnExpression);
+            resultEval = std::to_string(evalRpnExpression<long>(rpnExpression));
         else if (type == 4)
-            std::cout << std::setprecision(8) << evalRpnExpression<float>(rpnExpression);
+            resultEval = std::to_string(evalRpnExpression<float>(rpnExpression));
+        std::cout << std::setprecision(8) << "Result of evaluating RPN expression: " << resultEval;
     }
     catch (const std::exception &ex)
     {
@@ -166,13 +170,38 @@ void task4()
     std::string path = printAndScan<std::string>("file path:");
     std::string pathOut = path + ".out";
     std::ifstream in(path);
+    int range[2];
+    range[0] = printAndScan<int>("Enter A: ");
+    range[1] = printAndScan<int>("Enter B: ");
 
-    Queue<int> a;
+    IntQueue queue;
+    IntList1D lastIndex = nullptr;
+
+    int number;
+    while (!in.eof())
+    {
+        in >> number;
+        if (number < range[0])
+            pushFront(queue.list, number);
+        else if (number < range[1])
+        {
+            init(lastIndex, static_cast<int>(getLength(queue.list) - 1));
+            doActionOnIndexes(queue.list, lastIndex, index_actions::pushBefore, number);
+            deleteList(lastIndex);
+        }
+        else
+            pushBack(queue.list, number);
+
+        updateFields(queue);
+    }
+    printBegin(queue.list);
+    deleteQueue(queue);
 
     in.close();
     std::ofstream out(pathOut);
 
     out.close();
+    deleteList(lastIndex);
 }
 
 void task5()
