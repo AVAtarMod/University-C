@@ -618,7 +618,7 @@ void deleteList(intList2D list)
     }
 }
 
-void deleteList(IntList1D list)
+void deleteList(IntList1D &list)
 {
     if (list != nullptr)
     {
@@ -628,6 +628,7 @@ void deleteList(IntList1D list)
             *list = nullptr;
         }
         delete list;
+        list = nullptr;
     }
 }
 

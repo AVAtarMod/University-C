@@ -83,7 +83,7 @@ int greaterThenIndex(const intList2D list, int index);
 int sumChain(const intList2D list);
 int findFirstOf(const IntList1D list, int number);
 
-void deleteList(IntList1D list);
+void deleteList(IntList1D &list);
 void deleteList(intList2D list);
 
 void printBegin(const IntList1D list);
@@ -175,9 +175,26 @@ bool is_inited(const List1D<T> list)
 }
 
 template <class T>
+uint getLength(const List1D<T> list)
+{
+    uint length = 0;
+    if (list != nullptr && *list != nullptr)
+    {
+        List1D_element<T> *tmp = *list;
+        while (tmp != nullptr)
+        {
+            tmp = tmp->next;
+            ++length;
+        }
+    }
+
+    return length;
+}
+
+template <class T>
 List1D_element<T> *popBack(List1D<T> &list)
 {
-    if (list != nullptr && *list == nullptr)
+    if (list != nullptr && *list != nullptr)
     {
         List1D_element<T> begin = *list;
         List1D_element<T> prev;
@@ -241,7 +258,7 @@ void pushFront(List1D<T> &list, T data)
 }
 
 template <class T>
-void deleteList(List1D<T> list)
+void deleteList(List1D<T> &list)
 {
     if (list != nullptr)
     {
@@ -258,6 +275,7 @@ void deleteList(List1D<T> list)
             *list = nullptr;
         }
         delete list;
+        list = nullptr;
     }
 }
 
