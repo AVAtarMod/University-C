@@ -11,12 +11,17 @@ void replace(char *string, int *indexes, int lengthIndexes, char symbol);
 int *indexSymbols(char *string, char symbol, int &count);
 
 template <class T>
-T pow(T a, int power)
+T pow(T a, uint power)
 {
-    if (power == 1)
-        return a;
-    else
-        return pow(a * a, power - 1);
+    if (power == 0)
+        return 1;
+    long result = a;
+    while (power != 1)
+    {
+        result *= a;
+        --power;
+    }
+    return result;
 }
 
 #endif //FUNCTIONS_LIB
