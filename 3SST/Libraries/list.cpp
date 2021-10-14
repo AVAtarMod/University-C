@@ -21,6 +21,7 @@ void APPEND_FRONT_Link(IntList1D list, IntList1D appendList);
 void PUSH_Back(IntList1D_element *begin, int number);
 void PUSH_Back(IntList1D_element *begin, IntList1D_element *element);
 bool PUSH_Before(IntList1D_element *current, int number);
+bool PUSH_After(IntList1D_element *current, int number);
 void PUSH_Front(IntList1D_element *begin, int number);
 
 IntList1D_element *POP_Back(IntList1D_element *begin);
@@ -549,7 +550,7 @@ void pushFront(IntList1D &list, int number)
 
 IntList1D_element *popBack(IntList1D &list)
 {
-    if (list != nullptr && *list == nullptr)
+    if (list != nullptr && *list != nullptr)
         return POP_Back(*list);
     else
         return nullptr;
@@ -709,6 +710,12 @@ namespace index_actions
         PUSH_Before(*current, data);
         *current = (*current)->next;
     }
+
+    void pushAfter(IntList1D_element **prev, IntList1D_element **current, int data)
+    {
+        PUSH_After(*current, data);
+        *current = (*current)->next;
+    }
 } // namespace index_actions
 
 // ########################################################
@@ -842,6 +849,18 @@ bool PUSH_Before(IntList1D_element *current, int number)
         return false;
 }
 
+bool PUSH_After(IntList1D_element *current, int number)
+{
+    if (current != nullptr)
+    {
+        IntList1D_element *temp = new IntList1D_element(number, current->next);
+        current->next = temp;
+        return true;
+    }
+    else
+        return false;
+}
+
 void PUSH_Back(IntList1D_element *begin, int number)
 {
     while (begin->next != nullptr)
@@ -867,14 +886,14 @@ void PUSH_Front(IntList1D_element *begin, int number)
 
 IntList1D_element *POP_Back(IntList1D_element *begin)
 {
-    IntList1D_element prev;
+    IntList1D_element *prev;
     while (begin->next != nullptr)
     {
-        prev = *begin;
+        prev = begin;
         begin = begin->next;
     }
 
-    prev.next = nullptr;
+    prev->next = nullptr;
     return begin;
 }
 

@@ -128,6 +128,7 @@ namespace merge_actions
 namespace index_actions
 {
     void pushBefore(IntList1D_element **prev, IntList1D_element **current, int data);
+    void pushAfter(IntList1D_element **prev, IntList1D_element **current, int data);
 } // namespace index_actions
 
 IntList1D filter(const IntList1D source, bool comparator(int));
@@ -196,15 +197,16 @@ List1D_element<T> *popBack(List1D<T> &list)
 {
     if (list != nullptr && *list != nullptr)
     {
-        List1D_element<T> begin = *list;
-        List1D_element<T> prev;
+        List1D_element<T> *begin = *list;
+        List1D_element<T> *prev = nullptr;
         while (begin->next != nullptr)
         {
-            prev = *begin;
+            prev = begin;
             begin = begin->next;
         }
 
-        prev.next = nullptr;
+        if (prev != nullptr)
+            prev->next = nullptr;
         return begin;
     }
     else
