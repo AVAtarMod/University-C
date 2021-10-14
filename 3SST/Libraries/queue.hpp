@@ -29,7 +29,17 @@ bool isEmpty(Queue<T> queue)
 template <class T>
 Queue_element<T> *pop(Queue<T> &queue)
 {
-    return popBack(queue);
+    Queue_element<T> *tmp;
+    if ((*queue.list)->next == nullptr)
+    {
+        tmp = queue.begin;
+        *queue.list = nullptr;
+    }
+    else
+        tmp = popBack(queue.list);
+
+    updateFields(queue);
+    return tmp;
 }
 
 template <class T>
@@ -43,7 +53,8 @@ void deleteQueue(Queue<T> &queue)
 template <class T>
 void push(Queue<T> &queue, T data)
 {
-    pushFront(queue, data);
+    pushFront(queue.list, data);
+    queue.begin = *queue.list;
 }
 
 template <class T>
