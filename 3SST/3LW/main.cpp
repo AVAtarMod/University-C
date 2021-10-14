@@ -142,7 +142,7 @@ void task3()
          * 2a) 2.5 + 5 * 4 - 3
          * 2b) 2.5 5 * 4 + 3 -
          * 
-         * @todo 3a) 2 + 5 * 3 - 10
+         * 3a) 2 + 5 * 3 - 10
          * 3b) 2 5 3 * 10 - +
          */
         std::string rpnExpression = convertToRpnExpression(buffer);
@@ -167,7 +167,7 @@ void task3()
 
 void task4()
 {
-    std::string path = printAndScan<std::string>("file path:");
+    std::string path = printAndScan<std::string>("file path: ");
     std::string pathOut = path + ".out";
     std::ifstream in(path);
     int range[2];
@@ -175,38 +175,93 @@ void task4()
     range[1] = printAndScan<int>("Enter B: ");
 
     IntQueue queue;
-    IntList1D lastIndex = nullptr;
+    IntList1D_element *lastIndex = nullptr;
+    IntList1D lastIndexList = &lastIndex;
+    IntList1D_element begin(0);
+    IntList1D_element *begin_ptr = &begin;
+    IntList1D beginList = &begin_ptr;
 
     int number;
+    bool endPushed = false;
     while (!in.eof())
     {
         in >> number;
         if (number < range[0])
-            pushFront(queue.list, number);
-        else if (number < range[1])
         {
-            init(lastIndex, static_cast<int>(getLength(queue.list) - 1));
-            doActionOnIndexes(queue.list, lastIndex, index_actions::pushBefore, number);
-            deleteList(lastIndex);
+            if (isEmpty(queue))
+                pushFront(queue.list, number);
+            else
+                doActionOnIndexes(queue.list, beginList, index_actions::pushAfter, number);
+
+            if (endPushed)
+                (*lastIndexList)->data += 1;
+        }
+        else if (number <= range[1])
+        {
+            if (endPushed)
+            {
+                doActionOnIndexes(queue.list, lastIndexList, index_actions::pushBefore, number);
+                (*lastIndexList)->data += 1;
+            }
+            else
+                pushBack(queue.list, number);
         }
         else
+        {
             pushBack(queue.list, number);
+            if (!endPushed)
+                *lastIndexList = new IntList1D_element(static_cast<int>(getLength(queue.list) - 1));
+            endPushed = true;
+        }
 
         updateFields(queue);
     }
-    printBegin(queue.list);
-    deleteQueue(queue);
+    delete *lastIndexList;
 
     in.close();
     std::ofstream out(pathOut);
+    while (!isEmpty(queue))
+    {
+        IntQueue_element *tmp = popFront(queue.list);
+        out << tmp->data << " ";
+        delete tmp;
+        updateFields(queue);
+    }
 
     out.close();
-    deleteList(lastIndex);
+    deleteQueue(queue);
 }
 
 void task5()
 {
-    std::string path = printAndScan<std::string>("file path:");
-    std::string pathOut = path + ".out";
+    std::string path = printAndScan<std::string>("file path: ");
+
     std::ifstream in(path);
+    std::ofstream out(path + ".out");
+    IntQueue queue;
+
+    std::string buffer;
+
+    while (!in.eof())
+    {
+        buffer.resize(UINT8_MAX);
+        in.getline(buffer.data(), UINT8_MAX);
+        buffer.resize(buffer.find('\0'));
+        for (uint i = 0; i < buffer.size(); ++i)
+        {
+            char current = buffer[i];
+            if (isdigit(current))
+                push(queue, current - '0');
+            else
+                out << current;
+        }
+        out << " ";
+        while (!isEmpty(queue))
+        {
+            IntQueue_element *tmp = pop(queue);
+            out << tmp->data;
+            delete tmp;
+        }
+        out << "\n";
+    }
 }
