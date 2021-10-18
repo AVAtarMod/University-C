@@ -46,6 +46,9 @@ typedef IntList2D_element **intList2D;
 template <class T>
 using List1D = List1D_element<T> **;
 
+template <class T>
+using List2D = List2D_element<T> **;
+
 enum MODE_STOP
 {
     ZERO,
@@ -73,17 +76,14 @@ enum RETURN_TYPE2D
 };
 
 /**
- * @brief IntList1D functions (non universal)
+ * @brief IntList functions (non universal)
  */
-bool init(IntList1D &list, int number);
-bool is_inited(const IntList1D list);
 
 int maxElementData(const intList2D list);
 int greaterThenIndex(const intList2D list, int index);
 int sumChain(const intList2D list);
 int findFirstOf(const IntList1D list, int number);
 
-void deleteList(IntList1D &list);
 void deleteList(intList2D list);
 
 void printBegin(const IntList1D list);
@@ -91,11 +91,7 @@ void printBegin(const intList2D list);
 void printEnd(const intList2D list);
 
 void pushBack(IntList1D &list, int number);
-void pushBack(IntList1D &list, IntList1D_element *element);
-void pushFront(IntList1D &list, int number);
 
-IntList1D_element *popBack(IntList1D &list);
-IntList1D_element *popFront(IntList1D &list);
 IntList1D popByIndexes(IntList1D list, const IntList1D indexes);
 
 void appendFront(IntList1D list, IntList1D appendList);
@@ -138,7 +134,7 @@ void doActionOnIndexes(IntList1D list, const IntList1D indexes, void index_actio
 void doActionOnIndexes(IntList1D list, const IntList1D indexes, void index_action(IntList1D_element **prev, IntList1D_element **current, int data), int index_action_data);
 
 /**
- * @brief List1D functions (universal templates)
+ * @brief List1D universal functions (templates)
  */
 
 template <class T>
@@ -267,6 +263,152 @@ void deleteList(List1D<T> &list)
         if (*list != nullptr)
         {
             List1D_element<T> *prev = *list, *temp = (*list)->next;
+            while (temp != nullptr)
+            {
+                delete prev;
+                prev = temp;
+                temp = temp->next;
+            }
+            delete prev;
+            *list = nullptr;
+        }
+        delete list;
+        list = nullptr;
+    }
+}
+
+/**
+ * @brief List2D universal functions (templates)
+ */
+
+template <class T>
+void init(List2D<T> &list, T data)
+{
+    if (list == nullptr || *list == nullptr)
+    {
+        if (list == nullptr)
+            list = new List2D_element<T> *;
+        *list = new List2D_element<T>(nullptr, data);
+    }
+}
+
+template <class T>
+bool init(List2D<T> &list, List2D_element<T> *element)
+{
+    if (list == nullptr)
+    {
+        list = new List2D_element<T> *;
+        *list = element;
+        return true;
+    }
+    return false;
+}
+
+template <class T>
+bool is_inited(const List2D<T> list)
+{
+    if (list == nullptr && *list == nullptr)
+        return false;
+    else
+        return true;
+}
+
+template <class T>
+uint getLength(const List2D<T> list)
+{
+    uint length = 0;
+    if (list != nullptr && *list != nullptr)
+    {
+        List2D_element<T> *tmp = *list;
+        while (tmp != nullptr)
+        {
+            tmp = tmp->next;
+            ++length;
+        }
+    }
+
+    return length;
+}
+
+template <class T>
+List2D_element<T> *popBack(List2D<T> &list)
+{
+    if (list != nullptr && *list != nullptr)
+    {
+        List2D_element<T> *begin = *list;
+        List2D_element<T> *prev = nullptr;
+        while (begin->next != nullptr)
+        {
+            prev = begin;
+            begin = begin->next;
+        }
+
+        if (prev != nullptr)
+            prev->next = nullptr;
+        begin->prev = nullptr;
+        return begin;
+    }
+    else
+        return nullptr;
+}
+
+template <class T>
+List2D_element<T> *popFront(List2D<T> &list)
+{
+    if (list != nullptr && *list != nullptr)
+    {
+        List2D_element<T> *pop = *list;
+        *list = pop->next;
+        (*list)->prev = nullptr;
+        return pop;
+    }
+    else
+        return nullptr;
+}
+
+template <class T>
+void pushBack(List2D<T> &list, List2D_element<T> *element)
+{
+    if (list == nullptr || *list == nullptr)
+        init(list, element);
+    else
+    {
+        List2D_element<T> *begin = *list;
+        while (begin->next != nullptr)
+        {
+            begin = begin->next;
+        }
+        begin->next = element;
+        element->prev = begin;
+    }
+}
+
+template <class T>
+void pushFront(List2D<T> &list, T data)
+{
+    if (list == nullptr || *list == nullptr)
+        init(list, data);
+    else
+    {
+        List2D_element<T> *current = *list;
+        if (current != nullptr)
+        {
+            List2D_element<T> *temp = new List2D_element<T>(current->data, current->next);
+            current->data = data;
+            current->next = temp;
+            temp->prev = current;
+        }
+    }
+}
+
+template <class T>
+void deleteList(List2D<T> &list)
+{
+    if (list != nullptr)
+    {
+        if (*list != nullptr)
+        {
+            List2D_element<T> *prev = *list, *temp = (*list)->next;
             while (temp != nullptr)
             {
                 delete prev;

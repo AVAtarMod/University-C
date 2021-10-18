@@ -30,37 +30,6 @@ IntList1D GEN_USERINPUT_newline(const uint &buffer_size, bool &printInfo);
 
 IntList1D CONV_sstreamToList1D(std::stringstream &sstream);
 
-bool init(IntList1D &list, int number)
-{
-    if (list == nullptr || *list == nullptr)
-    {
-        if (list == nullptr)
-            list = new IntList1D_element *;
-        *list = new IntList1D_element(number);
-        return true;
-    }
-    return false;
-}
-
-bool init(IntList1D &list, IntList1D_element *element)
-{
-    if (list == nullptr)
-    {
-        list = new IntList1D_element *;
-        *list = element;
-        return true;
-    }
-    return false;
-}
-
-bool is_inited(const IntList1D list)
-{
-    if (list == nullptr || *list == nullptr)
-        return false;
-    else
-        return true;
-}
-
 void appendFront(IntList1D list, IntList1D appendList)
 {
     APPEND_FRONT_Link(list, appendList);
@@ -532,42 +501,6 @@ void pushBack(IntList1D &list, int number)
         PUSH_Back(*list, number);
 }
 
-void pushBack(IntList1D &list, IntList1D_element *element)
-{
-    if (list == nullptr || *list == nullptr)
-        init(list, element);
-    else
-        PUSH_Back(*list, element);
-}
-
-void pushFront(IntList1D &list, int number)
-{
-    if (list == nullptr || *list == nullptr)
-        init(list, number);
-    else
-        PUSH_Front(*list, number);
-}
-
-IntList1D_element *popBack(IntList1D &list)
-{
-    if (list != nullptr && *list != nullptr)
-        return POP_Back(*list);
-    else
-        return nullptr;
-}
-
-IntList1D_element *popFront(IntList1D &list)
-{
-    if (list != nullptr && *list != nullptr)
-    {
-        IntList1D_element *pop = *list;
-        *list = pop->next;
-        return pop;
-    }
-    else
-        return nullptr;
-}
-
 IntList1D popByIndexes(IntList1D list, const IntList1D indexes)
 {
     IntList1D_element *current = *list, *prev = nullptr;
@@ -616,20 +549,6 @@ void deleteList(intList2D list)
             *list = nullptr;
         }
         delete list;
-    }
-}
-
-void deleteList(IntList1D &list)
-{
-    if (list != nullptr)
-    {
-        if (*list != nullptr)
-        {
-            DEL(*list);
-            *list = nullptr;
-        }
-        delete list;
-        list = nullptr;
     }
 }
 
