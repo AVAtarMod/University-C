@@ -175,24 +175,18 @@ void task4()
     range[1] = printAndScan<int>("Enter B: ");
 
     IntQueue queue;
+
     IntList1D_element *lastIndex = nullptr;
     IntList1D lastIndexList = &lastIndex;
-    IntList1D_element begin(0);
-    IntList1D_element *begin_ptr = &begin;
-    IntList1D beginList = &begin_ptr;
 
     int number;
+    in >> number;
     bool endPushed = false;
     while (!in.eof())
     {
-        in >> number;
         if (number < range[0])
         {
-            if (isEmpty(queue))
-                pushFront(queue.list, number);
-            else
-                doActionOnIndexes(queue.list, beginList, index_actions::pushAfter, number);
-
+            pushFront(queue.list, number);
             if (endPushed)
                 (*lastIndexList)->data += 1;
         }
@@ -214,6 +208,7 @@ void task4()
             endPushed = true;
         }
 
+        in >> number;
         updateFields(queue);
     }
     delete *lastIndexList;
