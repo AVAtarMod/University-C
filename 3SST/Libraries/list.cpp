@@ -37,9 +37,9 @@ void appendFront(IntList1D list, IntList1D appendList)
 
 void appendBack(IntList1D &list, IntList1D appendList)
 {
-    if (is_inited(appendList))
+    if (isInited(appendList))
     {
-        if (is_inited(list))
+        if (isInited(list))
         {
             IntList1D_element *list_ptr = *list;
             while (list_ptr->next != nullptr)
@@ -146,12 +146,12 @@ IntList1D mergeUpperSorted(IntList1D listA, IntList1D listB, bool listsAlreadySo
     IntList1D_element *listptrA;
     IntList1D_element *listptrB;
 
-    if (is_inited(listA))
+    if (isInited(listA))
         listptrA = *listA;
     else
         listptrA = nullptr;
 
-    if (is_inited(listB))
+    if (isInited(listB))
         listptrA = *listB;
     else
         listptrA = nullptr;
@@ -554,7 +554,7 @@ void deleteList(intList2D list)
 
 IntList1D reverse(const IntList1D source)
 {
-    if (is_inited(source))
+    if (isInited(source))
     {
         IntList1D rotated = nullptr;
         IntList1D_element *begin = *source;
@@ -570,7 +570,7 @@ IntList1D reverse(const IntList1D source)
 
 IntList1D filter(const IntList1D source, bool comparator(int))
 {
-    if (is_inited(source))
+    if (isInited(source))
     {
         IntList1D filtered = nullptr;
         IntList1D_element *current = *source;
@@ -590,7 +590,7 @@ IntList1D filter(const IntList1D source, bool comparator(int))
 
 IntList1D filter(const IntList1D source, bool comparator(int, int), int comparator_data)
 {
-    if (is_inited(source))
+    if (isInited(source))
     {
         IntList1D filtered = nullptr;
         IntList1D_element *current = *source;
