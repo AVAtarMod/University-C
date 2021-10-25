@@ -24,4 +24,6 @@ T pow(T a, uint power)
     return result;
 }
 
+int getNumberDigits(int number);
+
 #endif //FUNCTIONS_LIB
