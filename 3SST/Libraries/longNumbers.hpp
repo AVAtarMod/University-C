@@ -50,4 +50,6 @@ class LongNumber {
     ~LongNumber() { deleteList(list_); }
 };
 
+LongNumber fact(const LongNumber& a, const LongNumber& b);
+
 #endif // LONGNUMBERS_LIB

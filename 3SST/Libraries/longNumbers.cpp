@@ -26,7 +26,8 @@ LongNumber::LongNumber(const char* cstring) : list_(StrToList(cstring)) {
 
 LongNumber::LongNumber(int number) {
     while (number != 0) {
-        pushFront(list_, static_cast<uint8_t>(number % storageBase_));
+        pushFront(list_, uint8_t{number % storageBase_});
+        number /= storageBase_;
     }
 }
 
@@ -34,10 +35,10 @@ void LongNumber::print() {
     if (initialized_) {
         UnsignedLongNumber_element* tmp = last_;
         while (tmp->previous != nullptr) {
-            std::cout << static_cast<int>(tmp->data) << " ";
+            std::cout << int{tmp->data} << " ";
             tmp = tmp->previous;
         }
-        std::cout << static_cast<int>(tmp->data);
+        std::cout << int{tmp->data};
     }
 }
 
@@ -93,16 +94,33 @@ LongNumber LongNumber::operator+(const LongNumber& b) const {
 LongNumber LongNumber::operator*(const LongNumber& b) const {
     const LongNumber& a = *this;
     UnsignedLongNumber result = nullptr;
+    UnsignedLongNumber tmp = nullptr;
+
+    uint shiftDigits = 0;
+    UnsignedLongNumber_element* b_ptr = (b.initialized_) ? *b.list_ : nullptr;
+    while (b_ptr) {
+        UnsignedLongNumber_element* a_ptr =
+            (a.initialized_) ? *a.list_ : nullptr;
+        while (a_ptr) {
+            uint8_t multiplication = a_ptr->data * b_ptr->data;
+            pushBack(tmp, multiplication);
+            a_ptr = a_ptr->next;
+        }
+
+        ++shiftDigits;
+        b_ptr = b_ptr->next;
+    }
+
     return LongNumber(result);
 }
 
 std::istream& operator>>(std::istream& input, LongNumber& number) {
     char* buffer = new char[number.bufferSize_];
     input.getline(buffer, number.bufferSize_);
-
     number.list_ = number.StrToList(buffer);
 
     number.update();
     delete[] buffer;
+    input.clear();
     return input;
 }
