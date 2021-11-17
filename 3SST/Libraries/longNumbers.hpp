@@ -6,8 +6,6 @@
 #include "list.hpp"
 #include "string.hpp"
 
-template <class T> using LongNumber_element = List2D_element<T>;
-
 using UnsignedLongNumber = List2D<uint8_t>;
 using UnsignedLongNumber_element = List2D_element<uint8_t>;
 
@@ -31,25 +29,42 @@ class LongNumber {
     bool initialized_ = false;
 
     UnsignedLongNumber StrToList(const char* str);
+    void normalize();
 
   public:
     LongNumber(UnsignedLongNumber numberList = nullptr);
     LongNumber(const char* cstring);
     LongNumber(int number);
+    LongNumber(const LongNumber& longNumber);
 
-    const uint getSize() const { return size_; }
-    const uint isInitialized() const { return initialized_; }
+    uint getSize() const { return size_; }
+    uint isInitialized() const { return initialized_; }
 
     void print();
     void update();
 
     LongNumber operator+(const LongNumber& b) const;
     LongNumber operator*(const LongNumber& b) const;
-    friend std::istream& operator>>(std::istream& input, LongNumber& number);
+    LongNumber operator-(const LongNumber& b) const;
+    bool operator>(const LongNumber& b) const;
+    bool operator<(const LongNumber& b) const;
 
-    ~LongNumber() { deleteList(list_); }
+    void operator=(const LongNumber& b);
+    void operator*=(const LongNumber& b);
+
+    friend std::istream& operator>>(std::istream& input, LongNumber& number);
+    friend std::ostream& operator<<(std::ostream& output,
+                                    const LongNumber& number);
+
+    ~LongNumber() {
+        if (initialized_)
+            deleteList(list_);
+    }
 };
 
-LongNumber fact(const LongNumber& a, const LongNumber& b);
+std::istream& operator>>(std::istream& input, LongNumber& number);
+std::ostream& operator<<(std::ostream& output, const LongNumber& number);
+
+LongNumber fact(const int number);
 
 #endif // LONGNUMBERS_LIB
