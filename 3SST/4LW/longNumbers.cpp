@@ -1,1 +1,1 @@
-../Libraries/longNumbers.cpp
+/home/gs/Programming/C++/Laboratory/3SST/Libraries/longNumbers.cpp

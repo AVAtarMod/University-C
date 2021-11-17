@@ -1,1 +1,1 @@
-/home/grigory/Programming/C++/Laboratory/3SST/Libraries/functions.hpp
+/home/gs/Programming/C++/Laboratory/3SST/Libraries/functions.hpp

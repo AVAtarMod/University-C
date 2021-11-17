@@ -55,9 +55,39 @@ int main(int argc, char const* argv[]) {
 }
 
 void task1() {
-    LongNumber number;
+    int number;
+    std::cout << "Enter number for computing factorial: ";
     std::cin >> number;
+    std::cout << fact(number) << "\n";
 }
-void task2() {}
-void task3() {}
+
+void task2() {
+    LongNumber A, B;
+    std::cout << "Enter number A: ";
+    std::cin >> A;
+    std::cout << "Enter number B: ";
+    std::cin >> B;
+    std::cout << "Result: A*B = " << A * B << "\n";
+}
+
+void task3() {
+    LongNumber A, B;
+    std::cout << "Enter number A: ";
+    std::cin >> A;
+    std::cout << "Enter number B: ";
+    std::cin >> B;
+
+    LongNumber result;
+    std::string greatest;
+    if (A > B) {
+        greatest = "A";
+        result = A - B;
+    } else {
+        greatest = "B";
+        result = B - A;
+    }
+
+    std::cout << "Greatest number is " << greatest << "\n";
+    std::cout << "Result: MAX-MIN = " << result << "\n";
+}
 void task4() {}
