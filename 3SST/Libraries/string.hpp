@@ -20,8 +20,8 @@ template <class T> T strToType(std::string str) {
     else
         return 0;
 }
-
-uint8_t charToInt(char digit) { return digit - '0'; }
+ 
+inline uint8_t charToInt(char digit) { return digit - '0'; }
 
 } // namespace conversion
 
