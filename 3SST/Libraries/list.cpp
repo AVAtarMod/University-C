@@ -51,7 +51,7 @@ void appendBack(IntList1D &list, IntList1D appendList)
     }
 }
 
-int sumChain(const intList2D list)
+int sumChain(const IntList2D list)
 {
     IntList2D_element *begin = *list;
     int sum = 0;
@@ -63,7 +63,7 @@ int sumChain(const intList2D list)
     return sum;
 }
 
-int greaterThenIndex(const intList2D list, int index)
+int greaterThenIndex(const IntList2D list, int index)
 {
     IntList2D_element *begin = *list;
     int cur_index = 0;
@@ -90,7 +90,7 @@ int greaterThenIndex(const intList2D list, int index)
     return greater;
 }
 
-int maxElementData(const intList2D list)
+int maxElementData(const IntList2D list)
 {
     IntList2D_element *begin = *list;
     int max = 0;
@@ -103,7 +103,7 @@ int maxElementData(const intList2D list)
     return max;
 }
 
-void printBegin(const intList2D list)
+void printBegin(const IntList2D list)
 {
     if (list != nullptr)
         PRINT_begin(*list, true);
@@ -115,7 +115,7 @@ void printBegin(const IntList1D list)
         PRINT_begin(*list, true);
 }
 
-void printEnd(const intList2D list)
+void printEnd(const IntList2D list)
 {
     if (list != nullptr)
         PRINT_end(*list, true);
@@ -539,7 +539,7 @@ IntList1D popByIndexes(IntList1D list, const IntList1D indexes)
     return deletedElements;
 }
 
-void deleteList(intList2D list)
+void deleteList(IntList2D list)
 {
     if (list != nullptr)
     {

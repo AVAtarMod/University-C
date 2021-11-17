@@ -236,6 +236,20 @@ template <class T> void deleteList(List1D<T>& list) {
     }
 }
 
+template <class T> void deleteListContent(List1D<T>& list) {
+    if (*list != nullptr) {
+        List1D_element<T>*prev = *list, *temp = (*list)->next;
+        while (temp != nullptr) {
+            delete prev;
+            prev = temp;
+            temp = temp->next;
+        }
+        delete prev;
+        *list = nullptr;
+    }
+    list = nullptr;
+}
+
 /**
  * @brief List2D universal functions (templates)
  */
@@ -257,10 +271,7 @@ template <class T> bool init(List2D<T>& list, List2D_element<T>* element) {
 }
 
 template <class T> bool isInited(const List2D<T> list) {
-    if (list == nullptr && *list == nullptr)
-        return false;
-    else
-        return true;
+    return (list != nullptr && *list != nullptr);
 }
 
 template <class T> uint getLength(const List2D<T> list) {
@@ -274,6 +285,18 @@ template <class T> uint getLength(const List2D<T> list) {
     }
 
     return length;
+}
+
+template <class T> List2D<T> copy(const List2D<T> list) {
+    List2D<T> result = nullptr;
+    if (isInited(list)) {
+        List2D_element<T>* list_ptr = *list;
+        while (list_ptr != nullptr) {
+            pushBack(result, list_ptr->data);
+            list_ptr = list_ptr->next;
+        }
+    }
+    return result;
 }
 
 template <class T> List2D_element<T>* popBack(List2D<T>& list) {
@@ -304,7 +327,7 @@ template <class T> List2D_element<T>* popFront(List2D<T>& list) {
 }
 
 template <class T> void pushBack(List2D<T>& list, List2D_element<T>* element) {
-    if (list == nullptr || *list == nullptr)
+    if (!isInited(list))
         init(list, element);
     else {
         List2D_element<T>* begin = *list;
@@ -317,7 +340,7 @@ template <class T> void pushBack(List2D<T>& list, List2D_element<T>* element) {
 }
 
 template <class T> void pushBack(List2D<T>& list, T data) {
-    if (list == nullptr || *list == nullptr)
+    if (!isInited(list))
         init(list, data);
     else {
         List2D_element<T>* begin = *list;
@@ -356,6 +379,20 @@ template <class T> void deleteList(List2D<T>& list) {
         delete list;
         list = nullptr;
     }
+}
+
+template <class T> void deleteListContent(List2D<T>& list) {
+    if (list != nullptr && *list != nullptr) {
+        List2D_element<T>*prev = *list, *temp = (*list)->next;
+        while (temp != nullptr) {
+            delete prev;
+            prev = temp;
+            temp = temp->next;
+        }
+        delete prev;
+        *list = nullptr;
+    }
+    list = nullptr;
 }
 
 #endif // LIST_LIB
