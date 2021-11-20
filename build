@@ -1,0 +1,17 @@
+#! /usr/bin/env bash
+
+rm_valgrind_files() {
+    local vgFilesList=$(find . -name 'vgcore.*' 2>&1)
+    local numberVgFiles=$(echo $vgFilesList | wc -l)
+    
+    if [[ $numberVgFiles > 1 ]]; then
+        for i in $vgFilesList; do
+            rm $i
+        done
+        echo "[I] $numberVgFiles Valgrind files removed"
+    else
+        echo "[I] no Valgrind files found"
+    fi
+}
+
+rm_valgrind_files
