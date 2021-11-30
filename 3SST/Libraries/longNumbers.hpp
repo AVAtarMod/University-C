@@ -11,45 +11,95 @@ using UnsignedLongNumber_element = List2D_element<uint8_t>;
 
 /**
  * TODO move all libs to include path
- * TODO add signed number support
  *
  * @brief Long Number class
  */
 class LongNumber {
   private:
-    uint bufferSize_ = UINT8_MAX;
+    uint bufferSize_ = INT16_MAX;
     uint storageBase_ = 10;
     uint size_ = 0;
 
-    UnsignedLongNumber list_;
-    UnsignedLongNumber_element* first_;
-    UnsignedLongNumber_element* last_;
+    UnsignedLongNumber list_ = nullptr;
+    UnsignedLongNumber_element* first_ = nullptr;
+    UnsignedLongNumber_element* last_ = nullptr;
 
     bool positive_ = true;
     bool initialized_ = false;
 
     UnsignedLongNumber StrToList(const char* str);
     void normalize();
+    void appendBegin(const LongNumber& longNumber);
 
   public:
-    LongNumber(UnsignedLongNumber numberList = nullptr);
+    LongNumber(UnsignedLongNumber numberList);
     LongNumber(const char* cstring);
     LongNumber(int number);
+    LongNumber();
+
+    /**
+     * @brief Construct a new Long Number object as @a copy longNumber
+     * @note This is copy-constructor
+     * @param longNumber object LongNumber
+     */
     LongNumber(const LongNumber& longNumber);
 
     uint getSize() const { return size_; }
-    uint isInitialized() const { return initialized_; }
+
+    /**
+     * @brief Get the subnumber from [start,end)
+     * @param indexBegin index of begin of range
+     * @param indexEnd index of end of range. Must be > indexStart
+     * @return LongNumber subnumber.
+     */
+    LongNumber getSubNumber(uint indexBegin, uint indexEnd) const;
+
+    bool isInitialized() const { return initialized_; }
 
     void print();
     void update();
 
+    /**
+     * @brief clear LongNumber content.
+     */
+    void clear();
+
+    /**
+     * @brief Cut number from [start,end),
+     * @param indexBegin index of begin of range
+     * @param indexEnd index of end of range. Must be > indexStart
+     * @return LongNumber subnumber.
+     */
+    LongNumber cut(uint indexStart, uint indexEnd);
+
+    /**
+     * @brief Const operators
+     */
+
     LongNumber operator+(const LongNumber& b) const;
-    LongNumber operator*(const LongNumber& b) const;
     LongNumber operator-(const LongNumber& b) const;
+    LongNumber operator*(const LongNumber& b) const;
+    LongNumber operator/(const LongNumber& b) const;
+
     bool operator>(const LongNumber& b) const;
     bool operator<(const LongNumber& b) const;
+    bool operator<=(const LongNumber& b) const;
+    bool operator>=(const LongNumber& b) const;
+    bool operator==(const LongNumber& b) const;
+    bool operator!=(const LongNumber& b) const;
 
+    /**
+     * @brief Non-const operators
+     */
+
+    /**
+     * @brief  Assign copy of B to A (where A = B)
+     *
+     * @param b Value for copying to A
+     */
     void operator=(const LongNumber& b);
+    void operator+=(const LongNumber& b);
+    void operator-=(const LongNumber& b);
     void operator*=(const LongNumber& b);
 
     friend std::istream& operator>>(std::istream& input, LongNumber& number);
