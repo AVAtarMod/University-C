@@ -4,9 +4,7 @@
 #include <iostream>
 #include <string>
 
-template <class T>
-T printAndScan(const char *text = "")
-{
+template <class T> T printAndScan(const char* text = "") {
     T data;
     std::cout << text;
     std::cin >> data;
