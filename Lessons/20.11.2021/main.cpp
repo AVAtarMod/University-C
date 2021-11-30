@@ -31,12 +31,12 @@ int main(int argc, char const* argv[]) {
             std::cout << "-----\n";
             break;
         case 2:
-            std::cout << "Задание №1\n";
+            std::cout << "Задание №2\n";
             task2();
             std::cout << "-----\n";
             break;
         case 3:
-            std::cout << "Задание №1\n";
+            std::cout << "Задание №3\n";
             task3();
             std::cout << "-----\n";
             break;
@@ -65,6 +65,7 @@ void task1() {
             prevData = list_ptr->data;
         } while (list_ptr->next != nullptr);
     }
+    deleteList(list);
     std::cout << "Length of sequence: " << lengthSequence << "\n";
 }
 
@@ -84,6 +85,7 @@ void task2() {
     indexes = getIndexesByComparator(list, comparator::negative);
     doActionOnIndexes(list, indexes, index_actions::pushBefore, 0);
     printBegin(list);
+    deleteList(list);
     std::cout << "\n";
 }
 
@@ -110,5 +112,6 @@ void task3() {
         }
     }
     printBegin(list);
+    deleteList(list);
     std::cout << "\n";
 }
