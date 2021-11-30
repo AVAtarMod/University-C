@@ -2,7 +2,7 @@
 CC = g++
 CXXFLAGS = -std=c++17 -O2
 LDFLAGS =
-DEVFLAGS = -std=c++17 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3  -Wno-error=unused-but-set-parameter -Wno-error=unused-parameter
+DEVFLAGS = -std=c++17 -Wall -Wnon-virtual-dtor -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3 -Wold-style-cast -Woverloaded-virtual -Wduplicated-branches -Wduplicated-cond -Wsign-promo
 
 # Makefile settings - Can be customized.
 APPNAME = realease.app
