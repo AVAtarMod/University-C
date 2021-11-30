@@ -1,1 +1,1 @@
-../Libraries/graph.hpp
+/home/lgs/Programming/C++/Laboratory/3SST/Libraries/graph.hpp
