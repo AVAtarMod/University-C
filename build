@@ -2,9 +2,9 @@
 
 rm_valgrind_files() {
     local vgFilesList=$(find . -name 'vgcore.*' 2>&1)
-    local numberVgFiles=$(echo $vgFilesList | wc -l)
+    local numberVgFiles=$(echo $vgFilesList | wc -w)
     
-    if [[ $numberVgFiles > 1 ]]; then
+    if [[ $numberVgFiles > 0 ]]; then
         for i in $vgFilesList; do
             rm $i
         done
