@@ -366,16 +366,19 @@ IntList1D cutByIndexRange(IntList1D& list, int from, int to) {
 }
 
 int findFirstOf(const IntList1D list, int number) {
-    IntList1D_element* list_ptr = *list;
-    int index = 0;
-    while (list_ptr != nullptr && list_ptr->data != number) {
-        list_ptr = list_ptr->next;
-        ++index;
+    if (isInited(list)) {
+        IntList1D_element* list_ptr = *list;
+        int index = 0;
+        while (list_ptr != nullptr) {
+            if (list_ptr->data == number) {
+                return index;
+            }
+            list_ptr = list_ptr->next;
+            ++index;
+        }
     }
-    if (list_ptr != nullptr && list_ptr->data == number)
-        return index;
-    else
-        return -1;
+
+    return -1;
 }
 
 /**
@@ -413,7 +416,7 @@ IntList1D getIndexesByComparator(const IntList1D list,
 
 void doActionOnIndexes(IntList1D list, const IntList1D indexes,
                        void index_action(IntList1D_element* current)) {
-    IntList1D_element *current = *list;
+    IntList1D_element* current = *list;
     IntList1D_element* indexes_ptr = *indexes;
 
     int index = 0;
@@ -430,7 +433,7 @@ void doActionOnIndexes(IntList1D list, const IntList1D indexes,
 void doActionOnIndexes(IntList1D list, const IntList1D indexes,
                        void index_action(IntList1D_element** current, int data),
                        int index_action_data) {
-    IntList1D_element *current = *list;
+    IntList1D_element* current = *list;
     IntList1D_element* indexes_ptr = (indexes) ? *indexes : nullptr;
 
     int index = 0;

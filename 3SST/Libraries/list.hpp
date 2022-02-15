@@ -154,7 +154,7 @@ template <class T> bool isInited(const List1D<T> list) {
 
 template <class T> uint getLength(const List1D<T> list) {
     uint length = 0;
-    if (list != nullptr && *list != nullptr) {
+    if (isInited(list)) {
         List1D_element<T>* tmp = *list;
         while (tmp != nullptr) {
             tmp = tmp->next;
@@ -163,6 +163,27 @@ template <class T> uint getLength(const List1D<T> list) {
     }
 
     return length;
+}
+
+template <class T>
+const List1D_element<T>* getElementAt(const List1D<T> list, const uint index) {
+    uint currentIndex = 0;
+    List1D_element<T>* element = nullptr;
+
+    if (isInited(list)) {
+        List1D_element<T>* tmp = *list;
+        while (tmp != nullptr) {
+            if (currentIndex == index) {
+                element = tmp;
+                break;
+            }
+
+            tmp = tmp->next;
+            ++currentIndex;
+        }
+    }
+
+    return element;
 }
 
 /**
@@ -181,7 +202,7 @@ template <class T> List1D<T> copy(const List1D<T> list) {
 }
 
 template <class T> List1D_element<T>* popBack(List1D<T>& list) {
-    if (list != nullptr && *list != nullptr) {
+    if (isInited(list)) {
         List1D_element<T>* begin = *list;
         List1D_element<T>* prev = nullptr;
         while (begin->next != nullptr) {
@@ -197,7 +218,7 @@ template <class T> List1D_element<T>* popBack(List1D<T>& list) {
 }
 
 template <class T> List1D_element<T>* popFront(List1D<T>& list) {
-    if (list != nullptr && *list != nullptr) {
+    if (isInited(list)) {
         List1D_element<T>* pop = *list;
         *list = pop->next;
         return pop;

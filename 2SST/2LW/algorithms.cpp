@@ -148,11 +148,11 @@ Data knuthMorisPratt(const char *string, const char *search)
             if (left == 0)
                 prefix[right] = 0;
             else
-                left = prefix[left - 1];
+                left = prefix[left - 1u];
         }
         if (search[right] == search[left])
         {
-            prefix[right] = left + 1;
+            prefix[right] = left + 1u;
             left++;
         }
     }

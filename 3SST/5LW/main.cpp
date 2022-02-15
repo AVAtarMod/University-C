@@ -77,16 +77,27 @@ void task1() {
     std::ifstream in(filePath);
     if (!in.eof()) {
         Graph graph;
-        in >> graph;
-        graph.print();
+        try {
+            in >> graph;
+            graph.print();
 
-        std::cout << "\nConverted to matrix:\n";
-        matrix_t matrix = graph.getAdjacencyMatrix();
-        for (auto& row : matrix) {
-            for (auto& element : row) {
-                std::cout << element << " ";
+            std::cout << "\nConverted to matrix:\n";
+            matrix_t matrix = graph.getAdjacencyMatrix();
+            for (auto& row : matrix) {
+                for (auto& element : row) {
+                    std::cout << element << " ";
+                }
+                std::cout << '\n';
             }
-            std::cout << '\n';
+            std::cout << "\nSpanning Tree (by depth):\n";
+            Graph spanTree = graph.getSpanningTree(Graph::Method::BY_DEPTH);
+            spanTree.print();
+            std::cout << "\nSpanning Tree (by width):\n";
+            spanTree = graph.getSpanningTree(Graph::Method::BY_WIDTH);
+            spanTree.print();
+        }
+        catch (const std::exception& e) {
+            std::cerr << "\nERROR:" << e.what() << '\n';
         }
 
     } else

@@ -8,7 +8,8 @@ int getRandomNumber(int from, int to) {
     try {
         if (from > to)
             throw "Incorrect couple 'from - to' for generating random numbers";
-    } catch (const char* message) {
+    }
+    catch (const char* message) {
         std::cerr << message << '\n';
         exit(1);
     }

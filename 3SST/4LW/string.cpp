@@ -1,1 +1,1 @@
-/home/gs/Programming/C++/Laboratory/3SST/Libraries/string.cpp
+/home/lgs/Programming/C++/Laboratory/3SST/Libraries/string.cpp

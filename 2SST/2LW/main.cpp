@@ -8,11 +8,11 @@
 #include "files.hpp"
 
 #define cast static_cast
-#define PATH "/home/grigory/Programming/C++/Laboratory/2SST/LABW2/files/table.txt"
+const std::string PATH = "/home/lgs/Programming/C++/Laboratory/2SST/2LW/files/table.txt";
 
 int main()
 {
-    if (isFileExist(PATH))
+    if (isFileExist(PATH.c_str()))
     {
         std::ofstream out(PATH);
         {

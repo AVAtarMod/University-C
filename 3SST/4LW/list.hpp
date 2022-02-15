@@ -1,1 +1,1 @@
-/home/gs/Programming/C++/Laboratory/3SST/Libraries/list.hpp
+/home/lgs/Programming/C++/Laboratory/3SST/Libraries/list.hpp
