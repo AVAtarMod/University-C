@@ -1,13 +1,14 @@
 #include <iostream>
 
 void task1();
+void task2();
 
 int main(int argc, char const *argv[])
 {
     bool noData = false;
     if (argc == 1)
     {
-        std::cout << "Введите программу для запуска: ";
+        std::cout << "Введите программу для запуска (1-2): ";
         argc++;
         noData = true;
     }
@@ -31,6 +32,11 @@ int main(int argc, char const *argv[])
             task1();
             std::cout << "-----\n";
             break;
+        case 2:
+            std::cout << "Задание №2\n";
+            task2();
+            std::cout << "-----\n";
+            break;
         default:
             std::cout << "Номер задачи введён не верно либо не удалось конвертировать введённые данные\n";
             break;
@@ -39,3 +45,4 @@ int main(int argc, char const *argv[])
 }
 
 void task1(){}
+void task2(){}
