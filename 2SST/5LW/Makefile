@@ -1,12 +1,13 @@
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++17 -O2
+LIB_PATH = -iquote ~/Programming/C++/Includes
+CXXFLAGS = -std=c++17 -O2 $(LIB_PATH)
 LDFLAGS =
-DEVFLAGS = -std=c++17 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3
+DEVFLAGS = -std=c++17 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3  -Wno-error=unused-but-set-parameter -Wno-error=unused-parameter $(LIB_PATH)
 
 # Makefile settings - Can be customized.
-APPNAME = algo5.app
-APPNAMEDEV = debug-algo5.app
+APPNAME = realease.app
+APPNAMEDEV = debug.app
 EXT = .cpp
 SRCDIR = .
 OBJDIR = build/

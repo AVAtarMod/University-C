@@ -1,8 +1,9 @@
 # Compiler settings - Can be customized.
 CC = g++
-CXXFLAGS = -std=c++17 -O2
+LIB_PATH = -iquote ~/Programming/C++/Includes
+CXXFLAGS = -std=c++17 -O2 $(LIB_PATH)
 LDFLAGS =
-DEVFLAGS = -std=c++17 -Wall -Wnon-virtual-dtor -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3 -Wold-style-cast -Woverloaded-virtual -Wduplicated-branches -Wduplicated-cond -Wsign-promo
+DEVFLAGS = -std=c++17 -Wall -Wextra -Wsign-conversion -pedantic-errors -Werror -Wuninitialized -g3  -Wno-error=unused-but-set-parameter -Wno-error=unused-parameter $(LIB_PATH)
 
 # Makefile settings - Can be customized.
 APPNAME = realease.app
