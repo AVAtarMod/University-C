@@ -14,4 +14,69 @@ rm_valgrind_files() {
     fi
 }
 
-rm_valgrind_files
+# TODO add verbose/debug options
+update_from_template() {
+    local listLW=$(find . -type d -path '*LW' 2>&1)
+    for i in $listLW; do
+        if [ -f "${i}/$1" ]; then
+            cp -f Template/$1 ${i}/$1
+        fi
+    done
+}
+
+main(){
+    local helpWasOpen=0
+    local verbose=0
+    local updateFiles=0
+    local filename=""
+    local debug=0
+
+    while [ -n "$1" ]; do
+        case "$1" in
+        -h)
+            let helpWasOpen=1
+            help
+            ;;
+        -v)
+            let verbose=1
+            ;;
+        -u)
+            let updateFiles=1
+            filename="$2"
+            shift
+            ;;
+        -d)
+            let debug=1
+            ;;
+        *)
+            help "$@"
+            exit 1
+            ;;
+        esac
+        shift
+    done
+
+    rm_valgrind_files
+    if [[ $updateFiles -eq 1 ]];then
+        update_from_template $filename $verbose
+    fi
+}
+
+help() {
+    if [[ $1 ]]; then
+        echo "'$1' не поддерживается (необходимо использовать верный ключ)."
+    fi
+
+    echo
+    echo "Список возможных параметров (вводить через пробел):"
+    echo "-h    Вывести справку"
+    echo
+    echo "-u filename   Обновить файлы из шаблона. Если имя"
+    echo "              файла содержит пробелы, писать в \""
+    echo "-v    Выводить больше информации"
+    echo "-d    Включить отладочную информацию"
+
+    echo "Laboratory works manager. Copyright (C) 2021  Stupnikov Grigory, лицензировано под GPLv3"
+    echo "Благодарности ❤ :Авторам статей на различных Интернет-ресурсах"
+    exit 0
+}
