@@ -20,7 +20,7 @@
 class ClientOptions {
 public:
     bool useBroadcast = true;
-    bool sendByTimeout = true;
+    bool sendByTimeout = false;
     bool notifyServersOnStop;
     bool debugOutput;
 

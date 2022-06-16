@@ -16,8 +16,7 @@ Server::Server(fd binded, ServerOptions options)
     if (options.method == ServerOptions::byTimeout)
         timer = Timer();
     pollFd[0].fd = socketFd;
-    pollFd[0].events = POLLIN | POLLPRI;
-    pollFd[0].revents = 0;
+    pollFd[0].events = POLLIN;
 }
 Server& Server::operator=(const Server& s)
 {
@@ -27,6 +26,7 @@ Server& Server::operator=(const Server& s)
     address = s.address;
     socketFd = s.socketFd;
     noReply = s.noReply;
+    pollFd[0] = s.pollFd[0];
     clientLastSeen = s.clientLastSeen;
     if (status == ServiceStatus::Running) {
         Start();
@@ -91,17 +91,18 @@ void* get_in_addr(struct sockaddr* sa)
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-void Server::mainLoop()
+void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN], pollfd* pfd)
 {
     buffer_t tmp;
-    sockaddr_storage tmp_storage;
-    socklen_t addr_len = sizeof(tmp_storage);
+    sockaddr_storage their_address;
+    socklen_t addr_len = sizeof(their_address);
     int bytesReceived = -1;
     int err_count = 0;
-    char s[INET6_ADDRSTRLEN];
+    sockaddr* casted = reinterpret_cast<sockaddr*>(&their_address);
+
     while (status == ServiceStatus::Running) {
-        sockaddr* casted = reinterpret_cast<sockaddr*>(&tmp_storage);
-        int poll_result = poll(pollFd, 1, 100);
+
+        int poll_result = poll(pfd, 1, 50);
         if (poll_result == -1) {
             perror("[Server] poll");
             if (err_count < 5)
@@ -112,20 +113,12 @@ void Server::mainLoop()
         } else if (poll_result == 0)
             continue;
         else {
-            bool pollin = pollFd[0].revents & POLLIN;
-            bool pollpri = pollFd[0].revents & POLLPRI;
-
-            if (!pollpri || !pollin)
+            if (!(pollFd[0].revents & POLLIN))
                 continue;
 
-            if (pollin) {
-                if (options.debugOutput)
-                    std::cout << "[Server] Receive packet from " << inet_ntop(casted->sa_family, get_in_addr((struct sockaddr*)&casted), s, sizeof s) << "\n";
-                bytesReceived = recvfrom(socketFd, tmp, sizeof(tmp), 0, casted, &addr_len); // receive normal data
-            }
-            if (pollpri) {
-                bytesReceived = recvfrom(socketFd, tmp, sizeof(tmp), MSG_OOB, casted, &addr_len); // out-of-band data
-            }
+            if (options.debugOutput)
+                std::cout << "[Server] Receive packet from " << inet_ntop(casted->sa_family, get_in_addr((struct sockaddr*)&casted), s, INET6_ADDRSTRLEN) << "\n";
+            bytesReceived = recvfrom(*socket, tmp, sizeof(tmp), 0, casted, &addr_len); // receive normal data
 
             if (bytesReceived == -1) {
                 perror("[Server] recvfrom");
@@ -138,6 +131,8 @@ void Server::mainLoop()
             updateClients(message, *casted);
         }
     }
+    delete socket;
+    delete pfd;
 }
 
 std::vector<std::string> Server::GetClients()
@@ -159,7 +154,11 @@ std::vector<std::string> Server::GetClients()
 void Server::Start()
 {
     status = ServiceStatus::Running;
-    serverThread = std::thread(&Server::mainLoop, this);
+    char buffer[INET6_ADDRSTRLEN];
+    pollfd* pollfdThread = new pollfd();
+    *pollfdThread = pollFd[0];
+    
+    serverThread = std::thread(&Server::mainLoop, this, new fd(socketFd), buffer, pollfdThread);
 }
 
 void Server::Stop()

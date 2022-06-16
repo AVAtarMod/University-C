@@ -9,6 +9,7 @@
 #include <map>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <poll.h>
 #include <signal.h>
 #include <stdio.h>
 #include <sys/socket.h>
@@ -17,7 +18,6 @@
 #include <thread>
 #include <unistd.h>
 #include <vector>
-#include <poll.h>
 
 #include "Timer.hpp"
 #include "Types.hpp"
@@ -27,7 +27,8 @@ public:
     enum ClientStatusCheckMethod {
         byTimeout,
         byPacket
-    } method = byPacket;
+    } method
+        = byPacket;
     bool noReply = true;
     bool debugOutput = false;
     std::chrono::milliseconds timeout;
@@ -46,7 +47,7 @@ private:
     bool noReply;
     pollfd pollFd[1];
 
-    void mainLoop();
+    void mainLoop(fd* socket, char s[INET6_ADDRSTRLEN], pollfd* pfd);
     void updateClients(ClientServerMessage message, sockaddr address);
     void updateClientsByTimeout();
 

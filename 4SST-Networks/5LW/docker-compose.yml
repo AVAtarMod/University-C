@@ -1,0 +1,55 @@
+version: "3.0"
+services:
+  sc_master:
+    image: ubuntu:latest
+    command: sh -c "tail -F /dev/null"
+    volumes:
+      - type: volume
+        source: networks_server-client
+        target: /usr/local/bin
+        read_only: true
+    stdin_open: true
+    tty: true
+  sc2:
+    image: ubuntu:latest
+    command: sh -c "tail -F /dev/null"
+    volumes:
+      - type: volume
+        source: networks_server-client
+        target: /usr/local/bin
+        read_only: true
+    stdin_open: true
+    tty: true
+  sc3:
+    image: ubuntu:latest
+    command: sh -c "tail -F /dev/null"
+    volumes:
+      - type: volume
+        source: networks_server-client
+        target: /usr/local/bin
+        read_only: true
+    stdin_open: true
+    tty: true
+  sc4:
+    image: ubuntu:latest
+    command: sh -c "tail -F /dev/null"
+    volumes:
+      - type: volume
+        source: networks_server-client
+        target: /usr/local/bin
+        read_only: true
+    stdin_open: true
+    tty: true
+  sc5:
+    image: ubuntu:latest
+    command: sh -c "tail -F /dev/null"
+    volumes:
+      - type: volume
+        source: networks_server-client
+        target: /usr/local/bin
+        read_only: true
+    stdin_open: true
+    tty: true
+volumes:
+   networks_server-client:
+    external: true

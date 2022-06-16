@@ -28,31 +28,36 @@ fd ClientServer::InitServerSocket()
 {
     fd serverSocket;
     struct addrinfo hints, *servinfo, *p;
-    int rv;
 
     memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_INET; // set to AF_INET to use IPv4
+    hints.ai_family = AF_INET6; // set to AF_INET to use IPv4
     hints.ai_socktype = SOCK_DGRAM;
     hints.ai_flags = AI_PASSIVE; // use my IP
 
-    if ((rv = getaddrinfo(nullptr, std::to_string(port).c_str(), &hints, &servinfo)) != 0) {
-        std::cerr << "getaddrinfo: " << gai_strerror(rv) << std::endl;
+    int rv = getaddrinfo(nullptr, std::to_string(port).c_str(), &hints, &servinfo);
+
+    if (rv != 0) {
+        std::cerr << "[Server] getaddrinfo: " << gai_strerror(rv) << std::endl;
         throw new std::runtime_error("Cannot get local address info");
     }
-
+    int yes = 1;
     // loop through all the results and bind to the first we can
     for (p = servinfo; p != nullptr; p = p->ai_next) {
         serverSocket = socket(p->ai_family, p->ai_socktype,
             p->ai_protocol);
 
         if (serverSocket == -1) {
-            perror("listener: socket");
+            perror("[Server] socket");
             throw new std::runtime_error("Cannot creaete server socket");
         }
 
-        if (bind(serverSocket, p->ai_addr, p->ai_addrlen) == -1) {
+        setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+
+        int bind_result = bind(serverSocket, p->ai_addr, p->ai_addrlen);
+
+        if (bind_result == -1) {
             close(serverSocket);
-            perror("listener: bind");
+            perror("[Server] bind");
             continue;
         }
 
@@ -70,6 +75,7 @@ fd ClientServer::InitServerSocket()
 
 ClientServer::ClientServer(ServerOptions serverOptions, ClientOptions clientOptions, int port)
 {
+    this->port = port;
     status = ServiceStatus::Stopped;
     const char* name = "255.255.255.255";
 
@@ -82,9 +88,9 @@ ClientServer::ClientServer(ServerOptions serverOptions, ClientOptions clientOpti
     fd clientSocket = InitClientSocket(name);
     fd serverSocket = InitServerSocket();
 
-    server = Server(serverSocket, serverOptions);
-
     client = Client(clientSocket, clientOptions, port, *he);
+
+    server = Server(serverSocket, serverOptions);
 }
 
 void ClientServer::Start()
@@ -94,8 +100,8 @@ void ClientServer::Start()
 }
 void ClientServer::Stop()
 {
-    client.Stop();
     server.Stop();
+    client.Stop();
 }
 std::vector<std::string> ClientServer::GetClients()
 {

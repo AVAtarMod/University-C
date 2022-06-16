@@ -4,7 +4,7 @@
 #include "Client.hpp"
 #include "Server.hpp"
 #include "Types.hpp"
-
+#include <fcntl.h>
 #include <exception>
 
 class ClientServer {
