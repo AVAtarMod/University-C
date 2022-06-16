@@ -9,16 +9,37 @@ Client::Client(fd binded, ClientOptions options, int port, hostent destination)
     this->port = port;
     this->destination = destination;
 }
+
+void Client::FinishLoop(sockaddr_in their_addr)
+{
+    const char* finishMessage = std::to_string(static_cast<int>(ClientServerMessage::STOPPED)).c_str();
+    int result = sendto(socketFd, finishMessage, strlen(finishMessage), 0,
+        (struct sockaddr*)&their_addr, sizeof their_addr);
+    if (result == -1) {
+        perror("[Client] sendto");
+        throw new std::runtime_error("[Client] Cannot send data");
+    } else {
+        if (options.debugOutput)
+            std::cout << "[Client] "
+                      << "finish message of size " << result << " sent to " << inet_ntoa(their_addr.sin_addr) << "\n";
+    }
+}
+
+void Client::InitTheirAddr(sockaddr_in& addr)
+{
+    addr.sin_family = AF_INET; // host byte order
+    addr.sin_port = htons(port); // short, network byte order
+    addr.sin_addr = *((struct in_addr*)destination.h_addr);
+    for (size_t i = 0; i < sizeof addr.sin_zero; i++) {
+        addr.sin_zero[i] = '\0';
+    }
+}
+
 void Client::mainLoop()
 {
     const char* message = std::to_string(static_cast<int>(ClientServerMessage::RUNNING)).c_str();
     sockaddr_in their_addr; // connector's address information
-    their_addr.sin_family = AF_INET; // host byte order
-    their_addr.sin_port = htons(port); // short, network byte order
-    their_addr.sin_addr = *((struct in_addr*)destination.h_addr);
-    for (size_t i = 0; i < sizeof their_addr.sin_zero; i++) {
-        their_addr.sin_zero[i] = '\0';
-    }
+    InitTheirAddr(their_addr);
 
     while (status == ServiceStatus::Running) {
         int result = sendto(socketFd, message, strlen(message), 0,
@@ -33,6 +54,7 @@ void Client::mainLoop()
         }
         std::this_thread::sleep_for(options.timeout);
     }
+    FinishLoop(their_addr);
 }
 
 Client& Client::operator=(const Client& c)

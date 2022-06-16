@@ -5,7 +5,7 @@ if [[ $1 != "" ]]; then
     force_file=$1
 fi
 printf "\e[1;33;1m[I] Starting container\e[0m\n"
-docker run --tty -d=true --name $name -v networks_server-client:/data -v $(pwd)/files:/data-updated ubuntu
+docker run --tty -d=true --name $name -v networks_server-client:/data -v $(pwd)/files:/data-updated opensuse/tumbleweed:latest
 
 if [[ $? != 0 ]]; then
     printf "[E] Cannot start container\n"
@@ -45,7 +45,7 @@ else
 fi
 
 printf "\e[1;33m[I] Run test\e[0m "
-docker run --tty -d=true --name $name -v networks_server-client:/usr/local/bin ubuntu
+docker run --tty -d=true --name $name -v networks_server-client:/usr/local/bin opensuse/tumbleweed:latest
 container_id=$(docker ps -a 2>&1 | grep $name | cut -d' ' -f1)
 out=$(docker exec $container_id bash -c "ls -la /usr/local/bin" 2>&1)
 echo "Dest filename=${destFilename}"

@@ -36,6 +36,9 @@ private:
     ServiceStatus status = ServiceStatus::Stopped;
     ClientOptions options;
     std::thread clientThread;
+    
+    void InitTheirAddr(sockaddr_in& addr);
+    void FinishLoop(sockaddr_in their_addr);
 
 public:
     Client() { }

@@ -1,7 +1,7 @@
 version: "3.0"
 services:
   sc_master:
-    image: ubuntu:latest
+    image: opensuse/tumbleweed:latest
     command: sh -c "tail -F /dev/null"
     volumes:
       - type: volume
@@ -11,7 +11,7 @@ services:
     stdin_open: true
     tty: true
   sc2:
-    image: ubuntu:latest
+    image: opensuse/tumbleweed:latest
     command: sh -c "tail -F /dev/null"
     volumes:
       - type: volume
@@ -21,7 +21,7 @@ services:
     stdin_open: true
     tty: true
   sc3:
-    image: ubuntu:latest
+    image: opensuse/tumbleweed:latest
     command: sh -c "tail -F /dev/null"
     volumes:
       - type: volume
@@ -31,7 +31,7 @@ services:
     stdin_open: true
     tty: true
   sc4:
-    image: ubuntu:latest
+    image: opensuse/tumbleweed:latest
     command: sh -c "tail -F /dev/null"
     volumes:
       - type: volume
@@ -41,7 +41,7 @@ services:
     stdin_open: true
     tty: true
   sc5:
-    image: ubuntu:latest
+    image: opensuse/tumbleweed:latest
     command: sh -c "tail -F /dev/null"
     volumes:
       - type: volume

@@ -4,8 +4,8 @@
 #include "Client.hpp"
 #include "Server.hpp"
 #include "Types.hpp"
-#include <fcntl.h>
 #include <exception>
+#include <fcntl.h>
 
 class ClientServer {
 private:
@@ -13,8 +13,9 @@ private:
     Server server;
     ServiceStatus status;
     int port;
+    bool serverDebug = false, clientDebug = false;
 
-    fd InitClientSocket(const char* name);
+    fd InitClientSocket();
     fd InitServerSocket();
 
 public:

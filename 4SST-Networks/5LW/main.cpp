@@ -15,6 +15,7 @@ void sigintHandler(int)
 
 int main(int argc, char const* argv[])
 {
+    std::cout << "Send SIGINT signal inside task to stop it\n";
     bool noData = false;
     if (argc == 1) {
         std::cout << "Введите программу для запуска и ее параметры: ";
@@ -25,8 +26,6 @@ int main(int argc, char const* argv[])
     int exit_code = 0;
 
     signal(SIGINT, sigintHandler);
-
-    std::cout << "Send SIGINT signal inside task to stop it\n";
 
     for (int i = 1; i < argc; i++) {
         bool debug = false;
@@ -104,13 +103,17 @@ int charCount(std::string source, char c)
 void clientServerLoop(ClientServer cs)
 {
     cs.Start();
+    std::string buffer = "";
     int bufferLinesCount = -1;
     while (stopFlag == 0) {
         cleanConsole(bufferLinesCount);
-        std::string buffer = vectorToText(cs.GetClients());
+        buffer = vectorToText(cs.GetClients());
+        std::cout << buffer;
         bufferLinesCount = charCount(buffer, '\n');
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
     std::cout << "Closing sockets...\n";
+    
     cs.Stop();
 }
 
@@ -142,11 +145,11 @@ int task2(bool debug)
 
     ServerOptions serverOpts = ServerOptions();
     serverOpts.method = ServerOptions::byTimeout;
-    serverOpts.timeout = std::chrono::milliseconds(1000);
+    serverOpts.timeout = std::chrono::milliseconds(1500);
     serverOpts.debugOutput = debug;
 
     ClientOptions clientOpts = ClientOptions();
-    clientOpts.timeout = std::chrono::milliseconds(200);
+    clientOpts.timeout = std::chrono::milliseconds(500);
     clientOpts.sendByTimeout = true;
     clientOpts.useBroadcast = true;
     clientOpts.debugOutput = debug;

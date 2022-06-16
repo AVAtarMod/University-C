@@ -1,6 +1,6 @@
 #include "ClientServer.hpp"
 
-fd ClientServer::InitClientSocket(const char* name)
+fd ClientServer::InitClientSocket()
 {
     fd clientSocket;
 
@@ -19,7 +19,7 @@ fd ClientServer::InitClientSocket(const char* name)
         == -1) {
         perror("setsockopt (SO_BROADCAST)");
 
-        throw new std::runtime_error("Cannot set client broadcast mode");
+        throw new std::runtime_error("[Client] Cannot set client broadcast mode");
     }
     return clientSocket;
 }
@@ -33,6 +33,8 @@ fd ClientServer::InitServerSocket()
     hints.ai_family = AF_INET6; // set to AF_INET to use IPv4
     hints.ai_socktype = SOCK_DGRAM;
     hints.ai_flags = AI_PASSIVE; // use my IP
+    if (serverDebug)
+        std::cout << "[D] [Server] Socket init: use " << std::to_string(port).c_str() << " port for bind\n";
 
     int rv = getaddrinfo(nullptr, std::to_string(port).c_str(), &hints, &servinfo);
 
@@ -51,7 +53,7 @@ fd ClientServer::InitServerSocket()
             throw new std::runtime_error("Cannot creaete server socket");
         }
 
-        setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+        setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
 
         int bind_result = bind(serverSocket, p->ai_addr, p->ai_addrlen);
 
@@ -63,13 +65,14 @@ fd ClientServer::InitServerSocket()
 
         break;
     }
-
+    std::cout << "[D] [Server] Socket created successfuly\n";
     if (p == nullptr) {
         std::cerr << "listener: failed to bind socket\n";
         throw new std::runtime_error("Cannot bind server socket");
     }
 
     freeaddrinfo(servinfo);
+    std::cout << "[D] [Server] Unused adresses freed\n";
     return serverSocket;
 }
 
@@ -85,7 +88,12 @@ ClientServer::ClientServer(ServerOptions serverOptions, ClientOptions clientOpti
         throw new std::runtime_error("Cannot get host by name");
     }
 
-    fd clientSocket = InitClientSocket(name);
+    if (serverOptions.debugOutput)
+        serverDebug = true;
+    if (clientOptions.debugOutput)
+        clientDebug = true;
+
+    fd clientSocket = InitClientSocket();
     fd serverSocket = InitServerSocket();
 
     client = Client(clientSocket, clientOptions, port, *he);
@@ -96,7 +104,9 @@ ClientServer::ClientServer(ServerOptions serverOptions, ClientOptions clientOpti
 void ClientServer::Start()
 {
     server.Start();
+    std::cout << "[D] [Server] Thread started\n";
     client.Start();
+    std::cout << "[D] [Client] Thread started\n";
 }
 void ClientServer::Stop()
 {

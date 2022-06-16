@@ -1,6 +1,7 @@
 #include "Server.hpp"
 
 using second_t = std::chrono::duration<double, std::ratio<1>>;
+void* get_in_addr(sockaddr* sa);
 
 // Server side
 Server::Server(fd binded, ServerOptions options)
@@ -8,8 +9,8 @@ Server::Server(fd binded, ServerOptions options)
     if (binded < 0)
         throw new std::runtime_error("Invalid socket fd");
 
-    activeClient = std::list<sockaddr>();
-    clientLastSeen = std::map<sockaddr, float>();
+    activeClient = std::list<std::string>();
+    clientLastSeen = std::unordered_map<std::string, float>();
     socketFd = binded;
     noReply = options.noReply;
     this->options = options;
@@ -17,6 +18,7 @@ Server::Server(fd binded, ServerOptions options)
         timer = Timer();
     pollFd[0].fd = socketFd;
     pollFd[0].events = POLLIN;
+    pollFd[0].revents = 0;
 }
 Server& Server::operator=(const Server& s)
 {
@@ -40,75 +42,104 @@ Server::Server(const Server& s)
 
 void Server::updateClientsByTimeout()
 {
+    std::shared_lock lock(activeClientMutex);
     double elapsed = timer.elapsed();
-    for (auto i = activeClient.begin(); i != activeClient.end(); ++i) {
+    for (auto i = activeClient.cbegin(); i != activeClient.cend();) {
         if (elapsed - clientLastSeen[*i] > std::chrono::duration_cast<second_t>(options.timeout).count()) {
+            clientLastSeen.erase(*i);
             activeClient.remove(*i);
-        }
+        } else
+            ++i;
     }
+}
+
+std::string to_string(sockaddr addr)
+{
+    std::string result = std::string(INET6_ADDRSTRLEN, '\0');
+    inet_ntop(addr.sa_family,
+        get_in_addr(&addr),
+        result.data(), result.size());
+    result.shrink_to_fit();
+    return result;
 }
 
 void Server::updateClients(ClientServerMessage message, sockaddr address)
 {
+    // bool needUpdateByTimeout = false;
     switch (options.method) {
     case ServerOptions::byPacket:
         break;
-    case ServerOptions::byTimeout:
-        updateClientsByTimeout();
+    // case ServerOptions::byTimeout:
+        // needUpdateByTimeout = true;
     default:
         break;
     }
+    std::string strAddress = to_string(address);
 
     switch (message) {
     case ClientServerMessage::RUNNING:
-        if (std::find(activeClient.begin(), activeClient.end(), address) == activeClient.end()) {
-            activeClient.push_back(address);
+        if (std::find(activeClient.begin(), activeClient.end(), strAddress) == activeClient.end()) {
+            std::shared_lock lock(activeClientMutex);
+            activeClient.push_back(strAddress);
         }
 
         if (options.method == ServerOptions::byTimeout) {
-            if (clientLastSeen.find(address) == clientLastSeen.end())
-                clientLastSeen.insert({ address, timer.elapsed() });
+            if (clientLastSeen.find(strAddress) == clientLastSeen.end())
+                clientLastSeen.insert({ strAddress, timer.elapsed() });
             else
-                clientLastSeen[address] = timer.elapsed();
+                clientLastSeen[strAddress] = timer.elapsed();
         }
         break;
     case ClientServerMessage::STOPPED:
-        if (options.method == ServerOptions::byPacket && std::find(activeClient.begin(), activeClient.end(), address) == activeClient.end()) {
-            activeClient.remove(address);
-            clientLastSeen.erase(address);
+        if (options.method == ServerOptions::byPacket && std::find(activeClient.begin(), activeClient.end(), strAddress) == activeClient.end()) {
+            std::shared_lock lock(activeClientMutex);
+            activeClient.remove(strAddress);
+            clientLastSeen.erase(strAddress);
         }
     default:
         break;
     }
+
+    // if (needUpdateByTimeout)
+    //     updateClientsByTimeout();
 }
 
-void* get_in_addr(struct sockaddr* sa)
+void* get_in_addr(sockaddr* sa)
 {
     if (sa->sa_family == AF_INET) {
-        return &(((struct sockaddr_in*)sa)->sin_addr);
+        return &(((sockaddr_in*)sa)->sin_addr);
     }
 
-    return &(((struct sockaddr_in6*)sa)->sin6_addr);
+    return &(((sockaddr_in6*)sa)->sin6_addr);
 }
 
-void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN], pollfd* pfd)
+void initBuffer(buffer_t buffer)
+{
+    for (size_t i = 0; i < sizeof(buffer_t); ++i) {
+        buffer[i] = '\0';
+    }
+}
+
+void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN])
 {
     buffer_t tmp;
+    initBuffer(tmp);
     sockaddr_storage their_address;
     socklen_t addr_len = sizeof(their_address);
     int bytesReceived = -1;
     int err_count = 0;
     sockaddr* casted = reinterpret_cast<sockaddr*>(&their_address);
 
+    int poll_result = 0;
     while (status == ServiceStatus::Running) {
 
-        int poll_result = poll(pfd, 1, 50);
+        poll_result = poll(pollFd, 1, 500);
         if (poll_result == -1) {
             perror("[Server] poll");
             if (err_count < 5)
                 ++err_count;
             else
-                throw "[Server] Too many poll errors";
+                throw std::runtime_error("[Server] Too many poll errors");
             continue;
         } else if (poll_result == 0)
             continue;
@@ -117,7 +148,7 @@ void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN], pollfd* pfd)
                 continue;
 
             if (options.debugOutput)
-                std::cout << "[Server] Receive packet from " << inet_ntop(casted->sa_family, get_in_addr((struct sockaddr*)&casted), s, INET6_ADDRSTRLEN) << "\n";
+                std::cout << "[Server] Receive packet from " << inet_ntop(casted->sa_family, get_in_addr(casted), s, INET6_ADDRSTRLEN) << "\n";
             bytesReceived = recvfrom(*socket, tmp, sizeof(tmp), 0, casted, &addr_len); // receive normal data
 
             if (bytesReceived == -1) {
@@ -132,20 +163,20 @@ void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN], pollfd* pfd)
         }
     }
     delete socket;
-    delete pfd;
 }
 
 std::vector<std::string> Server::GetClients()
 {
     std::vector<std::string> result = std::vector<std::string>();
-    size_t length = activeClient.size();
-    result.resize(length, std::string(INET6_ADDRSTRLEN, '\0'));
+    {
+        std::shared_lock lock(activeClientMutex);
+        size_t length = activeClient.size();
+        result.resize(length);
 
-    auto current = activeClient.begin();
-    for (size_t i = 0; i < length; ++i, ++current) {
-        sockaddr_in* ipv4_addr = reinterpret_cast<sockaddr_in*>(&(*current));
-
-        inet_ntop(AF_INET, ipv4_addr, result[i].data(), INET_ADDRSTRLEN);
+        size_t index = 0;
+        for (auto i = activeClient.cbegin(); i != activeClient.cend(); ++i, ++index) {
+            result[index] = *i;
+        }
     }
 
     return result;
@@ -155,10 +186,7 @@ void Server::Start()
 {
     status = ServiceStatus::Running;
     char buffer[INET6_ADDRSTRLEN];
-    pollfd* pollfdThread = new pollfd();
-    *pollfdThread = pollFd[0];
-    
-    serverThread = std::thread(&Server::mainLoop, this, new fd(socketFd), buffer, pollfdThread);
+    serverThread = std::thread(&Server::mainLoop, this, new fd(socketFd), buffer);
 }
 
 void Server::Stop()

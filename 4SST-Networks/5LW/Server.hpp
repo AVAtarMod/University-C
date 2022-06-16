@@ -6,7 +6,7 @@
 #include <chrono>
 #include <iostream>
 #include <list>
-#include <map>
+#include <unordered_map>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <poll.h>
@@ -18,6 +18,7 @@
 #include <thread>
 #include <unistd.h>
 #include <vector>
+#include <shared_mutex>
 
 #include "Timer.hpp"
 #include "Types.hpp"
@@ -38,8 +39,9 @@ class Server {
 private:
     fd socketFd;
     sockaddr_in address;
-    std::list<sockaddr> activeClient;
-    std::map<sockaddr, float> clientLastSeen;
+    std::list<std::string> activeClient;
+    std::shared_mutex activeClientMutex;
+    std::unordered_map<std::string, float> clientLastSeen;
     ServiceStatus status = ServiceStatus::Stopped;
     std::thread serverThread;
     ServerOptions options;
@@ -47,7 +49,7 @@ private:
     bool noReply;
     pollfd pollFd[1];
 
-    void mainLoop(fd* socket, char s[INET6_ADDRSTRLEN], pollfd* pfd);
+    void mainLoop(fd* socket, char s[INET6_ADDRSTRLEN]);
     void updateClients(ClientServerMessage message, sockaddr address);
     void updateClientsByTimeout();
 
