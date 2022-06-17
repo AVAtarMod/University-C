@@ -35,10 +35,10 @@ private:
     std::list<sockaddr> listeners;
     ServiceStatus status = ServiceStatus::Stopped;
     ClientOptions options;
-    std::thread clientThread;
-    
+
     void InitTheirAddr(sockaddr_in& addr);
     void FinishLoop(sockaddr_in their_addr);
+    void sendMessage();
 
 public:
     Client() { }
@@ -46,8 +46,8 @@ public:
     Client(const Client& c);
     void Start();
     void Stop();
-    void mainLoop();
-    ServiceStatus GetStatus() { return status; }
+    void Send();
+    ServiceStatus GetStatus() const { return status; }
 
     Client& operator=(const Client& c);
 

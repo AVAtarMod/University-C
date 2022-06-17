@@ -35,13 +35,13 @@ void Client::InitTheirAddr(sockaddr_in& addr)
     }
 }
 
-void Client::mainLoop()
+void Client::sendMessage()
 {
     const char* message = std::to_string(static_cast<int>(ClientServerMessage::RUNNING)).c_str();
     sockaddr_in their_addr; // connector's address information
     InitTheirAddr(their_addr);
 
-    while (status == ServiceStatus::Running) {
+    if (status == ServiceStatus::Running) {
         int result = sendto(socketFd, message, strlen(message), 0,
             (struct sockaddr*)&their_addr, sizeof their_addr);
 
@@ -53,8 +53,8 @@ void Client::mainLoop()
                 std::cout << "[Client] " << result << " bytes sent to " << inet_ntoa(their_addr.sin_addr) << "\n";
         }
         std::this_thread::sleep_for(options.timeout);
-    }
-    FinishLoop(their_addr);
+    } else
+        FinishLoop(their_addr);
 }
 
 Client& Client::operator=(const Client& c)
@@ -70,21 +70,28 @@ Client& Client::operator=(const Client& c)
     }
     return *this;
 }
+
 Client::Client(const Client& c)
 {
     *this = c;
 }
 
+void Client::Send()
+{
+    sendMessage();
+}
+
 void Client::Start()
 {
     status = ServiceStatus::Running;
-    clientThread = std::thread(&Client::mainLoop, this);
+    sendMessage();
 }
 void Client::Stop()
 {
     status = ServiceStatus::Stopped;
-    clientThread.join();
+    sendMessage();
 }
+
 Client::~Client()
 {
 }

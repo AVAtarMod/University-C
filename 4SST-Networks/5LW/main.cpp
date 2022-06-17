@@ -100,20 +100,22 @@ int charCount(std::string source, char c)
     return count;
 }
 
-void clientServerLoop(ClientServer cs)
+void clientServerLoop(ClientServer& cs)
 {
     cs.Start();
     std::string buffer = "";
     // int bufferLinesCount = -1;
     while (stopFlag == 0) {
         // cleanConsole(bufferLinesCount);
+        cs.ServerRead();
         buffer = vectorToText(cs.GetClients());
+        cs.ClientSend();
         std::cout << buffer;
         // bufferLinesCount = charCount(buffer, '\n');
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
     std::cout << "Closing sockets...\n";
-    
+
     cs.Stop();
 }
 

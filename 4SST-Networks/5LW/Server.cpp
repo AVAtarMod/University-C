@@ -29,7 +29,7 @@ Server& Server::operator=(const Server& s)
     noReply = s.noReply;
     pollFd[0] = s.pollFd[0];
     if (status == ServiceStatus::Running) {
-        Start();
+        Read();
     }
     return *this;
 }
@@ -53,6 +53,11 @@ std::string to_string(sockaddr_storage addr)
     return result;
 }
 
+std::string to_string(sockaddr addr)
+{
+    return to_string(*reinterpret_cast<sockaddr_storage*>(&addr));
+}
+
 void Server::updateClients(ClientServerMessage message, sockaddr_storage address)
 {
     std::string strAddress = to_string(address);
@@ -60,21 +65,16 @@ void Server::updateClients(ClientServerMessage message, sockaddr_storage address
     switch (message) {
     case ClientServerMessage::RUNNING:
         if (std::find(activeClient.begin(), activeClient.end(), strAddress) == activeClient.end()) {
-            // std::shared_lock lock(activeClientMutex);
             activeClient.push_back(strAddress);
-            // lock.unlock();
         }
         break;
     case ClientServerMessage::STOPPED:
-        if (options.method == ServerOptions::byPacket && std::find(activeClient.begin(), activeClient.end(), strAddress) == activeClient.end()) {
-            // std::shared_lock lock(activeClientMutex);
+        if (options.method == ServerOptions::byPacket && std::find(activeClient.begin(), activeClient.end(), strAddress) != activeClient.end()) {
             activeClient.remove(strAddress);
-            // lock.unlock();
         }
     default:
         break;
     }
-
 }
 
 void* get_in_addr(sockaddr* sa)
@@ -95,54 +95,55 @@ void initBuffer(buffer_t buffer)
 
 void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN])
 {
-    buffer_t tmp;
-    initBuffer(tmp);
-    sockaddr_storage their_address;
-    socklen_t addr_len = sizeof(their_address);
-    int bytesReceived = -1;
-    int err_count = 0;
-    sockaddr* casted = reinterpret_cast<sockaddr*>(&their_address);
+    if (status == ServiceStatus::Running) {
+        buffer_t tmp;
+        initBuffer(tmp);
 
-    int poll_result = 0;
-    while (status == ServiceStatus::Running) {
+        sockaddr_storage their_address;
+        socklen_t addr_len = sizeof(their_address);
+        int bytesReceived = -1;
+        int err_count = 0;
+        sockaddr* casted = reinterpret_cast<sockaddr*>(&their_address);
 
-        poll_result = poll(pollFd, 1, 500);
+        int poll_result = 0;
+        poll_result = poll(pollFd, 1, 1);
+
         if (poll_result == -1) {
             perror("[Server] poll");
             if (err_count < 5)
                 ++err_count;
             else
                 throw std::runtime_error("[Server] Too many poll errors");
-            continue;
-        } else if (poll_result == 0)
-            continue;
-        else {
-            if (!(pollFd[0].revents & POLLIN))
-                continue;
+        } else if (poll_result > 0) {
+            while (poll_result > 0) {
+                if (!(pollFd[0].revents & POLLIN))
+                    break;
 
-            if (options.debugOutput)
-                std::cout << "[Server] Receive packet from " << inet_ntop(casted->sa_family, get_in_addr(casted), s, INET6_ADDRSTRLEN) << "\n";
-            bytesReceived = recvfrom(*socket, tmp, sizeof(tmp), 0, casted, &addr_len); // receive normal data
+                if (options.debugOutput)
+                    std::cout << "[Server] Receive packet from " << inet_ntop(casted->sa_family, get_in_addr(casted), s, INET6_ADDRSTRLEN) << "\n";
+                bytesReceived = recvfrom(*socket,
+                    tmp, sizeof(tmp), 0, casted, &addr_len); // receive normal data
 
-            if (bytesReceived == -1) {
-                perror("[Server] recvfrom");
-                std::cerr << "[Server] Error occured in recvfrom\n";
-                continue;
+                if (bytesReceived == -1) {
+                    perror("[Server] recvfrom");
+                    std::cerr << "[Server] Error occured in recvfrom\n";
+                    return;
+                }
+
+                tmp[bytesReceived] = '\0';
+                ClientServerMessage message = static_cast<ClientServerMessage>(std::atoi(tmp));
+                updateClients(message, their_address);
+                poll_result = poll(pollFd, 1, 1);
             }
-
-            tmp[bytesReceived] = '\0';
-            ClientServerMessage message = static_cast<ClientServerMessage>(std::atoi(tmp));
-            updateClients(message, their_address);
         }
     }
     delete socket;
 }
 
-std::vector<std::string> Server::GetClients()
+std::vector<std::string> Server::GetClients() const
 {
     std::vector<std::string> result = std::vector<std::string>();
     {
-        // std::shared_lock lock(activeClientMutex);
         size_t length = activeClient.size();
         result.resize(length);
 
@@ -150,23 +151,31 @@ std::vector<std::string> Server::GetClients()
         for (auto i = activeClient.cbegin(); i != activeClient.cend(); ++i, ++index) {
             result[index] = *i;
         }
-        // lock.unlock();
     }
 
     return result;
 }
 
+void Server::Read()
+{
+    char buffer[INET6_ADDRSTRLEN];
+    mainLoop(new fd(socketFd), buffer);
+}
+
 void Server::Start()
 {
-    status = ServiceStatus::Running;
     char buffer[INET6_ADDRSTRLEN];
-    serverThread = std::thread(&Server::mainLoop, this, new fd(socketFd), buffer);
+    status = ServiceStatus::Running;
+    if (options.addSelfAddress)
+        activeClient.push_back(to_string(options.selfaddress));
+    mainLoop(new fd(socketFd), buffer);
 }
 
 void Server::Stop()
 {
+    if (options.addSelfAddress)
+        activeClient.remove(to_string(options.selfaddress));
     status = ServiceStatus::Stopped;
-    serverThread.join();
 }
 
 Server::~Server()

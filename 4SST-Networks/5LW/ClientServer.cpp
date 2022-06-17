@@ -63,17 +63,29 @@ fd ClientServer::InitServerSocket()
             continue;
         }
 
+        serverAddress = *(p->ai_addr);
+
         break;
     }
     std::cout << "[D] [Server] Socket created successfuly\n";
     if (p == nullptr) {
-        std::cerr << "listener: failed to bind socket\n";
+        std::cerr << "[Server] Error: failed to bind socket\n";
         throw new std::runtime_error("Cannot bind server socket");
     }
 
     freeaddrinfo(servinfo);
     std::cout << "[D] [Server] Unused adresses freed\n";
     return serverSocket;
+}
+
+void ClientServer::ServerRead()
+{
+    server.Read();
+}
+
+void ClientServer::ClientSend()
+{
+    client.Send();
 }
 
 ClientServer::ClientServer(ServerOptions serverOptions, ClientOptions clientOptions, int port)
@@ -96,6 +108,8 @@ ClientServer::ClientServer(ServerOptions serverOptions, ClientOptions clientOpti
     fd clientSocket = InitClientSocket();
     fd serverSocket = InitServerSocket();
 
+    serverOptions.selfaddress = serverAddress;
+
     client = Client(clientSocket, clientOptions, port, *he);
 
     server = Server(serverSocket, serverOptions);
@@ -104,20 +118,18 @@ ClientServer::ClientServer(ServerOptions serverOptions, ClientOptions clientOpti
 void ClientServer::Start()
 {
     server.Start();
-    std::cout << "[D] [Server] Thread started\n";
     client.Start();
-    std::cout << "[D] [Client] Thread started\n";
 }
 void ClientServer::Stop()
 {
     server.Stop();
     client.Stop();
 }
-std::vector<std::string> ClientServer::GetClients()
+std::vector<std::string> ClientServer::GetClients() const
 {
     return server.GetClients();
 }
-ServiceStatus ClientServer::GetStatus()
+ServiceStatus ClientServer::GetStatus() const
 {
     if (server.GetStatus() == ServiceStatus::Running && client.GetStatus() == ServiceStatus::Running)
         return ServiceStatus::Running;

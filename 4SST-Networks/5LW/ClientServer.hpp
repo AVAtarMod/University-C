@@ -12,6 +12,7 @@ private:
     Client client;
     Server server;
     ServiceStatus status;
+    sockaddr serverAddress;
     int port;
     bool serverDebug = false, clientDebug = false;
 
@@ -23,9 +24,11 @@ public:
     // TODO add support protocol string
     ClientServer(ServerOptions serverOptions, ClientOptions clientOptions, int port);
     void Start();
+    void ServerRead();
+    void ClientSend();
     void Stop();
-    std::vector<std::string> GetClients();
-    ServiceStatus GetStatus();
+    std::vector<std::string> GetClients() const;
+    ServiceStatus GetStatus() const;
     ~ClientServer();
 };
 

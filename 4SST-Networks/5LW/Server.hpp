@@ -6,10 +6,10 @@
 #include <chrono>
 #include <iostream>
 #include <list>
-#include <unordered_map>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <poll.h>
+#include <shared_mutex>
 #include <signal.h>
 #include <stdio.h>
 #include <sys/socket.h>
@@ -17,8 +17,8 @@
 #include <sys/wait.h>
 #include <thread>
 #include <unistd.h>
+#include <unordered_map>
 #include <vector>
-#include <shared_mutex>
 
 #include "Timer.hpp"
 #include "Types.hpp"
@@ -33,6 +33,8 @@ public:
     bool noReply = true;
     bool debugOutput = false;
     std::chrono::milliseconds timeout;
+    sockaddr selfaddress;
+    bool addSelfAddress = true;
 };
 
 class Server {
@@ -42,7 +44,6 @@ private:
     std::list<std::string> activeClient;
     std::shared_mutex activeClientMutex;
     ServiceStatus status = ServiceStatus::Stopped;
-    std::thread serverThread;
     ServerOptions options;
     Timer timer;
     bool noReply;
@@ -56,10 +57,11 @@ public:
     Server() { }
     Server(fd binded, ServerOptions options);
     Server(const Server& s);
+    void Read();
     void Start();
     void Stop();
-    std::vector<std::string> GetClients();
-    ServiceStatus GetStatus() { return status; }
+    std::vector<std::string> GetClients() const;
+    ServiceStatus GetStatus() const { return status; }
 
     Server& operator=(const Server&);
 
