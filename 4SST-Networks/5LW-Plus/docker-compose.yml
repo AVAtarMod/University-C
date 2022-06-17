@@ -1,0 +1,15 @@
+version: "3.0"
+services:
+  sc_master:
+    image: opensuse/tumbleweed:latest
+    command: sh -c "tail -F /dev/null"
+    volumes:
+      - type: volume
+        source: networks_server-client
+        target: /usr/local/bin
+        read_only: true
+    stdin_open: true
+    tty: true
+volumes:
+   networks_server-client:
+    external: true
