@@ -41,7 +41,6 @@ private:
     sockaddr_in address;
     std::list<std::string> activeClient;
     std::shared_mutex activeClientMutex;
-    std::unordered_map<std::string, float> clientLastSeen;
     ServiceStatus status = ServiceStatus::Stopped;
     std::thread serverThread;
     ServerOptions options;
@@ -50,7 +49,7 @@ private:
     pollfd pollFd[1];
 
     void mainLoop(fd* socket, char s[INET6_ADDRSTRLEN]);
-    void updateClients(ClientServerMessage message, sockaddr address);
+    void updateClients(ClientServerMessage message, sockaddr_storage address);
     void updateClientsByTimeout();
 
 public:

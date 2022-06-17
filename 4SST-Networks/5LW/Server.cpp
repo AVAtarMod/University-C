@@ -10,7 +10,6 @@ Server::Server(fd binded, ServerOptions options)
         throw new std::runtime_error("Invalid socket fd");
 
     activeClient = std::list<std::string>();
-    clientLastSeen = std::unordered_map<std::string, float>();
     socketFd = binded;
     noReply = options.noReply;
     this->options = options;
@@ -29,7 +28,6 @@ Server& Server::operator=(const Server& s)
     socketFd = s.socketFd;
     noReply = s.noReply;
     pollFd[0] = s.pollFd[0];
-    clientLastSeen = s.clientLastSeen;
     if (status == ServiceStatus::Running) {
         Start();
     }
@@ -40,68 +38,43 @@ Server::Server(const Server& s)
     *this = s;
 }
 
-void Server::updateClientsByTimeout()
-{
-    std::shared_lock lock(activeClientMutex);
-    double elapsed = timer.elapsed();
-    for (auto i = activeClient.cbegin(); i != activeClient.cend();) {
-        if (elapsed - clientLastSeen[*i] > std::chrono::duration_cast<second_t>(options.timeout).count()) {
-            clientLastSeen.erase(*i);
-            activeClient.remove(*i);
-        } else
-            ++i;
-    }
-}
-
-std::string to_string(sockaddr addr)
+std::string to_string(sockaddr_storage addr)
 {
     std::string result = std::string(INET6_ADDRSTRLEN, '\0');
-    inet_ntop(addr.sa_family,
-        get_in_addr(&addr),
-        result.data(), result.size());
+    if (addr.ss_family == AF_INET6)
+        inet_ntop(addr.ss_family,
+            &((sockaddr_in6*)&addr)->sin6_addr,
+            result.data(), result.size());
+    else if (addr.ss_family == AF_INET)
+        inet_ntop(addr.ss_family,
+            &((sockaddr_in*)&addr)->sin_addr,
+            result.data(), result.size());
     result.shrink_to_fit();
     return result;
 }
 
-void Server::updateClients(ClientServerMessage message, sockaddr address)
+void Server::updateClients(ClientServerMessage message, sockaddr_storage address)
 {
-    // bool needUpdateByTimeout = false;
-    switch (options.method) {
-    case ServerOptions::byPacket:
-        break;
-    // case ServerOptions::byTimeout:
-        // needUpdateByTimeout = true;
-    default:
-        break;
-    }
     std::string strAddress = to_string(address);
 
     switch (message) {
     case ClientServerMessage::RUNNING:
         if (std::find(activeClient.begin(), activeClient.end(), strAddress) == activeClient.end()) {
-            std::shared_lock lock(activeClientMutex);
+            // std::shared_lock lock(activeClientMutex);
             activeClient.push_back(strAddress);
-        }
-
-        if (options.method == ServerOptions::byTimeout) {
-            if (clientLastSeen.find(strAddress) == clientLastSeen.end())
-                clientLastSeen.insert({ strAddress, timer.elapsed() });
-            else
-                clientLastSeen[strAddress] = timer.elapsed();
+            // lock.unlock();
         }
         break;
     case ClientServerMessage::STOPPED:
         if (options.method == ServerOptions::byPacket && std::find(activeClient.begin(), activeClient.end(), strAddress) == activeClient.end()) {
-            std::shared_lock lock(activeClientMutex);
+            // std::shared_lock lock(activeClientMutex);
             activeClient.remove(strAddress);
-            clientLastSeen.erase(strAddress);
+            // lock.unlock();
         }
     default:
         break;
     }
 
-    // if (needUpdateByTimeout)
-    //     updateClientsByTimeout();
 }
 
 void* get_in_addr(sockaddr* sa)
@@ -159,7 +132,7 @@ void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN])
 
             tmp[bytesReceived] = '\0';
             ClientServerMessage message = static_cast<ClientServerMessage>(std::atoi(tmp));
-            updateClients(message, *casted);
+            updateClients(message, their_address);
         }
     }
     delete socket;
@@ -169,7 +142,7 @@ std::vector<std::string> Server::GetClients()
 {
     std::vector<std::string> result = std::vector<std::string>();
     {
-        std::shared_lock lock(activeClientMutex);
+        // std::shared_lock lock(activeClientMutex);
         size_t length = activeClient.size();
         result.resize(length);
 
@@ -177,6 +150,7 @@ std::vector<std::string> Server::GetClients()
         for (auto i = activeClient.cbegin(); i != activeClient.cend(); ++i, ++index) {
             result[index] = *i;
         }
+        // lock.unlock();
     }
 
     return result;

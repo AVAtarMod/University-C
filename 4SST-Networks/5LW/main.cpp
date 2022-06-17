@@ -104,12 +104,12 @@ void clientServerLoop(ClientServer cs)
 {
     cs.Start();
     std::string buffer = "";
-    int bufferLinesCount = -1;
+    // int bufferLinesCount = -1;
     while (stopFlag == 0) {
-        cleanConsole(bufferLinesCount);
+        // cleanConsole(bufferLinesCount);
         buffer = vectorToText(cs.GetClients());
         std::cout << buffer;
-        bufferLinesCount = charCount(buffer, '\n');
+        // bufferLinesCount = charCount(buffer, '\n');
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
     std::cout << "Closing sockets...\n";
@@ -139,6 +139,8 @@ int task1(bool debug)
 }
 int task2(bool debug)
 {
+    return 0;
+
     int port;
     std::cout << "Enter port: ";
     std::cin >> port;
