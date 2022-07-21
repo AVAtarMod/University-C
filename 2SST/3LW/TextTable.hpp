@@ -1,11 +1,11 @@
 #pragma once
 
-//TODO support wide string/char
+// TODO support wide string/char
+#include <iomanip>
 #include <iostream>
 #include <map>
-#include <iomanip>
-#include <vector>
 #include <string>
+#include <vector>
 
 #ifdef TEXTTABLE_ENCODE_MULTIBYTE_STRINGS
 #include <clocale>
@@ -14,12 +14,10 @@
 #endif
 #endif
 
-class TextTable
-{
+class TextTable {
 
 public:
-    enum class Alignment
-    {
+    enum class Alignment {
         LEFT,
         RIGHT
     };
@@ -65,7 +63,7 @@ public:
         return _horizontal;
     }
 
-    void add(std::string const &content)
+    void add(std::string const& content)
     {
         _current.push_back(content);
     }
@@ -79,20 +77,19 @@ public:
     template <typename Iterator>
     void addRow(Iterator begin, Iterator end)
     {
-        for (auto i = begin; i != end; ++i)
-        {
+        for (auto i = begin; i != end; ++i) {
             add(*i);
         }
         endOfRow();
     }
 
     template <typename Container>
-    void addRow(Container const &container)
+    void addRow(Container const& container)
     {
         addRow(container.begin(), container.end());
     }
 
-    std::vector<Row> const &rows() const
+    std::vector<Row> const& rows() const
     {
         return _rows;
     }
@@ -107,8 +104,7 @@ public:
     {
         std::string result;
         result += _corner;
-        for (auto width = _width.begin(); width != _width.end(); ++width)
-        {
+        for (auto width = _width.begin(); width != _width.end(); ++width) {
             result += repeat(*width, _horizontal);
             result += _corner;
         }
@@ -163,10 +159,9 @@ private:
 #error You need to specify the encoding if the TextTable library uses multybyte string encoding!
 #endif
         unsigned int u = 0;
-        const char *c_str = s.c_str();
+        const char* c_str = s.c_str();
         unsigned _glyphLength = 0;
-        while (u < _byteLength)
-        {
+        while (u < _byteLength) {
             u += std::mblen(&c_str[u], _byteLength - u);
             _glyphLength += 1;
         }
@@ -180,11 +175,9 @@ private:
     {
         _width.assign(columns(), 0);
         _utf8width.assign(columns(), 0);
-        for (auto rowIterator = _rows.begin(); rowIterator != _rows.end(); ++rowIterator)
-        {
-            Row const &row = *rowIterator;
-            for (unsigned i = 0; i < row.size(); ++i)
-            {
+        for (auto rowIterator = _rows.begin(); rowIterator != _rows.end(); ++rowIterator) {
+            Row const& row = *rowIterator;
+            for (unsigned i = 0; i < row.size(); ++i) {
                 _width[i] = _width[i] > glyphLength(row[i]) ? _width[i] : glyphLength(row[i]);
             }
         }
@@ -192,29 +185,24 @@ private:
 
     void setupAlignment() const
     {
-        for (unsigned i = 0; i < columns(); ++i)
-        {
-            if (_alignment.find(i) == _alignment.end())
-            {
+        for (unsigned i = 0; i < columns(); ++i) {
+            if (_alignment.find(i) == _alignment.end()) {
                 _alignment[i] = Alignment::LEFT;
             }
         }
     }
 };
 
-inline std::ostream &operator<<(std::ostream &stream, TextTable const &table)
+inline std::ostream& operator<<(std::ostream& stream, TextTable const& table)
 {
     table.setup();
-    if (table.has_ruler())
-    {
+    if (table.has_ruler()) {
         stream << table.ruler() << "\n";
     }
-    for (auto rowIterator = table.rows().begin(); rowIterator != table.rows().end(); ++rowIterator)
-    {
-        TextTable::Row const &row = *rowIterator;
+    for (auto rowIterator = table.rows().begin(); rowIterator != table.rows().end(); ++rowIterator) {
+        TextTable::Row const& row = *rowIterator;
         stream << table.vertical();
-        for (unsigned i = 0; i < row.size(); ++i)
-        {
+        for (unsigned i = 0; i < row.size(); ++i) {
             auto alignment = table.alignment(i) == TextTable::Alignment::LEFT ? std::left : std::right;
             // std::setw( width ) works as follows: a string which goes in the stream with byte length (!) l is filled with n spaces so that l+n=width.
             // For a utf8 encoded string the glyph length g might be smaller than l. We need n spaces so that g+n=width which is equivalent to g+n+l-l=width ==> l+n = width+l-g
@@ -224,8 +212,7 @@ inline std::ostream &operator<<(std::ostream &stream, TextTable const &table)
             stream << table.vertical();
         }
         stream << "\n";
-        if (table.has_ruler())
-        {
+        if (table.has_ruler()) {
             stream << table.ruler() << "\n";
         }
     }

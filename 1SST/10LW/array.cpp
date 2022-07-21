@@ -1,5 +1,5 @@
-#include <iostream>
 #include <ctime>
+#include <iostream>
 #include <random>
 
 #include "array.h"
@@ -7,21 +7,17 @@
 int getLenghtUser()
 {
     int length;
-    while (true)
-    {
+    while (true) {
         printf("Введите длину массива: ");
         scanf("%d", &length);
-        if (length < 0)
-        {
+        if (length < 0) {
             std::cin.ignore(32767, '\n');
             printf("Некорректное значение длины\n");
         }
-        if (length == 0){
+        if (length == 0) {
             printf("Длина = 0, работа программы будет завершена\n");
             return 0;
-        }
-        else
-        {
+        } else {
             std::cin.ignore(32767, '\n');
             return length;
         }
@@ -30,13 +26,10 @@ int getLenghtUser()
 
 int getLenghtRandom(int minN, int maxN)
 {
-    try
-    {
+    try {
         if (minN < 0)
             throw minN;
-    }
-    catch (int minN)
-    {
+    } catch (int minN) {
         std::cerr << "ОШИБКА(minN =" << minN << "):minN должен быть > 0. ";
     }
 
@@ -45,27 +38,23 @@ int getLenghtRandom(int minN, int maxN)
     return random(engine);
 }
 
-int getIndexUser(const int numberElementsArray, const char *reason)
+int getIndexUser(const int numberElementsArray, const char* reason)
 {
 
     int index;
-    while (true)
-    {
+    while (true) {
         printf("Введите индекс %s: ", reason);
         scanf("%d", &index);
-        if (index < 0 || index > numberElementsArray)
-        {
+        if (index < 0 || index > numberElementsArray) {
             printf("Введен некорректный индекс. Он должен быть числом от 0 до %d\n", numberElementsArray);
-        }
-        else
-        {
+        } else {
             std::cin.ignore(32767, '\n');
             return index;
         }
     }
 }
 
-int getElementUser(const char *reason)
+int getElementUser(const char* reason)
 {
     int element;
 
@@ -76,12 +65,11 @@ int getElementUser(const char *reason)
     return element;
 }
 
-void generateFromUser(int *array, int numberElements)
+void generateFromUser(int* array, int numberElements)
 {
     printf("Введите элементы массива через пробел: ");
 
-    for (int i = 0; i < numberElements; i++)
-    {
+    for (int i = 0; i < numberElements; i++) {
         int value;
         scanf("%d", &value);
         array[i] = value;
@@ -89,36 +77,32 @@ void generateFromUser(int *array, int numberElements)
     std::cin.ignore(32767, '\n');
 }
 
-void generateRandom(int *array, int numberElements, int minNumber, int maxNumber)
+void generateRandom(int* array, int numberElements, int minNumber, int maxNumber)
 {
     std::mt19937 engine(static_cast<unsigned long>(clock()));
     std::uniform_int_distribution<int> random(minNumber, maxNumber);
 
-    for (int i = 0; i < numberElements; i++)
-    {
+    for (int i = 0; i < numberElements; i++) {
         array[i] = random(engine);
     }
 }
 
-int indexElement(const int *array, const int numberElements, const int number)
+int indexElement(const int* array, const int numberElements, const int number)
 {
-    for (int i = 0; i < numberElements; i++)
-    {
+    for (int i = 0; i < numberElements; i++) {
         if (array[i] == number)
             return i;
     }
     return -1;
 }
 
-int indexMinMaxElement(const int *array, int numberElements, bool comparator(int, int))
+int indexMinMaxElement(const int* array, int numberElements, bool comparator(int, int))
 {
     int firstNumber = *array;
     int result = 0;
 
-    for (int i = 1; i < numberElements; i++)
-    {
-        if (comparator(firstNumber, array[i]))
-        {
+    for (int i = 1; i < numberElements; i++) {
+        if (comparator(firstNumber, array[i])) {
             firstNumber = array[i];
             result = i;
         }
@@ -126,15 +110,13 @@ int indexMinMaxElement(const int *array, int numberElements, bool comparator(int
     return result;
 }
 
-int minMaxElement(const int *array, int numberElements, bool comparator(int, int))
+int minMaxElement(const int* array, int numberElements, bool comparator(int, int))
 {
     int firstNumber = *array;
     int result = 0;
 
-    for (int i = 1; i < numberElements; i++)
-    {
-        if (comparator(firstNumber, array[i]))
-        {
+    for (int i = 1; i < numberElements; i++) {
+        if (comparator(firstNumber, array[i])) {
             firstNumber = array[i];
             result = array[i];
         }
@@ -142,21 +124,16 @@ int minMaxElement(const int *array, int numberElements, bool comparator(int, int
     return result;
 }
 
-int indexMinMaxElementWithConditions(const int *array, int numberElements, bool comparator(int, int), bool condition(int))
+int indexMinMaxElementWithConditions(const int* array, int numberElements, bool comparator(int, int), bool condition(int))
 {
     int result = -1;
     int iFirstNumber = 0;
-    for (int i = 1; i < numberElements; i++)
-    {
+    for (int i = 1; i < numberElements; i++) {
         int secNum = array[i];
-        if (condition(array[i]))
-        {
-            if (comparator(array[iFirstNumber], secNum))
-            {
+        if (condition(array[i])) {
+            if (comparator(array[iFirstNumber], secNum)) {
                 result = iFirstNumber;
-            }
-            else
-            {
+            } else {
                 result = iFirstNumber = i;
             }
         }
@@ -164,63 +141,51 @@ int indexMinMaxElementWithConditions(const int *array, int numberElements, bool 
     return result;
 }
 
-int *searchIndexElements(const int *array, const int numberElements, const int number)
+int* searchIndexElements(const int* array, const int numberElements, const int number)
 {
     int counter = 0;
-    for (int i = 0; i < numberElements; i++)
-    {
-        if (array[i] == number)
-        {
+    for (int i = 0; i < numberElements; i++) {
+        if (array[i] == number) {
             ++counter;
         }
     }
 
-    int *arrayResult = new int[counter + 1];
+    int* arrayResult = new int[counter + 1];
     arrayResult[0] = counter + 1;
 
-    for (int i = 0, iRes = 1; i < numberElements; i++)
-    {
-        if (array[i] == number)
-        {
+    for (int i = 0, iRes = 1; i < numberElements; i++) {
+        if (array[i] == number) {
             arrayResult[iRes] = i; //Заполняем arrayResult
             iRes++;
         }
     }
-    if (arrayResult[0] == 0)
-    {
+    if (arrayResult[0] == 0) {
         delete[] arrayResult;
         return nullptr;
-    }
-    else
+    } else
         return arrayResult;
 }
 
-int *elementsRelevantConditions(int *array, int numberElements, bool condition(int number))
+int* elementsRelevantConditions(int* array, int numberElements, bool condition(int number))
 {
-    int *arrayResult = new int[numberElements];
+    int* arrayResult = new int[numberElements];
 
     int lnResult = 1;
-    for (int i = 0; i < numberElements; i++)
-    {
-        if (condition(array[i]))
-        {
+    for (int i = 0; i < numberElements; i++) {
+        if (condition(array[i])) {
             arrayResult[lnResult] = array[i];
             arrayResult[0] = lnResult;
             lnResult++;
         }
     }
 
-    if (arrayResult[0] == 0)
-    {
+    if (arrayResult[0] == 0) {
         delete[] arrayResult;
         return nullptr;
-    }
-    else
-    {
-        int *result = new int[lnResult - 1];
+    } else {
+        int* result = new int[lnResult - 1];
         result[0] = lnResult - 1;
-        for (int i = 1; i <= lnResult; i++)
-        {
+        for (int i = 1; i <= lnResult; i++) {
             result[i] = arrayResult[i];
         }
         delete[] arrayResult;
@@ -229,15 +194,13 @@ int *elementsRelevantConditions(int *array, int numberElements, bool condition(i
     }
 }
 
-void deleteElement(int **array, int &numberElements, int element, int offset)
+void deleteElement(int** array, int& numberElements, int element, int offset)
 {
     --numberElements;
-    int *arrayResult = new int[numberElements];
+    int* arrayResult = new int[numberElements];
 
-    for (int i = offset, iRes = 0; i < numberElements; i++)
-    {
-        if ((*array)[i] != element)
-        {
+    for (int i = offset, iRes = 0; i < numberElements; i++) {
+        if ((*array)[i] != element) {
             arrayResult[iRes] = (*array)[i];
             iRes++;
         }
@@ -247,28 +210,23 @@ void deleteElement(int **array, int &numberElements, int element, int offset)
     *array = arrayResult;
 }
 
-void deleteElements(int **array, int &numberElements, int element, int offset)
+void deleteElements(int** array, int& numberElements, int element, int offset)
 {
     int counter = 0;
-    for (int i = offset; i < numberElements; i++)
-    {
-        if ((*array)[i] != element)
-        {
+    for (int i = offset; i < numberElements; i++) {
+        if ((*array)[i] != element) {
             counter++;
         }
     }
 
     bool needDelete = (counter == numberElements - offset) ? false : true;
-    if (needDelete)
-    {
+    if (needDelete) {
 
-        int *arrayResult = new int[counter];
+        int* arrayResult = new int[counter];
 
         int iRes = 0;
-        for (int i = offset; i < numberElements; i++)
-        {
-            if ((*array)[i] != element)
-            {
+        for (int i = offset; i < numberElements; i++) {
+            if ((*array)[i] != element) {
                 arrayResult[iRes] = (*array)[i];
                 iRes++;
             }
@@ -281,15 +239,13 @@ void deleteElements(int **array, int &numberElements, int element, int offset)
     }
 }
 
-void pasteElement(int **array, int &numberElements, int index, int element)
+void pasteElement(int** array, int& numberElements, int index, int element)
 {
     ++numberElements;
-    int *arrayResult = new int[numberElements];
+    int* arrayResult = new int[numberElements];
 
-    for (int i = 0, iRes = 0; i < numberElements - 1; i++)
-    {
-        if (i == index)
-        {
+    for (int i = 0, iRes = 0; i < numberElements - 1; i++) {
+        if (i == index) {
             arrayResult[iRes] = element;
             iRes++;
         }
@@ -301,11 +257,10 @@ void pasteElement(int **array, int &numberElements, int index, int element)
     *array = arrayResult;
 }
 
-void print(const int *array, const int numberElements, const char *text, const int offset)
+void print(const int* array, const int numberElements, const char* text, const int offset)
 {
     printf("Значения массива %s : [ ", text);
-    for (int i = offset; i < numberElements; i++)
-    {
+    for (int i = offset; i < numberElements; i++) {
         printf("%d, ", array[i]);
     }
     printf("\b\b ]\n");

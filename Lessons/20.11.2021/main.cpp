@@ -8,7 +8,8 @@ void task1();
 void task2();
 void task3();
 
-int main(int argc, char const* argv[]) {
+int main(int argc, char const* argv[])
+{
     bool noData = false;
     if (argc == 1) {
         printf("Введите программу для запуска: ");
@@ -48,7 +49,8 @@ int main(int argc, char const* argv[]) {
     }
 }
 
-void task1() {
+void task1()
+{
     IntList1D list = readArrayKeyboard();
     IntList1D_element* list_ptr = (list) ? *list : nullptr;
 
@@ -69,7 +71,8 @@ void task1() {
     std::cout << "Length of sequence: " << lengthSequence << "\n";
 }
 
-void task2() {
+void task2()
+{
     IntList1D list = readArrayKeyboard();
 
     const int length = static_cast<int>(getLength(list));
@@ -89,7 +92,8 @@ void task2() {
     std::cout << "\n";
 }
 
-void task3() {
+void task3()
+{
     IntList1D list = readArrayKeyboard();
     IntList1D_element* const list_ptr = (list) ? *list : nullptr;
 

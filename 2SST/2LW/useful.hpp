@@ -4,14 +4,14 @@
 #include <iostream>
 
 /**
-*   @brief  Print text and return user answer.
-*   @param  text  Text for user
-*   @param  storage  Variable for store result.
-*   @param  size  Size of returned line (for string/c-string)
-*   @return  Any type
-*/
+ *   @brief  Print text and return user answer.
+ *   @param  text  Text for user
+ *   @param  storage  Variable for store result.
+ *   @param  size  Size of returned line (for string/c-string)
+ *   @return  Any type
+ */
 template <class T>
-void printAndScan(const char *text, T &storage, int size)
+void printAndScan(const char* text, T& storage, int size)
 {
     std::cout << text;
     {
@@ -19,18 +19,17 @@ void printAndScan(const char *text, T &storage, int size)
     }
 
     std::cin.ignore(32767, '\n');
-    if (!std::cin.good())
-    {
+    if (!std::cin.good()) {
         std::cin.clear();
     }
 }
 /**
-*   @brief  Print text and return user answer.
-*   @param  text  Text for user
-*   @return  Your type
-*/
+ *   @brief  Print text and return user answer.
+ *   @param  text  Text for user
+ *   @return  Your type
+ */
 template <class T>
-T printAndScan(const char *text)
+T printAndScan(const char* text)
 {
     T data;
     std::cout << text;
@@ -39,8 +38,7 @@ T printAndScan(const char *text)
     }
 
     std::cin.ignore(32767, '\n');
-    if (!std::cin.good())
-    {
+    if (!std::cin.good()) {
         std::cin.clear();
     }
     return data;
@@ -90,7 +88,7 @@ std::string fgBrightCyan = "\033[36;1m";
 std::string bgCyan = "\033[46m";
 std::string bgBrightCyan = "\033[46;1m";
 
-//White
+// White
 std::string fgWhite = "\033[37m";
 std::string fgBrightWhite = "\033[37;1m";
 std::string bgWhite = "\033[47m";

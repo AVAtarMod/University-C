@@ -2,30 +2,24 @@
 
 void task1();
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     bool noData = false;
-    if (argc == 1)
-    {
+    if (argc == 1) {
         std::cout << "Введите программу для запуска: ";
         argc++;
         noData = true;
     }
-    for (int i = 1; i < argc; i++)
-    {
+    for (int i = 1; i < argc; i++) {
         int choice;
-        if (noData)
-        {
+        if (noData) {
             std::cin >> choice;
             std::cin.ignore(32767, '\n');
-        }
-        else
-        {
+        } else {
             choice = std::stoi(argv[i]);
         }
 
-        switch (choice)
-        {
+        switch (choice) {
         case 1:
             std::cout << "Задание №1\n";
             task1();
@@ -38,4 +32,4 @@ int main(int argc, char const *argv[])
     }
 }
 
-void task1(){}
+void task1() { }

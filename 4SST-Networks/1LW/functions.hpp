@@ -4,12 +4,12 @@
 #include <vector>
 
 class Graph {
-  private:
+private:
     bool empty = true;
     std::vector<std::vector<int>> listOfEdges;
     int numberVertexes = 0, numberEdges = 0;
-    
-  public:
+
+public:
     Graph(const char* filePath);
 
     bool isEmpty() const;
@@ -34,11 +34,11 @@ enum class TopologyVariant {
 };
 
 class Topology {
-  private:
+private:
     Graph& g;
     std::vector<TopologyVariant> variants;
 
-  public:
+public:
     Topology(Graph& graph);
     std::vector<TopologyVariant> getTopology();
     ~Topology();

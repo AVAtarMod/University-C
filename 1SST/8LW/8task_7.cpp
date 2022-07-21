@@ -12,8 +12,7 @@ int main()
     blocks n;
     cout << "Введите количество кубиков: ";
     cin >> n;
-    if (n > 0 && n < 101)
-    {
+    if (n > 0 && n < 101) {
         stairs(1, n);
     }
     cout << "Количество лесенок = " << d << "\n";
@@ -22,12 +21,10 @@ int main()
 //В результате считает количество возможных 1 слоев с N-1 кубиками
 void stairs(int numberLayer, blocks n)
 {
-    if (n == 0)
-    {
+    if (n == 0) {
         d++;
     }
-    for (int i = numberLayer; i <= n; i++)
-    {
+    for (int i = numberLayer; i <= n; i++) {
         stairs(i + 1, n - i);
     }
 }

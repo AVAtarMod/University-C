@@ -9,11 +9,9 @@ int main()
     printf("\n\nПодходящие пары числел: \n");
     int counter = 0;
 
-    for (int numberTwin1 = 1; numberTwin1 <= 1000; numberTwin1++)
-    {
+    for (int numberTwin1 = 1; numberTwin1 <= 1000; numberTwin1++) {
         int numberTwin2 = numberTwin1 + 2;
-        if (isSimple(numberTwin1) && isSimple(numberTwin2))
-        {
+        if (isSimple(numberTwin1) && isSimple(numberTwin2)) {
             printf("(%d %d)", numberTwin1, numberTwin2);
             counter++;
             if (counter % 3 == 0)
@@ -29,8 +27,7 @@ bool isSimple(int number)
 {
     bool isSimple;
 
-    for (int divider = 1, counter = 0; divider <= number; divider++)
-    {
+    for (int divider = 1, counter = 0; divider <= number; divider++) {
         if (number % divider == 0)
             counter++;
         isSimple = (counter == 2) ? true : false;

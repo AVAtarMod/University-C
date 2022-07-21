@@ -1,14 +1,13 @@
 #include "functions.hpp"
 
-#include <string>
 #include <cmath>
+#include <string>
 
-bool isFileExist(const char *file);
-bool getPowerOf2(int number, int &power)
+bool isFileExist(const char* file);
+bool getPowerOf2(int number, int& power)
 {
     int a, c = 0;
-    while (number != 1)
-    {
+    while (number != 1) {
         a = number % 2;
         if (a != 0)
             return false;
@@ -19,56 +18,44 @@ bool getPowerOf2(int number, int &power)
     return true;
 }
 
-std::string task3(const char *filename)
+std::string task3(const char* filename)
 {
-    if (isFileExist(filename))
-    {
+    if (isFileExist(filename)) {
         std::ifstream in(filename);
         std::string result;
         int k, n, power = 0;
         in >> k >> n;
-        if (getPowerOf2(n, power))
-        {
+        if (getPowerOf2(n, power)) {
             result = std::to_string(k);
-            for (int i = 0; i < power; ++i)
-            {
+            for (int i = 0; i < power; ++i) {
                 result += "^2";
             }
             result += " = " + std::to_string(power);
             return result;
-        }
-        else if (getPowerOf2(n - 1, power))
-        {
+        } else if (getPowerOf2(n - 1, power)) {
             result = "(" + std::to_string(k);
-            for (int i = 0; i < power; ++i)
-            {
+            for (int i = 0; i < power; ++i) {
                 result += "^2";
             }
             result += ")*" + std::to_string(k) + " = " + std::to_string(power + 1);
             return result;
-        }
-        else
-        {
+        } else {
             int tN = n;
-            while (!getPowerOf2(tN, power))
-            {
+            while (!getPowerOf2(tN, power)) {
                 --tN;
             }
-            if (n == tN + 3)
-            {
+            if (n == tN + 3) {
                 int ops = 0;
                 result = "(" + std::to_string(k);
                 getPowerOf2(tN, power);
                 ops += power;
-                for (int i = 0; i < power; ++i)
-                {
+                for (int i = 0; i < power; ++i) {
                     result += "^2";
                 }
                 result += ")*(" + std::to_string(k);
                 getPowerOf2(n - tN - 1, power);
                 ops += power;
-                for (int i = 0; i < power; ++i)
-                {
+                for (int i = 0; i < power; ++i) {
                     result += "^2";
                 }
                 result += ")*" + std::to_string(k) + " = " + std::to_string(ops + 2);
@@ -112,13 +99,12 @@ std::string task3(const char *filename)
 //     return "";
 // }
 
-bool isFileExist(const char *file)
+bool isFileExist(const char* file)
 {
     bool exist = false;
 
     std::ifstream in(file);
-    if (in.good())
-    {
+    if (in.good()) {
         exist = true;
     }
     in.close();
@@ -144,15 +130,13 @@ unsigned maxLayer(unsigned n)
 
 unsigned maxTop(unsigned n, unsigned layers)
 {
-    unsigned *stairSerialized = new unsigned[layers]{0};
-    for (unsigned i = 0; i < layers; ++i)
-    {
+    unsigned* stairSerialized = new unsigned[layers] { 0 };
+    for (unsigned i = 0; i < layers; ++i) {
         stairSerialized[i] = i + 1;
         n -= i + 1;
     }
     while (n > 0)
-        for (unsigned i = layers - 1u; i < 0u - 1u && n != 0; --i)
-        {
+        for (unsigned i = layers - 1u; i < 0u - 1u && n != 0; --i) {
             ++stairSerialized[i];
             --n;
         }
@@ -166,19 +150,14 @@ unsigned getNumberStairs(unsigned n, unsigned layers, unsigned top = 0)
 {
     unsigned result = 0;
 
-    if (layers > 2)
-    {
+    if (layers > 2) {
         unsigned max_top = maxTop(n, layers);
-        for (unsigned i = 1; i <= max_top; ++i)
-        {
+        for (unsigned i = 1; i <= max_top; ++i) {
             result += getNumberStairs(n - i, layers - 1, i);
         }
-    }
-    else
-    {
+    } else {
         unsigned stairSerialized = (top + 1) * 10 + (n - top - 1);
-        while (stairSerialized / 10 < stairSerialized % 10)
-        {
+        while (stairSerialized / 10 < stairSerialized % 10) {
             ++result;
             stairSerialized += 10;
             --stairSerialized;
@@ -194,10 +173,9 @@ unsigned stairs(unsigned n, unsigned numberLayer = 2, unsigned sum = 0)
     return sum;
 }
 
-std::string task12(const char *filename)
+std::string task12(const char* filename)
 {
-    if (isFileExist(filename))
-    {
+    if (isFileExist(filename)) {
         std::ifstream in(filename);
         unsigned n;
         in >> n;

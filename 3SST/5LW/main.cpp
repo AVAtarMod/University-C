@@ -12,7 +12,8 @@ void task5();
 void task6();
 void task7();
 
-int main(int argc, char const* argv[]) {
+int main(int argc, char const* argv[])
+{
     bool noData = false;
     if (argc == 1) {
         printf("Введите программу для запуска: ");
@@ -72,7 +73,8 @@ int main(int argc, char const* argv[]) {
     }
 }
 
-void task1() {
+void task1()
+{
     std::string filePath = printAndScan<std::string>("Enter path:");
     std::ifstream in(filePath);
     if (!in.eof()) {
@@ -95,8 +97,7 @@ void task1() {
             std::cout << "\nSpanning Tree (by width):\n";
             spanTree = graph.getSpanningTree(Graph::Method::BY_WIDTH);
             spanTree.print();
-        }
-        catch (const std::exception& e) {
+        } catch (const std::exception& e) {
             std::cerr << "\nERROR:" << e.what() << '\n';
         }
 
@@ -104,9 +105,9 @@ void task1() {
         std::cerr << "Error: Cannot open file.";
 }
 
-void task2() {}
-void task3() {}
-void task4() {}
-void task5() {}
-void task6() {}
-void task7() {}
+void task2() { }
+void task3() { }
+void task4() { }
+void task5() { }
+void task6() { }
+void task7() { }

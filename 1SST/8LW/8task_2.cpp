@@ -18,8 +18,7 @@ int main()
 int computeDigitalRoot(long int number)
 {
     int sumDigits = 0;
-    for (int i = number; i != 0; i /= 10)
-    {
+    for (int i = number; i != 0; i /= 10) {
         sumDigits += i % 10;
     }
 

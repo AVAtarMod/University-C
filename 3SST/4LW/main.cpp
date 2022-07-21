@@ -10,7 +10,8 @@ void task2();
 void task3();
 void task4();
 
-int main(int argc, char const* argv[]) {
+int main(int argc, char const* argv[])
+{
     bool noData = false;
     if (argc == 1) {
         printf("Введите программу для запуска: ");
@@ -53,21 +54,22 @@ int main(int argc, char const* argv[]) {
                              "конвертировать введенные данные\n";
                 break;
             }
-        }
-        catch (const std::exception& e) {
+        } catch (const std::exception& e) {
             std::cerr << "\nERROR: " << e.what() << '\n';
         }
     }
 }
 
-void task1() {
+void task1()
+{
     int number;
     std::cout << "Enter number for computing factorial: ";
     std::cin >> number;
     std::cout << fact(number) << "\n";
 }
 
-void task2() {
+void task2()
+{
     LongNumber A, B;
     std::cout << "Enter number A: ";
     std::cin >> A;
@@ -76,7 +78,8 @@ void task2() {
     std::cout << "Result: A*B = " << A * B << "\n";
 }
 
-void task3() {
+void task3()
+{
     LongNumber A, B;
     std::cout << "Enter number A: ";
     std::cin >> A;
@@ -96,7 +99,8 @@ void task3() {
     std::cout << "Greatest number is " << greatest << "\n";
     std::cout << "Result: MAX-MIN = " << result << "\n";
 }
-void task4() {
+void task4()
+{
     LongNumber A, B;
     std::cout << "Enter number A: ";
     std::cin >> A;

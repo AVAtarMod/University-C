@@ -9,17 +9,20 @@
 
 #include <iostream>
 
-int main(){
-    int n,result = 0;
+int main()
+{
+    int n, result = 0;
 
     printf("\n\nВведите число: ");
-    scanf("%d",&n);
+    scanf("%d", &n);
 
-    for(int t = 1; t < n+1; t++)
-        result += 2*t - 1;
+    for (int t = 1; t < n + 1; t++)
+        result += 2 * t - 1;
 
-    if (n > 0) printf("Результат n^2 = %d\n\n",result);
-    else printf("Ошибка:введенное число не натуральное\n\n");
-    
+    if (n > 0)
+        printf("Результат n^2 = %d\n\n", result);
+    else
+        printf("Ошибка:введенное число не натуральное\n\n");
+
     return 0;
 }

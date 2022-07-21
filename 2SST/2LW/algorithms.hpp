@@ -2,12 +2,11 @@
 #define ALGORHITMS
 
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
-class Data
-{
+class Data {
 public:
     bool stringWasFound;
     int indexString;
@@ -29,17 +28,17 @@ public:
     }
 };
 
-std::ostream &operator<<(std::ostream &out, Data Data);
-std::ostream &operator<<(std::ostream &out, std::vector<std::pair<int, std::string>> array);
+std::ostream& operator<<(std::ostream& out, Data Data);
+std::ostream& operator<<(std::ostream& out, std::vector<std::pair<int, std::string>> array);
 
-Data linearAccelerated(const char *string, const char *search);
+Data linearAccelerated(const char* string, const char* search);
 
-Data linear(const char *string, const char *search);
+Data linear(const char* string, const char* search);
 
-Data boyerMoor(const char *string, const char *search);
+Data boyerMoor(const char* string, const char* search);
 
-Data knuthMorisPratt(const char *string, const char *search);
+Data knuthMorisPratt(const char* string, const char* search);
 
-Data rabinKarp(const char *string, const char *search);
+Data rabinKarp(const char* string, const char* search);
 
 #endif

@@ -1,37 +1,31 @@
 #include <iostream>
 
-#include "useful.hpp"
 #include "functions.hpp"
+#include "useful.hpp"
 
 void task5();
 void task6();
 void task7();
 void task8();
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     bool noData = false;
-    if (argc == 1)
-    {
+    if (argc == 1) {
         printf("Введите программу для запуска: ");
         argc++;
         noData = true;
     }
-    for (int i = 1; i < argc; i++)
-    {
+    for (int i = 1; i < argc; i++) {
         int choice;
-        if (noData)
-        {
+        if (noData) {
             scanf("%d", &choice);
             std::cin.ignore(32767, '\n');
-        }
-        else
-        {
+        } else {
             choice = std::stoi(argv[i]);
         }
 
-        switch (choice)
-        {
+        switch (choice) {
         case 5:
             std::cout << "Задание №5\n";
             task5();
@@ -58,11 +52,10 @@ int main(int argc, char const *argv[])
 void task5()
 {
     const int LENGTH = 12;
-    const int RANGE[2] = {-20, 20};
+    const int RANGE[2] = { -20, 20 };
     intList2D_element *begin = new intList2D_element(nullptr, getRandomNumber(RANGE[0], RANGE[1])), *temp = begin, *prev;
 
-    for (int currentLength = 1; currentLength < LENGTH; ++currentLength)
-    {
+    for (int currentLength = 1; currentLength < LENGTH; ++currentLength) {
         prev = temp;
 
         temp->next = new intList2D_element;
@@ -84,10 +77,9 @@ void task6()
     std::string path = printAndScan<std::string>("file path:");
     std::list<int> numbers = readArrayFile(path);
     const int num_size = numbers.size();
-    intList2D_element *begin = new intList2D_element(nullptr, *numbers.cbegin());
+    intList2D_element* begin = new intList2D_element(nullptr, *numbers.cbegin());
     intList2D_element *prev = nullptr, *temp = begin;
-    for (uint16_t i = 0; i < num_size - 1; ++i)
-    {
+    for (uint16_t i = 0; i < num_size - 1; ++i) {
         prev = temp;
         numbers.pop_front();
 
@@ -105,10 +97,9 @@ void task7()
 {
     std::list<int> numbers = readArrayKeyboard(ZERO);
     const int num_size = numbers.size();
-    intList2D_element *begin = new intList2D_element(nullptr, *numbers.cbegin());
+    intList2D_element* begin = new intList2D_element(nullptr, *numbers.cbegin());
     intList2D_element *prev = nullptr, *temp = begin;
-    for (uint16_t i = 0; i < num_size - 1; ++i)
-    {
+    for (uint16_t i = 0; i < num_size - 1; ++i) {
         prev = temp;
         numbers.pop_front();
 
@@ -126,10 +117,9 @@ void task8()
 {
     std::list<int> numbers = readArrayKeyboard(IO_EOF);
     const int num_size = numbers.size();
-    intList2D_element *begin = new intList2D_element(nullptr, *numbers.cbegin());
+    intList2D_element* begin = new intList2D_element(nullptr, *numbers.cbegin());
     intList2D_element *prev = nullptr, *temp = begin;
-    for (uint16_t i = 0; i < num_size - 1; ++i)
-    {
+    for (uint16_t i = 0; i < num_size - 1; ++i) {
         prev = temp;
         numbers.pop_front();
 

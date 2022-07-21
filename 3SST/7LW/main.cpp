@@ -3,7 +3,8 @@
 void task1();
 void task2();
 
-int main(int argc, char const* argv[]) {
+int main(int argc, char const* argv[])
+{
     bool noData = false;
     if (argc == 1) {
         std::cout << "Select tree for operations: ";
@@ -37,7 +38,8 @@ int main(int argc, char const* argv[]) {
     }
 }
 
-void task1() {
+void task1()
+{
     bool exit = false;
     int parameter;
     int data;
@@ -92,7 +94,8 @@ void task1() {
             break;
     }
 }
-void task2() {
+void task2()
+{
     BTree btree(2);
     int data = 0;
     bool exit;

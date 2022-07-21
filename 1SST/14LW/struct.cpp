@@ -1,19 +1,19 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <locale>
 
 #include "struct.h"
 
-bool searchText(const char *source, const char *text)
+bool searchText(const char* source, const char* text)
 {
-    std::string sourceStr{source};
+    std::string sourceStr { source };
     if (sourceStr.find(text) != sourceStr.npos)
         return true;
     else
         return false;
 }
 
-bool binWriteMember(std::ofstream &output, Member &member)
+bool binWriteMember(std::ofstream& output, Member& member)
 {
     std::unique_ptr<char[]> memberBinary = member;
     output.write(memberBinary.get(), BUFFER_SIZE);
@@ -23,7 +23,7 @@ bool binWriteMember(std::ofstream &output, Member &member)
         return false;
 }
 
-bool binReadMember(std::ifstream &input, Member &member)
+bool binReadMember(std::ifstream& input, Member& member)
 {
     char buffer[BUFFER_SIZE];
     input.read(buffer, BUFFER_SIZE);
@@ -34,7 +34,7 @@ bool binReadMember(std::ifstream &input, Member &member)
         return false;
 }
 
-void editMember(Member &member)
+void editMember(Member& member)
 {
     std::cout << member << "\n";
     std::cout << "Avaliable actions:\n\t"
@@ -46,13 +46,11 @@ void editMember(Member &member)
                  "6) Edit phone number\n\t"
                  "7) Exit\n";
     uint32_t act = 0;
-    while (act != 7)
-    {
+    while (act != 7) {
         std::cout << "  Enter action: ";
         std::cin.clear();
         std::cin >> act;
-        switch (act)
-        {
+        switch (act) {
         case 1:
             std::cout << "  Enter: ";
             std::cin.ignore(INT16_MAX, '\n');
@@ -94,16 +92,16 @@ void editMember(Member &member)
 std::unique_ptr<char[]> getLastName(Member member)
 {
     size_t beginLastName = -1;
-    for (size_t i = 0; i < STR_SIZE - 1 && beginLastName; i++)
-    {
-        if(isspace(member.fullName[i])) beginLastName = i+1;
+    for (size_t i = 0; i < STR_SIZE - 1 && beginLastName; i++) {
+        if (isspace(member.fullName[i]))
+            beginLastName = i + 1;
     }
     auto lastName = std::make_unique<char[]>(STR_SIZE - beginLastName);
-    strncpy(lastName.get(),member.fullName + beginLastName,STR_SIZE - beginLastName);
+    strncpy(lastName.get(), member.fullName + beginLastName, STR_SIZE - beginLastName);
     return lastName;
 }
 
-std::istream &operator>>(std::istream &input, Member &member)
+std::istream& operator>>(std::istream& input, Member& member)
 {
 
     input.ignore(INT16_MAX, '\n');
@@ -131,7 +129,7 @@ std::istream &operator>>(std::istream &input, Member &member)
     return input;
 }
 
-std::ostream &operator<<(std::ostream &output, Member &member)
+std::ostream& operator<<(std::ostream& output, Member& member)
 {
     output << member.fullName << " " << member.age << " y.o"
            << "\nCountry, city: " << member.country << ", " << member.city << "\nWork place: " << member.work

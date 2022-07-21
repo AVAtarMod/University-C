@@ -12,30 +12,24 @@ void task5();
 void task6();
 void task7();
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     bool noData = false;
-    if (argc == 1)
-    {
+    if (argc == 1) {
         printf("Введите программу для запуска: ");
         argc++;
         noData = true;
     }
-    for (int i = 1; i < argc; i++)
-    {
+    for (int i = 1; i < argc; i++) {
         int choice;
-        if (noData)
-        {
+        if (noData) {
             scanf("%d", &choice);
             std::cin.ignore(32767, '\n');
-        }
-        else
-        {
+        } else {
             choice = std::stoi(argv[i]);
         }
 
-        switch (choice)
-        {
+        switch (choice) {
         case 1:
             std::cout << "Задание №1\n";
             task1();
@@ -83,8 +77,7 @@ void task1()
     IntList1D list1 = nullptr;
     IntList1D list2 = nullptr;
     int userInput;
-    while (true)
-    {
+    while (true) {
         std::cin >> userInput;
         if (std::cin.eof())
             break;
@@ -115,8 +108,7 @@ void task2()
     char buffer[BUFFSIZE];
     std::cin.getline(buffer, BUFFSIZE);
     stream.str(buffer);
-    while (!stream.eof())
-    {
+    while (!stream.eof()) {
         stream >> userInput;
         insertUpperSorted(list1, userInput, USE_CYCLE);
     }
@@ -127,8 +119,7 @@ void task2()
     stream.clear();
     stream.str(buffer);
 
-    while (!stream.eof())
-    {
+    while (!stream.eof()) {
         stream >> userInput;
         insertUpperSorted(list2, userInput, USE_CYCLE);
     }
@@ -174,8 +165,7 @@ void task4()
 {
     std::string path = printAndScan<std::string>("file path:");
     std::list<IntList1D> arLists = fileToLists(path, '|');
-    if (arLists.size() >= 2)
-    {
+    if (arLists.size() >= 2) {
         IntList1D listA = *(arLists.begin());
         arLists.pop_front();
         IntList1D listB = *(arLists.begin());
@@ -211,7 +201,7 @@ void task5()
     printBegin(list2);
 
     /**
-     * @brief Now we delete list2+sublist, 
+     * @brief Now we delete list2+sublist,
      * therefore we not need to delete sublist
      */
     deleteList(list2);
@@ -230,19 +220,15 @@ void task6()
     int indexOfZero = findFirstOf(list, 0);
     IntList1D indexes = getIndexesByData(list, numberSearch);
 
-    if (indexOfZero == -1)
-    {
+    if (indexOfZero == -1) {
         indexOfZero = 0;
-    }
-    else
-    {
+    } else {
         IntList1D filtered_indexes = filter(indexes, comparator::lesserThanData, indexOfZero);
         deleteList(indexes);
         indexes = filtered_indexes;
     }
 
-    if (indexes != nullptr)
-    {
+    if (indexes != nullptr) {
         deleteList(popByIndexes(list, indexes));
     }
 
@@ -260,11 +246,11 @@ void task7()
 {
     IntList1D list = readArrayKeyboard(NEWLINE, 255, true);
     int userInput[2] = {
-        printAndScan<int>("\nEnter number for search: "), printAndScan<int>("\nEnter X: ")};
+        printAndScan<int>("\nEnter number for search: "), printAndScan<int>("\nEnter X: ")
+    };
     IntList1D indexes = getIndexesByData(list, userInput[0]);
 
-    if (indexes != nullptr)
-    {
+    if (indexes != nullptr) {
         doActionOnIndexes(list, indexes, index_actions::pushBefore, userInput[1]);
     }
 

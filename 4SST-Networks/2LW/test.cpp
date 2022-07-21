@@ -19,10 +19,10 @@ int main(int argc, char const* argv[])
 #elif PLATFORM_NAME != 0
     std::cout << "Non-windows!";
     setlocale(LC_CTYPE, "");
-    #if PLATFORM_NAME == 1 || PLATFORM_NAME == 2
-        std::cout << " Linux or unknown OS!";
-        setlocale(LC_CTYPE, "");
-    #endif
+#if PLATFORM_NAME == 1 || PLATFORM_NAME == 2
+    std::cout << " Linux or unknown OS!";
+    setlocale(LC_CTYPE, "");
+#endif
 #endif
 
     return 0;

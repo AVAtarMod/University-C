@@ -1,16 +1,15 @@
 #include "Labyrinth.hpp"
-#include <vector>
-#include <memory>
 #include <algorithm>
+#include <memory>
+#include <vector>
 
 #define isc static_cast<int>
 #define lusc static_cast<long unsigned>
 #define usc static_cast<unsigned>
 
-Labyrinth::Labyrinth(const char *filename)
+Labyrinth::Labyrinth(const char* filename)
 {
-    if (isFileExist(filename))
-    {
+    if (isFileExist(filename)) {
         std::ifstream fileWithLabyrinth(filename);
         std::string buffer;
 
@@ -28,24 +27,21 @@ Labyrinth::Labyrinth(const char *filename)
 
         buffer.reserve(UINT8_MAX);
         fileWithLabyrinth.getline(buffer.data(), UINT8_MAX, '\n');
-        for (unsigned i = 0; i < 2; ++i)
-        {
+        for (unsigned i = 0; i < 2; ++i) {
             fileWithLabyrinth >> buffer;
             start[i] = std::stoul(buffer.data());
         }
 
         fileWithLabyrinth.getline(buffer.data(), UINT8_MAX, '\n');
-        for (unsigned i = 0; i < 2; ++i)
-        {
+        for (unsigned i = 0; i < 2; ++i) {
             fileWithLabyrinth >> buffer;
             finish[i] = std::stoul(buffer.data());
         }
 
         bool startL = false;
-        char *cBuffer = new char[UINT8_MAX + 1];
+        char* cBuffer = new char[UINT8_MAX + 1];
         unsigned pos;
-        while (!startL)
-        {
+        while (!startL) {
             startL = true;
             pos = fileWithLabyrinth.tellg();
             fileWithLabyrinth.getline(cBuffer, UINT8_MAX, '\n');
@@ -53,8 +49,7 @@ Labyrinth::Labyrinth(const char *filename)
 
             if ((buffer.find('1') == buffer.npos || buffer.find('0') == buffer.npos) && buffer.find(' ') == buffer.npos)
                 startL = false;
-            for (unsigned bufI = 0; bufI < buffer.size() && startL; ++bufI)
-            {
+            for (unsigned bufI = 0; bufI < buffer.size() && startL; ++bufI) {
                 char i = buffer[bufI];
                 if (i != ' ' && i != 'a' && i != '0' && i != '1' && i != 'b')
                     startL = false;
@@ -64,13 +59,12 @@ Labyrinth::Labyrinth(const char *filename)
         delete[] cBuffer;
         cBuffer = nullptr;
 
-        this->labyrinth = new char *[this->Lrows];
+        this->labyrinth = new char*[this->Lrows];
         init(this->labyrinth);
 
         labyrinth[0][0] = buffer.data()[0];
         for (unsigned i = 0; i < this->Lrows; ++i)
-            for (unsigned ii = 0; ii < this->Lcollumns; ++ii)
-            {
+            for (unsigned ii = 0; ii < this->Lcollumns; ++ii) {
                 fileWithLabyrinth >> buffer;
                 labyrinth[i][ii] = buffer.data()[0];
             }
@@ -87,23 +81,20 @@ Labyrinth::~Labyrinth()
 void Labyrinth::show()
 {
     std::cout << "Rows = " << Lrows << "; Collumns = " << Lcollumns << "\n";
-    for (unsigned i = 0; i < Lrows; ++i)
-    {
-        for (unsigned ii = 0; ii < Lcollumns; ++ii)
-        {
+    for (unsigned i = 0; i < Lrows; ++i) {
+        for (unsigned ii = 0; ii < Lcollumns; ++ii) {
             std::cout << labyrinth[i][ii] << " ";
         }
         std::cout << "\n";
     }
 }
 
-bool isFileExist(const char *file)
+bool isFileExist(const char* file)
 {
     bool exist = false;
 
     std::ifstream in(file);
-    if (in.good())
-    {
+    if (in.good()) {
         exist = true;
     }
     in.close();
@@ -111,8 +102,7 @@ bool isFileExist(const char *file)
     return exist;
 }
 
-class Coordinate
-{
+class Coordinate {
 public:
     int x, y, possibleWays = 0;
     bool lock;
@@ -125,20 +115,20 @@ public:
     {
         x = X, y = Y, lock = needLock;
     }
-    Coordinate(int *data, bool needLock = false)
+    Coordinate(int* data, bool needLock = false)
     {
         x = data[0], y = data[1], lock = needLock;
     }
 
-    friend bool operator==(const Coordinate &a, const Coordinate &b)
+    friend bool operator==(const Coordinate& a, const Coordinate& b)
     {
-        if (a.x == b.x && a.y == b.y) //TODO:need add impl && a.lock == b.lock
+        if (a.x == b.x && a.y == b.y) // TODO:need add impl && a.lock == b.lock
             return true;
         return false;
     }
-    friend bool operator!=(const Coordinate &a, const Coordinate &b)
+    friend bool operator!=(const Coordinate& a, const Coordinate& b)
     {
-        if (a.x == b.x && a.y == b.y) //TODO:need add impl && a.lock == b.lock
+        if (a.x == b.x && a.y == b.y) // TODO:need add impl && a.lock == b.lock
             return false;
         return true;
     }
@@ -155,8 +145,7 @@ std::unique_ptr<Coordinate> returnOffset(Coordinate current, int i)
 {
     std::unique_ptr<Coordinate> returnOffset_ptr(new Coordinate(0, 0, false));
     *returnOffset_ptr = current;
-    switch (i)
-    {
+    switch (i) {
     case 0:
         returnOffset_ptr->x = current.x + 1;
         return returnOffset_ptr;
@@ -185,17 +174,14 @@ int Labyrinth::shortestWay()
 {
     Coordinate start = this->start;
     Coordinate finish = this->finish;
-    if (start != finish)
-    {
+    if (start != finish) {
         /**
          * @brief Making 'shadow' copy
          */
-        char **bufferLabyrinth = new char *[this->Lrows];
-        for (unsigned i = 0; i < Lrows; ++i)
-        {
+        char** bufferLabyrinth = new char*[this->Lrows];
+        for (unsigned i = 0; i < Lrows; ++i) {
             bufferLabyrinth[i] = new char[Lcollumns];
-            for (unsigned ii = 0; ii < Lcollumns; ++ii)
-            {
+            for (unsigned ii = 0; ii < Lcollumns; ++ii) {
                 bufferLabyrinth[i][ii] = labyrinth[i][ii];
             }
         }
@@ -204,33 +190,27 @@ int Labyrinth::shortestWay()
         std::vector<Coordinate> currentWay;
         currentWay.resize(max_length_Labyrinth);
 
-        currentWay[0] = {this->start, false};
+        currentWay[0] = { this->start, false };
         std::vector<int> lengthsWays;
 
         bool isLastWayPassed = false;
         unsigned currentWayI = 0;
         Coordinate temp;
-        while (!isLastWayPassed)
-        {
+        while (!isLastWayPassed) {
             int cLength = 0;
             std::vector<Coordinate> blacklist;
-            while (currentWay[currentWayI] != finish)
-            {
-                //TODO: replace let -> ob.possibleWays
+            while (currentWay[currentWayI] != finish) {
+                // TODO: replace let -> ob.possibleWays
                 int cX = currentWay[currentWayI].x, cY = currentWay[currentWayI].y;
                 currentWay[currentWayI].possibleWays = 4;
-                for (int i = 0, hardLet = 0; i < 4; ++i)
-                {
+                for (int i = 0, hardLet = 0; i < 4; ++i) {
                     Coordinate tempCurrent = returnOffset(currentWay[currentWayI], i).get()[0];
                     bool goodCoordinate = true;
-                    if (isEdge(tempCurrent, Lrows, Lcollumns) || bufferLabyrinth[tempCurrent.x][tempCurrent.y] == '1')
-                    {
+                    if (isEdge(tempCurrent, Lrows, Lcollumns) || bufferLabyrinth[tempCurrent.x][tempCurrent.y] == '1') {
                         --currentWay[currentWayI].possibleWays;
                         ++hardLet;
                         goodCoordinate = false;
-                    }
-                    else if (tempCurrent == currentWay[currentWayI] || std::find(currentWay.begin(), currentWay.end(), tempCurrent) != currentWay.end() || std::find(blacklist.begin(), blacklist.end(), tempCurrent) != blacklist.end())
-                    {
+                    } else if (tempCurrent == currentWay[currentWayI] || std::find(currentWay.begin(), currentWay.end(), tempCurrent) != currentWay.end() || std::find(blacklist.begin(), blacklist.end(), tempCurrent) != blacklist.end()) {
                         --currentWay[currentWayI].possibleWays;
                         goodCoordinate = false;
                     }
@@ -244,17 +224,14 @@ int Labyrinth::shortestWay()
                  * @brief Pass way from end to begin; find first
                  * good coordinate
                  */
-                if (currentWay[currentWayI].possibleWays == 0)
-                {
+                if (currentWay[currentWayI].possibleWays == 0) {
                     int i = isc(currentWayI);
                     while (currentWay[usc(i)].possibleWays < 2 && i > 0)
                         --i;
                     blacklist.push_back(temp);
                     currentWay.resize(lusc(i + 1));
-                    currentWayI = usc(i),cLength = i;
-                }
-                else
-                {
+                    currentWayI = usc(i), cLength = i;
+                } else {
                     ++currentWayI;
                     ++cLength;
                     currentWay[currentWayI] = temp;
@@ -268,7 +245,6 @@ int Labyrinth::shortestWay()
         delete[] bufferLabyrinth;
 
         return std::min_element(lengthsWays.begin(), lengthsWays.end())[0];
-    }
-    else
+    } else
         return 0;
 }

@@ -1,26 +1,25 @@
 #ifndef LABYRINTH
 #define LABYRINTH
 
-bool isFileExist(const char *file);
+bool isFileExist(const char* file);
 
 #include <fstream>
-#include <string>
 #include <iostream>
+#include <string>
 
-class Labyrinth
-{
+class Labyrinth {
 private:
     unsigned Lrows, Lcollumns;
-    char **labyrinth;
+    char** labyrinth;
     int start[2], finish[2];
-    void init(char **labyrinth)
+    void init(char** labyrinth)
     {
         for (unsigned i = 0; i < Lrows; ++i)
             labyrinth[i] = new char[Lcollumns];
     }
 
 public:
-    Labyrinth(const char *filename);
+    Labyrinth(const char* filename);
     ~Labyrinth();
 
     int shortestWay();

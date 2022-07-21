@@ -4,19 +4,17 @@
 
 #include <iostream>
 
-int main(){
-    int num,sum = 0,div = 1;
+int main()
+{
+    int num, sum = 0, div = 1;
     printf("Введите число: ");
-    scanf("%d",&num);
+    scanf("%d", &num);
 
-    while (sum < num)
-    {
-        sum += (num % div == 0) ? div : 0 ;
+    while (sum < num) {
+        sum += (num % div == 0) ? div : 0;
         div++;
     }
-    if (sum == num)
-    {
+    if (sum == num) {
         printf("Поздравляю, число совершенно =)\n\n");
     }
-    
 }

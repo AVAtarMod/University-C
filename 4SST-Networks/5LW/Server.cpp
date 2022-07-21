@@ -43,12 +43,12 @@ std::string to_string(sockaddr_storage addr)
     std::string result = std::string(INET6_ADDRSTRLEN, '\0');
     if (addr.ss_family == AF_INET6)
         inet_ntop(addr.ss_family,
-            &((sockaddr_in6*)&addr)->sin6_addr,
-            result.data(), result.size());
+                  &((sockaddr_in6*)&addr)->sin6_addr,
+                  result.data(), result.size());
     else if (addr.ss_family == AF_INET)
         inet_ntop(addr.ss_family,
-            &((sockaddr_in*)&addr)->sin_addr,
-            result.data(), result.size());
+                  &((sockaddr_in*)&addr)->sin_addr,
+                  result.data(), result.size());
     result.shrink_to_fit();
     return result;
 }
@@ -122,7 +122,7 @@ void Server::mainLoop(fd* socket, char s[INET6_ADDRSTRLEN])
                 if (options.debugOutput)
                     std::cout << "[Server] Receive packet from " << inet_ntop(casted->sa_family, get_in_addr(casted), s, INET6_ADDRSTRLEN) << "\n";
                 bytesReceived = recvfrom(*socket,
-                    tmp, sizeof(tmp), 0, casted, &addr_len); // receive normal data
+                                         tmp, sizeof(tmp), 0, casted, &addr_len); // receive normal data
 
                 if (bytesReceived == -1) {
                     perror("[Server] recvfrom");

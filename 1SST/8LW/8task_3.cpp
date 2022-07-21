@@ -8,11 +8,9 @@ int main()
     printf("\n\nВведите номер(а) последовательности,-1 для выхода: ");
     long int number, result;
 
-    while (number != -1)
-    {
+    while (number != -1) {
         scanf("%ld", &number);
-        if (number != -1)
-        {
+        if (number != -1) {
             result = computeMemberSequence(number);
             printf("№%ld = %ld ", number, result);
             if (result == 0)
@@ -32,4 +30,3 @@ long int computeMemberSequence(int numberMember)
     else
         return -(computeMemberSequence(numberMember - 1)) * computeMemberSequence(numberMember - 2);
 }
-

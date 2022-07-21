@@ -3,12 +3,13 @@
 
 #include <iostream>
 
-int main(){
+int main()
+{
     using namespace std;
 
-    int a,b,c,d;
+    int a, b, c, d;
     printf("\n\nВведите стороны конвертов через пробел.Пример: 1 2 3 4\n");
-    scanf("%d %d %d %d",&a,&b,&c,&d);
+    scanf("%d %d %d %d", &a, &b, &c, &d);
 
     int temp = a;
     a = (a < b) ? a : b;
@@ -18,15 +19,12 @@ int main(){
     c = (c < d) ? c : d;
     d = (c == d) ? temp : d;
 
-    if ((a < c && b < d) || (c < a && d < b))
-    {
+    if ((a < c && b < d) || (c < a && d < b)) {
         printf("\nTrue\n\n");
-    }
-    else
-    {
+    } else {
         printf("\nFalse\n\n");
     }
-    /* После ввода сторон проверка на то,что сторона 1 конверта < стороны 
+    /* После ввода сторон проверка на то,что сторона 1 конверта < стороны
     2 конверта для каждой из сторон
     */
 

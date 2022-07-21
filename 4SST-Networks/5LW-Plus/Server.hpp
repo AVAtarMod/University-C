@@ -39,7 +39,7 @@ public:
     std::chrono::milliseconds timeout;
     sockaddr selfaddress;
     bool addSelfAddress = true;
-    Client *cl;
+    Client* cl;
 };
 
 class Server {

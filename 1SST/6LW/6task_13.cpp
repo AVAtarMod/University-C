@@ -2,29 +2,27 @@
 
 #include <iostream>
 
-int main(){
-    int a,b,c,v,cont=0;
-    for (int u = 1; u < 21; u+=2)
-    {
-        for (v = 1; v < u; v+=2){
+int main()
+{
+    int a, b, c, v, cont = 0;
+    for (int u = 1; u < 21; u += 2) {
+        for (v = 1; v < u; v += 2) {
             int NOD = v;
             int del = u;
-            while (del % NOD != 0)
-            {
+            while (del % NOD != 0) {
                 int t = NOD;
                 NOD = del % NOD;
                 del = t;
             }
-            if (NOD==1)
-            {
-                int a=u*v;
-                int b=(u*u-v*v)/2;
-                int c=(u*u+v*v)/2;
-                printf("%d %d %d;\n",a,b,c);
+            if (NOD == 1) {
+                int a = u * v;
+                int b = (u * u - v * v) / 2;
+                int c = (u * u + v * v) / 2;
+                printf("%d %d %d;\n", a, b, c);
                 cont++;
             }
         }
     }
-    printf("******\nБыло выведено %d число\n",cont);
+    printf("******\nБыло выведено %d число\n", cont);
     return 0;
 }

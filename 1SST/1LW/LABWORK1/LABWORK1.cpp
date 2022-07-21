@@ -4,22 +4,22 @@
 //#include "stdafx.h"
 //
 //
-//int main()
+// int main()
 //{
 //    return 0;
 //}
 
 #include "pch.h"
-#include <iostream>
 #include "stdafx.h"
+#include <iostream>
 
 int main()
 {
-    int test;                   //ќбь€вление тестовой переменной чтобы окно консоли закрывалось
-    int x, y;                   //ќбь€вление переменных
-    printf("Input x and y: ");  //ќжидание ввода переменных х и у
-    scanf_s("%d %d", &x, &y);   //¬вод х и у
-    printf("%d + %d = %d", x, y, x + y);    //—ложение х и у и вывод их в консоль
-    scanf_s("%d", &test);                   //ќжидание ввода переменной test
-    return 0;                               //ќстановка программы
+    int test; //ќбь€вление тестовой переменной чтобы окно консоли закрывалось
+    int x, y; //ќбь€вление переменных
+    printf("Input x and y: "); //ќжидание ввода переменных х и у
+    scanf_s("%d %d", &x, &y); //¬вод х и у
+    printf("%d + %d = %d", x, y, x + y); //—ложение х и у и вывод их в консоль
+    scanf_s("%d", &test); //ќжидание ввода переменной test
+    return 0; //ќстановка программы
 }

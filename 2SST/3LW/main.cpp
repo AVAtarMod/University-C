@@ -9,9 +9,8 @@
 
 #define pair std::pair<uint16_t, uint16_t>
 
-namespace userInput
-{
-    uint32_t getDataUser(uint32_t &n, uint32_t &m);
+namespace userInput {
+uint32_t getDataUser(uint32_t& n, uint32_t& m);
 }
 
 void task1(uint32_t n = 0, uint32_t m = 0);
@@ -24,12 +23,11 @@ void printTaskComplete(T task)
     std::cout << "\nTask #" << task << " completed.\n";
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     uint32_t numberTask, n, m;
 
-    switch (argc)
-    {
+    switch (argc) {
     case 1:
         numberTask = userInput::getDataUser(n, m);
         break;
@@ -46,8 +44,7 @@ int main(int argc, char const *argv[])
         break;
     }
 
-    switch (numberTask)
-    {
+    switch (numberTask) {
     case 1:
         task1(n, m);
         printTaskComplete(1);
@@ -69,14 +66,13 @@ int main(int argc, char const *argv[])
 
 void task1(uint32_t n, uint32_t m)
 {
-    uint16_t *array = new uint16_t[n];
+    uint16_t* array = new uint16_t[n];
     arrays1d::generateRandom(array, n, 0u, m);
     arrays1d::print(array, n);
     std::map<uint16_t, uint16_t> indexMap;
-    for (uint16_t i = 0; i < n; i++)
-    {
+    for (uint16_t i = 0; i < n; i++) {
         if (indexMap.find(array[i]) == indexMap.end())
-            indexMap.insert({array[i], 1});
+            indexMap.insert({ array[i], 1 });
         else
             indexMap.at(array[i])++;
     }
@@ -91,21 +87,19 @@ void task1(uint32_t n, uint32_t m)
 }
 void task2(uint32_t n, uint32_t m)
 {
-    uint16_t *array = new uint16_t[n];
+    uint16_t* array = new uint16_t[n];
     arrays1d::generateRandom(array, n, 0u, m);
     arrays1d::print(array, n);
 
-    uint16_t *arraySorted = new uint16_t[n];
+    uint16_t* arraySorted = new uint16_t[n];
     uint16_t iS = 0;
     for (uint16_t i = 0; i < n; i++)
-        if (array[i] % 2 == 0)
-        {
+        if (array[i] % 2 == 0) {
             arraySorted[iS] = array[i];
             iS++;
         }
     for (uint16_t i = 0; i < n; i++)
-        if (array[i] % 2 == 1)
-        {
+        if (array[i] % 2 == 1) {
             arraySorted[iS] = array[i];
             iS++;
         }
@@ -115,10 +109,10 @@ void task2(uint32_t n, uint32_t m)
 }
 void task3(uint32_t n, uint32_t m)
 {
-    int *ar = new int[n];
+    int* ar = new int[n];
     arrays1d::generate(ar, n, arrays1d::RANDOMLY, 0u, m);
 
-    int *arCopy = new int[n];
+    int* arCopy = new int[n];
     for (uint32_t i = 0; i < n; i++)
         arCopy[i] = ar[i];
 
@@ -165,24 +159,22 @@ void task3(uint32_t n, uint32_t m)
     delete[] ar;
 }
 
-namespace userInput
+namespace userInput {
+uint32_t getDataUser(uint32_t& n, uint32_t& m)
 {
-    uint32_t getDataUser(uint32_t &n, uint32_t &m)
-    {
-        while (true)
-        {
-            std::cout << "Enter task number[1-3]: ";
-            uint32_t number;
-            std::cin >> number;
-            std::cout << "Enter n,m through space (ex 1 2): ";
-            std::cin >> n >> m;
-            if (!std::cin.good())
-                std::cout << "Please try again...";
-            else
-                return number;
-            std::cin.ignore(INT16_MAX, '\n');
-            std::cin.clear();
-        }
-        return 0;
+    while (true) {
+        std::cout << "Enter task number[1-3]: ";
+        uint32_t number;
+        std::cin >> number;
+        std::cout << "Enter n,m through space (ex 1 2): ";
+        std::cin >> n >> m;
+        if (!std::cin.good())
+            std::cout << "Please try again...";
+        else
+            return number;
+        std::cin.ignore(INT16_MAX, '\n');
+        std::cin.clear();
     }
+    return 0;
+}
 } // namespace userInput

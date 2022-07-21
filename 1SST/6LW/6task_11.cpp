@@ -2,21 +2,21 @@
 
 #include <iostream>
 
-int main(){
-    int m,n,c=0;
+int main()
+{
+    int m, n, c = 0;
     printf("Введите стороны прямоугольника: ");
-    scanf("%d %d",&m,&n);
+    scanf("%d %d", &m, &n);
 
-    while(n!=0){
-        if (m>n)
-        {
-            int temp=n;
-            n=m;
-            m=temp;
+    while (n != 0) {
+        if (m > n) {
+            int temp = n;
+            n = m;
+            m = temp;
         }
-        n-=m;
+        n -= m;
         c++;
     }
-    printf("Прямоугольник можно разрезать на %d квадратов\n\n",c);
+    printf("Прямоугольник можно разрезать на %d квадратов\n\n", c);
     return 0;
 }

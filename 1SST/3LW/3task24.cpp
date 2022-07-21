@@ -9,39 +9,37 @@
 
 #include <iostream>
 
-int main(){
+int main()
+{
 
     using namespace std;
     int k;
-    string mushroom,pizza,levels;
-    bool oneDef=false;
+    string mushroom, pizza, levels;
+    bool oneDef = false;
 
     printf("\n\nВведите число k: ");
-    scanf("%d",&k);
-    
-    if (k%10 == 1 && k != 11)
-    {
-        mushroom="гриб";
-        pizza="пиццу";
-        levels="уровень";
+    scanf("%d", &k);
+
+    if (k % 10 == 1 && k != 11) {
+        mushroom = "гриб";
+        pizza = "пиццу";
+        levels = "уровень";
     }
-    if ((k>4 && k<21) || k%10 == 5 || k%10 == 6 || k%10 == 7 || k%10 == 8 || k%10 == 9)
-    {
-        oneDef=true;
-        mushroom="грибов";
-        pizza="пицц";
-        levels="уровней";
+    if ((k > 4 && k < 21) || k % 10 == 5 || k % 10 == 6 || k % 10 == 7 || k % 10 == 8 || k % 10 == 9) {
+        oneDef = true;
+        mushroom = "грибов";
+        pizza = "пицц";
+        levels = "уровней";
     }
-    if ((k%10 == 2 || k%10 == 3 || k%10 == 4) && !oneDef)
-    {
-        mushroom="гриба";
-        pizza="пиццы";
-        levels="уровня";
+    if ((k % 10 == 2 || k % 10 == 3 || k % 10 == 4) && !oneDef) {
+        mushroom = "гриба";
+        pizza = "пиццы";
+        levels = "уровня";
     }
 
     cout << "\nМы нашли в лесу " << k << " " << mushroom;
     cout << "\nМы купили на всех " << k << " " << pizza;
     cout << "\nЯ сегодня прошел " << k << " " << levels << " в игре\n\n";
-    
+
     return 0;
 }

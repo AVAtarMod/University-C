@@ -9,30 +9,37 @@ int main()
 {
     printf("Введите число: ");
     long int number;
-    scanf("%ld",&number);
+    scanf("%ld", &number);
 
     printf("Вывод чисел с младшего разряда: \n");
     OutputDigits(abs(number));
 
     printf("Теперь наоборот: \n");
     OutputDigits_invert(abs(number));
-    
-    int sum = computeSumDigits((abs(number)),0);
-    printf("\nСумма цифр числа = %d\n\n",sum);
+
+    int sum = computeSumDigits((abs(number)), 0);
+    printf("\nСумма цифр числа = %d\n\n", sum);
     return 0;
 }
 
-void OutputDigits(long int number){
-    printf("%ld\n",number%10);
-    if (number > 9) OutputDigits(number/10);
+void OutputDigits(long int number)
+{
+    printf("%ld\n", number % 10);
+    if (number > 9)
+        OutputDigits(number / 10);
 }
 
-void OutputDigits_invert(long int number){
-    if (number > 9) OutputDigits_invert(number/10);
-    printf("%ld\n",number%10);
+void OutputDigits_invert(long int number)
+{
+    if (number > 9)
+        OutputDigits_invert(number / 10);
+    printf("%ld\n", number % 10);
 }
 
-long int computeSumDigits(long int number, int sum){
-    if (number) return computeSumDigits(number/10,sum + number%10);
-    else return sum;
+long int computeSumDigits(long int number, int sum)
+{
+    if (number)
+        return computeSumDigits(number / 10, sum + number % 10);
+    else
+        return sum;
 }

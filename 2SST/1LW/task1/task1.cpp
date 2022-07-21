@@ -1,31 +1,30 @@
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <fstream>
+#include <iostream>
+#include <vector>
 
 #include "/home/grigory/Programming/C++/Laboratory/1SST/LABW13/arrays2d.cpp"
 #include "/home/grigory/Programming/C++/Laboratory/1SST/LABW13/useful.h"
 #include "/home/grigory/Programming/C++/Laboratory/2SST/LABW1/extension/cpp-text-table/TextTable.h"
 
 const int SIZE = 100'000'000; //
-enum ValuePlace
-{
+enum ValuePlace {
     AT_BEGIN,
     AT_MIDDLE,
     AT_END,
     NOT_EXIST
 };
 
-uint32_t *getArray();
+uint32_t* getArray();
 
 TextTable getTable(uint64_t linear[4], uint64_t linearBarrier[4], uint64_t binary[4], uint64_t binaryRecursive[4]);
 
-int linear(uint32_t *array, int value);
-int linearWithBarrier(uint32_t *array, int value);
-int binary(uint32_t *array, int value);
-int binaryRecursive(uint32_t *array, int value, int l = 0, int r = SIZE - 1, int c = 0);
+int linear(uint32_t* array, int value);
+int linearWithBarrier(uint32_t* array, int value);
+int binary(uint32_t* array, int value);
+int binaryRecursive(uint32_t* array, int value, int l = 0, int r = SIZE - 1, int c = 0);
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     int value = 0;
 
@@ -35,7 +34,7 @@ int main(int argc, char const *argv[])
     uint64_t binaryRecursiveA[4];
 
     //------------------
-    uint32_t *array = getArray();
+    uint32_t* array = getArray();
     std::cout << "\b\b5%";
     std::cout.flush();
     linearResultA[0] = linear(array, 0);
@@ -92,18 +91,16 @@ int main(int argc, char const *argv[])
     std::cout << result;
 
     std::ofstream out("/home/grigory/Programming/C++/Laboratory/2SST/LABW1/files/task1_out.txt", out.trunc);
-    if (out.good())
-    {
+    if (out.good()) {
         out << result;
     }
     out.close();
 }
 
-int linear(uint32_t *array, int value)
+int linear(uint32_t* array, int value)
 {
     int countComparisons = 0;
-    for (int i = 0; i < SIZE; i++)
-    {
+    for (int i = 0; i < SIZE; i++) {
         countComparisons += 2;
         if (array[i] == value)
             return countComparisons;
@@ -111,29 +108,28 @@ int linear(uint32_t *array, int value)
     return countComparisons;
 }
 
-int linearWithBarrier(uint32_t *array, int value)
+int linearWithBarrier(uint32_t* array, int value)
 {
     uint32_t lastElement = array[SIZE - 1];
     array[SIZE - 1] = value;
     uint32_t i = 0;
     uint32_t countComparisons = 1;
-    while (array[i] != value)
-    {
+    while (array[i] != value) {
         countComparisons++;
         i++;
     }
-    if (lastElement == value);
+    if (lastElement == value)
+        ;
     countComparisons++;
 
     return countComparisons;
 }
-int binary(uint32_t *array, int value)
+int binary(uint32_t* array, int value)
 {
     uint32_t countComparisons = 0;
     int left = 0, right = SIZE - 1;
     bool notFound = true;
-    while (left <= right && notFound)
-    {
+    while (left <= right && notFound) {
         int middle = (left + right) / 2;
         if (array[middle] > value)
             right = middle;
@@ -147,18 +143,14 @@ int binary(uint32_t *array, int value)
     return countComparisons;
 }
 
-int binaryRecursive(uint32_t *array, int value, int l, int r, int c)
+int binaryRecursive(uint32_t* array, int value, int l, int r, int c)
 {
-    if (l < r)
-    {
+    if (l < r) {
         int middle = (l + r) / 2;
-        if (array[middle] > value)
-        {
+        if (array[middle] > value) {
             c++;
             return binaryRecursive(array, value, 0, middle, c);
-        }
-        else if (array[middle] < value)
-        {
+        } else if (array[middle] < value) {
             c++;
             return binaryRecursive(array, value, middle + 1, r, c);
         }
@@ -167,9 +159,9 @@ int binaryRecursive(uint32_t *array, int value, int l, int r, int c)
     return c;
 }
 
-uint32_t *getArray()
+uint32_t* getArray()
 {
-    uint32_t *array = new uint32_t[SIZE];
+    uint32_t* array = new uint32_t[SIZE];
     for (int i = 0; i < SIZE - 1; i++)
         array[i] = i;
 

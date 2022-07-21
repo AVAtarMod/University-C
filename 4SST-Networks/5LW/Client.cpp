@@ -14,7 +14,7 @@ void Client::FinishLoop(sockaddr_in their_addr)
 {
     const char* finishMessage = std::to_string(static_cast<int>(ClientServerMessage::STOPPED)).c_str();
     int result = sendto(socketFd, finishMessage, strlen(finishMessage), 0,
-        (struct sockaddr*)&their_addr, sizeof their_addr);
+                        (struct sockaddr*)&their_addr, sizeof their_addr);
     if (result == -1) {
         perror("[Client] sendto");
         throw new std::runtime_error("[Client] Cannot send data");
@@ -43,7 +43,7 @@ void Client::sendMessage()
 
     if (status == ServiceStatus::Running) {
         int result = sendto(socketFd, message, strlen(message), 0,
-            (struct sockaddr*)&their_addr, sizeof their_addr);
+                            (struct sockaddr*)&their_addr, sizeof their_addr);
 
         if (result == -1) {
             perror("[Client] sendto");

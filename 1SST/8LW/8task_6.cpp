@@ -11,11 +11,9 @@ int main()
 
 unsigned long long int computeOutputDecomposition(int number, int countDecompositions, __int128_t lastDecomposition, ...)
 {
-    for (__int128_t *p = &lastDecomposition, c = 0; c != countDecompositions; p++, c++)
-    {
-        if (*p == (number * 10) + 1) return 1;
+    for (__int128_t *p = &lastDecomposition, c = 0; c != countDecompositions; p++, c++) {
+        if (*p == (number * 10) + 1)
+            return 1;
     }
     printf("\n");
-
-
 }

@@ -15,7 +15,7 @@ fd ClientServer::InitClientSocket()
 
     // this call is what allows broadcast packets to be sent:
     if (setsockopt(clientSocket, SOL_SOCKET, SO_BROADCAST, &broadcast,
-            sizeof broadcast)
+                   sizeof broadcast)
         == -1) {
         perror("setsockopt (SO_BROADCAST)");
 
@@ -46,7 +46,7 @@ fd ClientServer::InitServerSocket()
     // loop through all the results and bind to the first we can
     for (p = servinfo; p != nullptr; p = p->ai_next) {
         serverSocket = socket(p->ai_family, p->ai_socktype,
-            p->ai_protocol);
+                              p->ai_protocol);
 
         if (serverSocket == -1) {
             perror("[Server] socket");

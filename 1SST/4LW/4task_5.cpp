@@ -4,20 +4,21 @@
 
 #include <iostream>
 
-int main(){
+int main()
+{
 
     int userNumber, prevUserNumber, exit = 100;
     bool c = false;
 
     printf("Введите последовательность чисел (или 100 для выхода):");
-    scanf("%d",&userNumber);
+    scanf("%d", &userNumber);
 
-    while (userNumber != exit && prevUserNumber <= userNumber)
-    {
+    while (userNumber != exit && prevUserNumber <= userNumber) {
         prevUserNumber = (c) ? userNumber : userNumber - 1;
-        if (!c) c = true;
-        
-        scanf("%d",&userNumber);
+        if (!c)
+            c = true;
+
+        scanf("%d", &userNumber);
     }
 
     return 0;

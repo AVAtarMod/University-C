@@ -3,19 +3,17 @@
 #include <iostream>
 #include <math.h>
 
-int main(){
+int main()
+{
     using namespace std;
 
-    int n,k,res1,res2;
+    int n, k, res1, res2;
     printf("\n\nВведите n,k через пробел.Пример:1 2\n");
-    scanf("%d %d",&n,&k);
+    scanf("%d %d", &n, &k);
 
-    if (n % 2 == k % 2)
-    {
+    if (n % 2 == k % 2) {
         printf("\nTrue\n\n");
-    }
-    else
-    {
+    } else {
         printf("\nFalse\n\n");
     }
 

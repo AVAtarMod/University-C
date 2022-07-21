@@ -2,30 +2,28 @@
 // взаимно простыми, если их наибольший общий делитель равен 1.
 #include <iostream>
 
-int main(){
-    int num1,num2;
+int main()
+{
+    int num1, num2;
     printf("\n\nВведите 2 числа через пробел:");
-    scanf("%d %d",&num1,&num2);
+    scanf("%d %d", &num1, &num2);
 
     //Если 2 число больше 1,то поменяем их местами
-    if (num2 > num1)
-    {
+    if (num2 > num1) {
         int t = num2;
         num2 = num1;
         num1 = t;
     }
 
     //Находим НОД чисел
-    while (num1 % num2 != 0)
-    {
+    while (num1 % num2 != 0) {
         int t = num2;
         num2 = num1 % num2;
         num1 = t;
     }
 
     //Если конечный остаток = 1 то НОД чисел = 1 и числа простые
-    if (num2 == 1)
-    {
+    if (num2 == 1) {
         printf("\nЧисла взаимно простые\n\n");
     }
     return 0;

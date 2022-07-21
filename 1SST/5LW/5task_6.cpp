@@ -3,19 +3,20 @@
 
 #include <iostream>
 
-int main(){
-    int n = 100,count = 0,mod = 0;
+int main()
+{
+    int n = 100, count = 0, mod = 0;
     printf("\nЧисла, соответствующие условиям = ");
 
-    for(;n<1000;n++){
-        int square = n*n;
+    for (; n < 1000; n++) {
+        int square = n * n;
 
-        if (square % 1000 == n){
-            printf("%d;",n);
+        if (square % 1000 == n) {
+            printf("%d;", n);
             count++;
         }
     }
-    printf("\n\n -- Общее количество чисел = %d --\n",count);
-    
+    printf("\n\n -- Общее количество чисел = %d --\n", count);
+
     return 0;
 }

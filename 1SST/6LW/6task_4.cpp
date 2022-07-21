@@ -2,21 +2,20 @@
 
 #include <iostream>
 
-int main(){
-    long long int n,sum;
+int main()
+{
+    long long int n, sum;
     printf("Введите n: ");
-    scanf("%lld",&n);
-    for (long long int i = 1; i < n; i++)
-    {
+    scanf("%lld", &n);
+    for (long long int i = 1; i < n; i++) {
         sum = 0;
-        for (long long int pos = 1; pos < i; pos++)
-        {
-            if (i % pos == 0) 
-            {
+        for (long long int pos = 1; pos < i; pos++) {
+            if (i % pos == 0) {
                 sum += pos;
             }
         }
-        if (sum == i) printf("%lld ",sum);
+        if (sum == i)
+            printf("%lld ", sum);
     }
     printf("\n ");
     return 0;

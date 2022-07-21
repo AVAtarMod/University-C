@@ -20,14 +20,14 @@ void Client::InitTheirAddr(sockaddr_in& addr)
     }
 }
 
-void Client::sendMessage(const char *message)
+void Client::sendMessage(const char* message)
 {
     sockaddr_in their_addr; // connector's address information
     InitTheirAddr(their_addr);
 
     if (status == ServiceStatus::Running) {
         int result = sendto(socketFd, message, strlen(message), 0,
-            (struct sockaddr*)&their_addr, sizeof their_addr);
+                            (struct sockaddr*)&their_addr, sizeof their_addr);
 
         if (result == -1) {
             perror("[Client] sendto");
@@ -37,7 +37,7 @@ void Client::sendMessage(const char *message)
                 std::cout << "[Client] " << result << " bytes sent to " << inet_ntoa(their_addr.sin_addr) << "\n";
         }
         std::this_thread::sleep_for(options.timeout);
-    } 
+    }
 }
 
 Client& Client::operator=(const Client& c)

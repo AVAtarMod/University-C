@@ -20,30 +20,24 @@ void task7();
 
 int choiceImplementation();
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     bool noData = false;
-    if (argc == 1)
-    {
+    if (argc == 1) {
         printf("### Вариант 3 ###");
         printf("\nВведите программу для запуска: ");
         argc++;
         noData = true;
     }
-    for (int i = 1; i < argc; i++)
-    {
+    for (int i = 1; i < argc; i++) {
         int choice;
-        if (noData)
-        {
+        if (noData) {
             scanf("%d", &choice);
-        }
-        else
-        {
+        } else {
             choice = std::stoi(argv[i]);
         }
 
-        switch (choice)
-        {
+        switch (choice) {
         case 1:
             printf("Задание №1\n");
             if (choiceImplementation() == 1)
@@ -89,25 +83,22 @@ int main(int argc, char const *argv[])
 
 int choiceImplementation()
 {
-    while (true)
-    {
+    while (true) {
         int choice = printAndScan<int>("Выберите реализацию: c-string[1] или std::string[2]: ");
-        if (choice == 1 || choice == 2)
-        {
+        if (choice == 1 || choice == 2) {
             std::cin.ignore(32767, '\n');
             return choice;
-        }
-        else
+        } else
             cout << "Введеные данные неверны.\n";
     }
 }
 
 void task1cstr()
 {
-    char *line = cstr::getStringUser(true);
+    char* line = cstr::getStringUser(true);
     char symbol = cstr::getSymbolUser(" для замены на другой символ");
     int numberReplaces;
-    int *indexes = cstr::indexSymbols(line, symbol, numberReplaces);
+    int* indexes = cstr::indexSymbols(line, symbol, numberReplaces);
 
     char replace = cstr::getSymbolUser(", на который нужно заменить");
     cstr::replace(line, indexes, numberReplaces, replace);
@@ -120,7 +111,7 @@ void task1()
 {
     std::string str = classStr::getString(true);
     uint8_t replaces;
-    uint8_t *indexes = classStr::indexSymbols(str, cstr::getSymbolUser(" для замены на другой символ"), replaces);
+    uint8_t* indexes = classStr::indexSymbols(str, cstr::getSymbolUser(" для замены на другой символ"), replaces);
     classStr::replace(str, indexes, replaces, cstr::getSymbolUser(", на который нужно заменить"));
 
     classStr::print(str);
@@ -128,7 +119,7 @@ void task1()
 }
 void task2cstr()
 {
-    char *telegram = cstr::getStringUser(true);
+    char* telegram = cstr::getStringUser(true);
     uint16_t words = cstr::countWords(telegram);
     uint16_t cost = printAndScan<int>("Введите стоимость телеграммы: ");
     cout << "Стоимость телеграммы: " << words * cost << "\n";
@@ -144,7 +135,7 @@ void task2()
 }
 void task3cstr()
 {
-    char *line = cstr::getStringUser(true);
+    char* line = cstr::getStringUser(true);
     cstr::changeCase(line);
     cstr::print(line);
 
@@ -158,12 +149,11 @@ void task3()
 }
 void task4cstr()
 {
-    char *line = cstr::getStringUser(true);
+    char* line = cstr::getStringUser(true);
     int sizeArray = 0;
-    int *symbols = cstr::countSymbols(line, sizeArray);
+    int* symbols = cstr::countSymbols(line, sizeArray);
 
-    for (int i = 0; i < sizeArray - 1; i += 2)
-    {
+    for (int i = 0; i < sizeArray - 1; i += 2) {
         cout << "Symbol '" << static_cast<char>(symbols[i]) << "' = " << symbols[i + 1] << "\n";
     }
 
@@ -174,9 +164,8 @@ void task4()
 {
     std::string str = classStr::getString(true);
     int sizeptr;
-    int *chars = classStr::countSymbols(str, sizeptr);
-    for (int i = 0; i < sizeptr - 1; i += 2)
-    {
+    int* chars = classStr::countSymbols(str, sizeptr);
+    for (int i = 0; i < sizeptr - 1; i += 2) {
         cout << "Symbol '" << static_cast<char>(chars[i]) << "' = " << chars[i + 1] << "\n";
     }
 
@@ -184,7 +173,7 @@ void task4()
 }
 void task7cstr()
 {
-    char *line = cstr::getStringUser(true);
+    char* line = cstr::getStringUser(true);
     const char* b = (cstr::isPalindrome(line)) ? "Строка является палиндромом" : "Строка не является палиндромом";
     cout << b << std::endl;
     delete[] line;

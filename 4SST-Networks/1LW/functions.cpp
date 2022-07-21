@@ -3,7 +3,8 @@
 #include <fstream>
 #include <sstream>
 
-Graph::Graph(const char* filePath) {
+Graph::Graph(const char* filePath)
+{
     const int bufferSize = 255;
     std::ifstream input(filePath);
 
@@ -42,14 +43,16 @@ Graph::Graph(const char* filePath) {
 
 bool Graph::isEmpty() const { return empty; }
 
-std::vector<std::vector<int>> Graph::getListEdges() const {
+std::vector<std::vector<int>> Graph::getListEdges() const
+{
     return listOfEdges;
 }
 
 int Graph::getNumberVertexes() const { return numberVertexes; }
 int Graph::getNumberEdges() const { return numberEdges; }
 
-bool isLinear(const Graph& g) {
+bool isLinear(const Graph& g)
+{
     const int numberVertexes = g.getNumberVertexes(),
               numberEdges = g.getNumberEdges();
     bool condition1 = (numberEdges == numberEdges + 1);
@@ -61,15 +64,13 @@ bool isLinear(const Graph& g) {
     for (uint i = 1; i < numberVertexes - 1; ++i) {
         bool is2Relation = (list[i].size() == 2);
 
-        bool isLinear =
-            is2Relation && (list[i][0] == i - 1) && (list[i][1] == i + 1);
+        bool isLinear = is2Relation && (list[i][0] == i - 1) && (list[i][1] == i + 1);
         if (!is2Relation || !isLinear) {
             condition2 = false;
             break;
         }
     }
-    condition1 = (list[numberVertexes - 1].size() == 1) &&
-                 (list[numberVertexes - 1][0] == 1);
+    condition1 = (list[numberVertexes - 1].size() == 1) && (list[numberVertexes - 1][0] == 1);
 
     if (condition1 && condition2)
         return true;
@@ -77,16 +78,16 @@ bool isLinear(const Graph& g) {
         return false;
 }
 
-bool isHordalRing(const Graph& g) {}
-bool isRingCycleShifting(const Graph& g) {}
-bool isStar(const Graph& g) {}
-bool isTree(const Graph& g) {}
-bool isGrid(const Graph& g) {}
-bool isFullGraph(const Graph& g) {}
-bool isHyperSquare(const Graph& g) {}
+bool isHordalRing(const Graph& g) { }
+bool isRingCycleShifting(const Graph& g) { }
+bool isStar(const Graph& g) { }
+bool isTree(const Graph& g) { }
+bool isGrid(const Graph& g) { }
+bool isFullGraph(const Graph& g) { }
+bool isHyperSquare(const Graph& g) { }
 
-Topology::Topology(Graph& graph) : g(graph) {}
+Topology::Topology(Graph& graph) : g(graph) { }
 
 std::vector<TopologyVariant> Topology::getTopology() { return variants; }
 
-Topology::~Topology() {}
+Topology::~Topology() { }

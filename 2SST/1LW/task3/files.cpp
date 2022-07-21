@@ -1,31 +1,28 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <vector>
 
 #include "files.h"
 
-void readArray(int **array, int rows, int collumns, const char *filename, const int readPosition)
+void readArray(int** array, int rows, int collumns, const char* filename, const int readPosition)
 {
     std::ifstream in(filename);
     in.seekg(readPosition);
-    for (int row = 0; row < rows; row++)
-    {
-        for (int coll = 0; coll < collumns; coll++)
-        {
+    for (int row = 0; row < rows; row++) {
+        for (int coll = 0; coll < collumns; coll++) {
             in >> array[row][coll];
         }
     }
     in.close();
 }
 
-std::vector<int> readSearchFile(const char *filename)
+std::vector<int> readSearchFile(const char* filename)
 {
     std::ifstream in(filename);
     std::vector<int> array;
     array.resize(10);
     size_t i = 0;
-    for (; !in.eof(); i++)
-    {
+    for (; !in.eof(); i++) {
         int number;
         in >> number;
         array.at(i) = number;
@@ -37,13 +34,12 @@ std::vector<int> readSearchFile(const char *filename)
     return array;
 }
 
-bool isFileExist(const char *file)
+bool isFileExist(const char* file)
 {
     bool exist = false;
 
     std::ifstream in(file);
-    if (in.good())
-    {
+    if (in.good()) {
         exist = true;
     }
     in.close();

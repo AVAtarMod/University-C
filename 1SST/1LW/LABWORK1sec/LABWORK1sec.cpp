@@ -3,16 +3,16 @@
 
 #include "stdafx.h"
 
-
-//int main()
+// int main()
 //{
-//    return 0;
-//}
+//     return 0;
+// }
 
 //#include "pch.h"
-#include "stdio.h"
 #include "conio.h"
-int main() {
+#include "stdio.h"
+int main()
+{
     int age;
     printf("Input your age: ");
     scanf_s("%d", &age);

@@ -9,30 +9,29 @@
 
 long long int numOfDigit(long long int a);
 
-int main(){
-    long long int k,natNumbers = 0,squareNumbers = 0,fibNumbers = 0;
+int main()
+{
+    long long int k, natNumbers = 0, squareNumbers = 0, fibNumbers = 0;
 
     printf("\n\nВведите число k: ");
-    scanf("%lld",&k);
-    int counter=1,num = 1;
+    scanf("%lld", &k);
+    int counter = 1, num = 1;
 
-    while (numOfDigit(natNumbers) < k)
-    {
-        natNumbers = natNumbers*counter + num;
+    while (numOfDigit(natNumbers) < k) {
+        natNumbers = natNumbers * counter + num;
         num++;
-        counter = pow(10,numOfDigit(num));
+        counter = pow(10, numOfDigit(num));
     }
     std::cout << natNumbers << "\n";
-    
 
     return 0;
 }
-long long int numOfDigit(long long int a){
-    int pos = 1,sum = 0;
-    while (a % pos != a)
-    {
-        pos *=10;
-        sum ++;
+long long int numOfDigit(long long int a)
+{
+    int pos = 1, sum = 0;
+    while (a % pos != a) {
+        pos *= 10;
+        sum++;
     }
     sum = (a == 0) ? 1 : sum;
     return sum;

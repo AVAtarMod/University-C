@@ -6,11 +6,9 @@
 void task1()
 {
     std::cout << "Magick square\n";
-    unsigned **task1 = magickSquare();
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int ii = 0; ii < 3; ++ii)
-        {
+    unsigned** task1 = magickSquare();
+    for (int i = 0; i < 3; ++i) {
+        for (int ii = 0; ii < 3; ++ii) {
             std::cout << task1[i][ii] << " ";
         }
         std::cout << "\n";
@@ -26,27 +24,21 @@ void task2()
 
     const int amountNumbers = numberBoxes, amountOperators = numberBoxes - 1;
 
-    int *array = new int[numberBoxes + numberBoxes - 1];
+    int* array = new int[numberBoxes + numberBoxes - 1];
     std::cout << "Enter operators and then numbers:\n ";
-    for (int i = 0; i < amountNumbers + amountOperators; ++i)
-    {
+    for (int i = 0; i < amountNumbers + amountOperators; ++i) {
         std::string temp;
         std::cin >> temp;
-            std::cout << temp;
-        if (i > amountNumbers)
-        {
+        std::cout << temp;
+        if (i > amountNumbers) {
             array[i] = temp[0];
-            try
-            {
+            try {
                 if (array[i] != '<' || array[i] != '>')
                     throw temp[0] + " cannot handle";
-            }
-            catch (const std::exception &e)
-            {
+            } catch (const std::exception& e) {
                 std::cerr << e.what() << '\n';
             }
-        }
-        else
+        } else
             array[i] = atoi(temp.c_str());
     }
 
@@ -60,8 +52,7 @@ void task4()
 }
 void task5()
 {
-    int ar[13] = {1,3,5,2,12,15,11,53,13,10,9,43,4};
-
+    int ar[13] = { 1, 3, 5, 2, 12, 15, 11, 53, 13, 10, 9, 43, 4 };
 }
 void task6()
 {

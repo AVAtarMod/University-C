@@ -6,49 +6,46 @@
 
 #include <iostream>
 
-int main(){
+int main()
+{
 
-    int m,sum = 2,n = 2;
+    int m, sum = 2, n = 2;
 
     printf("\n\nВведите число m: ");
-    scanf("%d",&m);
+    scanf("%d", &m);
 
-    int fib,pFib,pFib2;
+    int fib, pFib, pFib2;
 
-    //reset values temporary variables for next work
+    // reset values temporary variables for next work
     pFib = pFib2 = 1;
     fib = pFib + pFib2;
-    while (n != 40)
-    {
+    while (n != 40) {
         fib = pFib + pFib2;
         pFib2 = pFib;
         pFib = fib;
         n++;
     }
-    printf("\n\na) 40 число Фиббоначи = %d",fib);
-    
+    printf("\n\na) 40 число Фиббоначи = %d", fib);
 
-    //reset values temporary variables for next work
+    // reset values temporary variables for next work
     pFib = pFib2 = 1;
     fib = pFib + pFib2;
-    while (fib <= m && m > 1)
-    {
+    while (fib <= m && m > 1) {
         fib = pFib + pFib2;
         pFib2 = pFib;
         pFib = fib;
     }
-    printf("\n\nb) Первое число Фибоначчи, большее m = %d",fib);
+    printf("\n\nb) Первое число Фибоначчи, большее m = %d", fib);
 
-    //reset values temporary variables for next work
+    // reset values temporary variables for next work
     pFib = pFib2 = 1;
     fib = pFib + pFib2;
-    while (pFib + pFib2 < 1001)
-    {
+    while (pFib + pFib2 < 1001) {
         fib = pFib + pFib2;
         pFib2 = pFib;
         pFib = fib;
         sum += fib;
     }
-    printf("\n\nc) Сумма всех чисел Фибоначчи, которые не превосходят 1000 = %d",sum);
+    printf("\n\nc) Сумма всех чисел Фибоначчи, которые не превосходят 1000 = %d", sum);
     return 0;
 }
